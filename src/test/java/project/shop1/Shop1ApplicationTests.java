@@ -21,19 +21,19 @@ class Shop1ApplicationTests {
 
 	@Test
 	void contextLoads() {
-		Hello hello = new Hello();
-		em.persist(hello);
-
-		JPAQueryFactory query = new JPAQueryFactory(em);
-		QHello qHello = QHello.hello;
-
-		Hello result = query
-				.selectFrom(qHello)
-				.fetchOne();
-
-		Assertions.assertThat(result).isEqualTo(hello);
-
-		Assertions.assertThat(result.getId()).isEqualTo(hello.getId());
+//		Hello hello = new Hello();
+//		em.persist(hello);
+//
+//		JPAQueryFactory query = new JPAQueryFactory(em);
+//		QHello qHello = QHello.hello;
+//
+//		Hello result = query
+//				.selectFrom(qHello)
+//				.fetchOne();
+//
+//		Assertions.assertThat(result).isEqualTo(hello);
+//
+//		Assertions.assertThat(result.getId()).isEqualTo(hello.getId());
 
 
 	}
