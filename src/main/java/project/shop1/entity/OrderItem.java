@@ -8,4 +8,7 @@ public class OrderItem {
     @Id @GeneratedValue
     private Long id;
 
+    public int getTotalPrice() {
+        return 0;
+    }
 }

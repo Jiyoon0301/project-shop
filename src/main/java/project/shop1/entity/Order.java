@@ -3,7 +3,7 @@ package project.shop1.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.catalina.User;
+import project.shop1.enums.OrderStatus;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
