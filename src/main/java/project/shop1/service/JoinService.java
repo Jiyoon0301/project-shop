@@ -5,6 +5,6 @@ import project.shop1.dto.JoinRequestDto;
 
 public interface JoinService {
 
-    void joinUser(JoinRequestDto joinRequestDto);
+    void joinUser(JoinRequestDto joinRequestDto) throws Exception;
 
 }

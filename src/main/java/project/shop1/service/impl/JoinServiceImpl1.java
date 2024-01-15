@@ -16,8 +16,9 @@ public class JoinServiceImpl1 implements JoinService {
 
     private final JoinRepository joinRepository;
 
+
     @Override
-    public void joinUser(JoinRequestDto joinRequestDto) {
+    public void joinUser(JoinRequestDto joinRequestDto) throws Exception {
 
         String userId = joinRequestDto.getUserId();
         String password=joinRequestDto.getPassword();
@@ -32,7 +33,8 @@ public class JoinServiceImpl1 implements JoinService {
             throw new Exception(); //예외처리
         }
 
-        UserEntity userEntity = UserEntity.builder() // ==setId,password...
+        //중복되는 회원이 없을 때
+        UserEntity userEntity = UserEntity.builder() // ==setId,password... ->
                 .userId(userId)
                 .password(password)
                 .name(name)

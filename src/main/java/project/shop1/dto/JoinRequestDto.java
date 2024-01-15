@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 public class JoinRequestDto {
-    private Long id;
+
     private String userId;
     private String password;
     @NotEmpty
