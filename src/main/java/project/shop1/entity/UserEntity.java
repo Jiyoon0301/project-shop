@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import project.shop1.enums.Rank;
+import project.shop1.common.enums.Rank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +24,11 @@ public class UserEntity {
     private String name;
     private String phoneNumber;
     private String email;
+    @Enumerated(value=EnumType.STRING)
     private Rank rank;
 
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "userEntity")
     private List<Order> orders = new ArrayList<>();
 
     public UserEntity(){ //기본생성자

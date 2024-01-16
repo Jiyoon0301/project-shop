@@ -1,4 +1,4 @@
-package project.shop1.Exception;
+package project.shop1.common.exception;
 
 public class NotEnoughStockException {
 

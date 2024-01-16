@@ -3,10 +3,8 @@ package project.shop1.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.websocket.server.ServerEndpoint;
 import lombok.Getter;
 import lombok.Setter;
-import project.shop1.Exception.NotEnoughStockException;
 
 @Entity
 @Getter @Setter

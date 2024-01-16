@@ -32,7 +32,7 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public final StringPath phoneNumber = createString("phoneNumber");
 
-    public final EnumPath<project.shop1.enums.Rank> rank = createEnum("rank", project.shop1.enums.Rank.class);
+    public final EnumPath<project.shop1.common.enums.Rank> rank = createEnum("rank", project.shop1.common.enums.Rank.class);
 
     public final StringPath userId = createString("userId");
 
