@@ -26,10 +26,10 @@ public class JoinRepositoryImpl implements JoinRepository {
     }
 
     @Override
-    public Optional<UserEntity> findUserEntityByName(String name){ //이름을 조회해서 반환(중복된 회원이 있는지 검사)
+    public Optional<UserEntity> findUserEntityByUserId(String userId){ //유저 아이디를 조회해서 반환(중복된 회원이 있는지 검사)
         UserEntity result = jpaQueryFactory
                 .selectFrom(userEntity)
-                .where(userEntity.name.eq(name))
+                .where(userEntity.userId.eq(userId))
                 .fetchOne();
         return Optional.ofNullable(result);
     }

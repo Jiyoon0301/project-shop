@@ -30,10 +30,10 @@ public class JoinServiceImpl1 implements JoinService {
         String phoneNumber= joinRequestDto.getPhoneNumber();
         String email = joinRequestDto.getEmail();
 
-        Optional<UserEntity> findUserEntity = joinRepository.findUserEntityByName(name);
+        Optional<UserEntity> findUserEntity = joinRepository.findUserEntityByUserId(userId);
 
-        if(findUserEntity.isPresent()){ //정보가 들어온 회원과 중복되는 회원이 있을 때
-            throw new Exception("중복되는 회원이 존재합니다."); //예외처리
+        if(findUserEntity.isPresent()){ //userId가 중복되는 회원이 이미 존재할 때
+            throw new Exception(); //예외 처리
         }
 
         //중복되는 회원이 없을 때

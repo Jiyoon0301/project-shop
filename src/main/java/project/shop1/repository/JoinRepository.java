@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface JoinRepository {
 
-    Optional<UserEntity> findUserEntityByName(String name);
+    Optional<UserEntity> findUserEntityByUserId(String name);
 
     void saveUserEntity(UserEntity userEntity);
 
