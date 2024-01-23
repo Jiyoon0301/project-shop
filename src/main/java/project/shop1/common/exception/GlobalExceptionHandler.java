@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import project.shop1.common.ResponseDto;
+import project.shop1.feature.login.exception.NotExistUserEntity;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -19,6 +20,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ResponseDto> joinUserValidationException(MethodArgumentNotValidException ex){
+
+        BindingResult bindingResult = ex.getBindingResult();
+        String message = bindingResult.getFieldError().getDefaultMessage(); //에러 받아와서 그 에러에 맞는 message 받아오기
+
+        return new ResponseEntity<>(new ResponseDto(message), new HttpHeaders(), HttpStatus.CONFLICT); //return에 에러 메세지 담기
+    }
+
+    @ExceptionHandler(NotExistUserEntity.class)
+    protected ResponseEntity<ResponseDto> NotExistUserEntity(MethodArgumentNotValidException ex){
 
         BindingResult bindingResult = ex.getBindingResult();
         String message = bindingResult.getFieldError().getDefaultMessage(); //에러 받아와서 그 에러에 맞는 message 받아오기
