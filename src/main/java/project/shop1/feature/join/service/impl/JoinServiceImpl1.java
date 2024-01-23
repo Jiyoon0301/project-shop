@@ -1,13 +1,13 @@
-package project.shop1.service.impl;
+package project.shop1.feature.join.service.impl;
 
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import project.shop1.dto.JoinRequestDto;
+import project.shop1.feature.join.dto.JoinRequestDto;
 import project.shop1.entity.UserEntity;
 import project.shop1.common.enums.Rank;
-import project.shop1.repository.JoinRepository;
-import project.shop1.service.JoinService;
+import project.shop1.feature.join.repository.JoinRepository;
+import project.shop1.feature.join.service.JoinService;
 
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package project.shop1.repository;
+package project.shop1.feature.join.repository;
 
 import project.shop1.entity.UserEntity;
 
