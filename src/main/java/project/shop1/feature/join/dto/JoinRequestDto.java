@@ -18,14 +18,14 @@ public class JoinRequestDto {
 
     @NotBlank(message = "비밀번호 항목은 필수 입력값입니다.", groups=NotBlank.class)
     @Size(min=8, max=16, groups = SizeCheckGroup.class,message = "비밀번호는 8자 이상 16자 이하여야합니다.")
-    @Pattern(regexp = "~`!@#\\$%\\^\\(\\)*_\\-\\=\\{\\}\\[\\]\\|;:<>,\\.\\?/",
-            groups = PatternCheckGroup.class,
-            message = "비밀번호는 대소문자/숫자/특수문자 중 2가지 이상 조합이어야 합니다. \n" +
-                    "입력 가능 특수문자 : ~`!@#\\$%\\^\\(\\)*_\\-\\=\\{\\}\\[\\]\\|;:<>,\\.\\?/ \n" +
-                    "공백 입력 불가능 \n" +
-                    "연속된 문자, 숫자 사용 불가능 \n" +
-                    "동일한 문자, 숫자를 반복해서 사용 불가능 \n" +
-                    "아이디 포함 불가능")
+//    @Pattern(regexp = "~`!@#\\$%\\^\\(\\)*_\\-\\=\\{\\}\\[\\]\\|;:<>,\\.\\?/",
+//            groups = PatternCheckGroup.class,
+//            message = "비밀번호는 대소문자/숫자/특수문자 중 2가지 이상 조합이어야 합니다. \n" +
+//                    "입력 가능 특수문자 : ~`!@#\\$%\\^\\(\\)*_\\-\\=\\{\\}\\[\\]\\|;:<>,\\.\\?/ \n" +
+//                    "공백 입력 불가능 \n" +
+//                    "연속된 문자, 숫자 사용 불가능 \n" +
+//                    "동일한 문자, 숫자를 반복해서 사용 불가능 \n" +
+//                    "아이디 포함 불가능")
     private String password;
 
     @NotBlank(message = "이름 항목은 필수 입력값입니다.",groups = NotBlankGroup.class)

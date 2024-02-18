@@ -20,9 +20,10 @@ public class LoginRepositoryImpl implements LoginRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Autowired
-    public LoginRepositoryImpl(EntityManager entityManager){
-        this.jpaQueryFactory=new JPAQueryFactory(entityManager);
+    public LoginRepositoryImpl(EntityManager entityManager) {
+        this.jpaQueryFactory = new JPAQueryFactory(entityManager);
     }
+
     @Override
     public Optional<UserEntity> findUserEntityByUserId(String userId) {
         UserEntity result = jpaQueryFactory

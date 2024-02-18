@@ -24,16 +24,12 @@ public class GlobalExceptionHandler {
         BindingResult bindingResult = ex.getBindingResult();
         String message = bindingResult.getFieldError().getDefaultMessage(); //에러 받아와서 그 에러에 맞는 message 받아오기
 
-        return new ResponseEntity<>(new ResponseDto(message), new HttpHeaders(), HttpStatus.CONFLICT); //return에 에러 메세지 담기
+        return new ResponseEntity<>(new ResponseDto(message), new HttpHeaders(), HttpStatus.BAD_REQUEST); //return에 에러 메세지 담기
     }
 
     @ExceptionHandler(NotExistUserEntity.class)
-    protected ResponseEntity<ResponseDto> NotExistUserEntity(MethodArgumentNotValidException ex){
-
-        BindingResult bindingResult = ex.getBindingResult();
-        String message = bindingResult.getFieldError().getDefaultMessage(); //에러 받아와서 그 에러에 맞는 message 받아오기
-
-        return new ResponseEntity<>(new ResponseDto(message), new HttpHeaders(), HttpStatus.CONFLICT); //return에 에러 메세지 담기
+    protected ResponseEntity<ResponseDto> NotExistUserEntity(NotExistUserEntity ex){
+        return new ResponseEntity(new ResponseDto(ex.getMsg()), new HttpHeaders(), HttpStatus.BAD_REQUEST); //return에 에러 메세지 담기
     }
 
 }

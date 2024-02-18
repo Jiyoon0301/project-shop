@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import project.shop1.common.enums.Rank;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Entity
 @Builder
-@Getter
+@Getter @Setter
 @AllArgsConstructor
 public class UserEntity {
 
@@ -22,6 +23,8 @@ public class UserEntity {
     private String password;
     @NotEmpty
     private String name;
+    @Embedded
+    private Address address;
     private String phoneNumber;
     private String email;
     @Enumerated(value=EnumType.STRING)
@@ -32,7 +35,6 @@ public class UserEntity {
     private List<Order> orders = new ArrayList<>();
 
     public UserEntity(){ //기본생성자
-
     }
 
 

@@ -12,12 +12,11 @@ import project.shop1.feature.join.service.JoinService;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor //final이 있는 필드만 가지고 생성자 만들어줌
 @Transactional(readOnly = true)
 public class JoinServiceImpl1 implements JoinService {
 
     private final JoinRepository joinRepository;
-
 
     @Override
     @Transactional

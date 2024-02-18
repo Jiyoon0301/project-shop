@@ -34,11 +34,12 @@ public class LoginServiceImpl1 implements LoginService {
         UserEntity userEntity = userEntityByUserId.get();
 
         if(!userEntity.getPassword().equals(password)){
-            throw new NotExistUserEntity("비밀번호가 틀렸습니다.");
+            throw new NotExistUserEntity("비밀번호가 일치하지 않습니다.");
         }
 
         HttpSession httpSession = httpServletRequest.getSession(true);
         httpSession.setAttribute("userId",userId);
+//        httpSession.setMaxInactiveInterval(); //로그인 유지 기간
 
     }
 }
