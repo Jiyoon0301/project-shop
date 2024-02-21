@@ -13,10 +13,11 @@ import project.shop1.feature.login.exception.NotExistUserEntity;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({Exception.class})
-    protected ResponseEntity<ResponseDto> joinUserException(){
-        return new ResponseEntity<>(new ResponseDto("이미 사용 중인 아이디입니다."), new HttpHeaders(), HttpStatus.CONFLICT); //충돌 에러
-    }
+//    @ExceptionHandler({Exception.class})
+//    protected ResponseEntity<ResponseDto> joinUserException(Exception e){
+////        BindingResult b = e.getMessage();
+//        return new ResponseEntity<>(new ResponseDto("이미 사용 중인 아이디입니다."), new HttpHeaders(), HttpStatus.CONFLICT); //충돌 에러
+//    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ResponseDto> joinUserValidationException(MethodArgumentNotValidException ex){

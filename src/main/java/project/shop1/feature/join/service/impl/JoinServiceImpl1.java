@@ -46,6 +46,15 @@ public class JoinServiceImpl1 implements JoinService {
                 .build();
 
         joinRepository.saveUserEntity(userEntity);
+    }
+
+    @Override
+    public Boolean verificationMail(JoinRequestDto joinRequestDto, String userAuthNum){ //인증번호가 일치하는지 검증
+
+        if (joinRequestDto.getAuthCode().equals(userAuthNum)){
+            return true;
+        } else return false;
 
     }
+
 }

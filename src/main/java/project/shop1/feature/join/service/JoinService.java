@@ -6,4 +6,6 @@ public interface JoinService {
 
     void joinUser(JoinRequestDto joinRequestDto) throws Exception;
 
+    Boolean verificationMail(JoinRequestDto joinRequestDto, String userAuthNum);
+
 }

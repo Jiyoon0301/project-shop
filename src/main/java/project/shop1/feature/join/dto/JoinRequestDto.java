@@ -34,4 +34,6 @@ public class JoinRequestDto {
     private String phoneNumber;
     @NotBlank(message = "이메일을 입력해 주세요.", groups = NotBlankGroup.class)
     private String email;
+
+    private String authCode;
 }
