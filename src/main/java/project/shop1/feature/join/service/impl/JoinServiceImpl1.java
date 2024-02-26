@@ -3,11 +3,15 @@ package project.shop1.feature.join.service.impl;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import project.shop1.common.exception.InvalidEmailFormatException;
+import project.shop1.common.exception.UserAlreadyExistsException;
 import project.shop1.feature.join.dto.JoinRequestDto;
 import project.shop1.entity.UserEntity;
 import project.shop1.common.enums.Rank;
 import project.shop1.feature.join.repository.JoinRepository;
 import project.shop1.feature.join.service.JoinService;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import java.util.Optional;
 
@@ -20,7 +24,7 @@ public class JoinServiceImpl1 implements JoinService {
 
     @Override
     @Transactional
-    public void joinUser(JoinRequestDto joinRequestDto) throws Exception {
+    public void joinUser(JoinRequestDto joinRequestDto) throws UserAlreadyExistsException, InvalidEmailFormatException {
 
         String userId = joinRequestDto.getUserId();
         String password=joinRequestDto.getPassword();
@@ -31,8 +35,15 @@ public class JoinServiceImpl1 implements JoinService {
 
         Optional<UserEntity> findUserEntity = joinRepository.findUserEntityByUserId(userId);
 
-        if(findUserEntity.isPresent()){ //userId가 중복되는 회원이 이미 존재할 때
-            throw new Exception(); //예외 처리
+
+        // userId 중복 검사
+        if(findUserEntity.isPresent()){
+            throw new UserAlreadyExistsException();
+        }
+
+        //이메일 형식 검사
+        if (!mailFormCheck(email)){
+            throw new InvalidEmailFormatException();
         }
 
         //중복되는 회원이 없을 때
@@ -55,6 +66,15 @@ public class JoinServiceImpl1 implements JoinService {
             return true;
         } else return false;
 
+    }
+
+    /* 이메일 형식 검사 */
+    @Override
+    public Boolean mailFormCheck(String email) {
+        String form = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(form);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
 }

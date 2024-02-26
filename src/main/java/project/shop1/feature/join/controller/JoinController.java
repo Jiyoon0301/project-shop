@@ -1,26 +1,37 @@
 package project.shop1.feature.join.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import project.shop1.common.ResponseDto;
 import project.shop1.feature.join.dto.JoinRequestDto;
 import project.shop1.feature.join.service.JoinService;
 import project.shop1.common.validation.ValidationSequence;
+import project.shop1.util.AddressService;
 import project.shop1.util.MailService;
+
+import java.net.URI;
+import java.nio.charset.Charset;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class JoinController {
 
     private final JoinService joinService;
     private final MailService mailService;
+    private final AddressService addressService;
 
     private String verificationCode;
     private Boolean verified = false; //이메일 인증 여부
@@ -44,5 +55,10 @@ public class JoinController {
         if (verified==true){
             return new ResponseEntity(new ResponseDto("인증이 완료되었습니다."), new HttpHeaders(), HttpStatus.OK);
         } else { return new ResponseEntity(new ResponseDto("인증번호를 다시 확인해주세요."), new HttpHeaders(), HttpStatus.OK);}
+    }
+
+    @GetMapping("/searchAddress")
+    public String searchAddress(String keyword){
+        return addressService.searchAddress(keyword);
     }
 }

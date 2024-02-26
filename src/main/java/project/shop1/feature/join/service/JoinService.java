@@ -8,4 +8,7 @@ public interface JoinService {
 
     Boolean verificationMail(JoinRequestDto joinRequestDto, String userAuthNum);
 
+    Boolean mailFormCheck(String email);
+
+
 }
