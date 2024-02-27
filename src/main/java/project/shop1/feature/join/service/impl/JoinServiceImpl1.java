@@ -1,5 +1,7 @@
 package project.shop1.feature.join.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,21 +24,22 @@ public class JoinServiceImpl1 implements JoinService {
 
     private final JoinRepository joinRepository;
 
+    @Autowired
+    private final BCryptPasswordEncoder pwEncoder;
+
     @Override
     @Transactional
     public void joinUser(JoinRequestDto joinRequestDto) throws UserAlreadyExistsException, InvalidEmailFormatException {
 
         String userId = joinRequestDto.getUserId();
         String password=joinRequestDto.getPassword();
-
         String name = joinRequestDto.getName();
         String phoneNumber= joinRequestDto.getPhoneNumber();
         String email = joinRequestDto.getEmail();
 
-        Optional<UserEntity> findUserEntity = joinRepository.findUserEntityByUserId(userId);
-
 
         // userId 중복 검사
+        Optional<UserEntity> findUserEntity = joinRepository.findUserEntityByUserId(userId);
         if(findUserEntity.isPresent()){
             throw new UserAlreadyExistsException();
         }
@@ -46,10 +49,13 @@ public class JoinServiceImpl1 implements JoinService {
             throw new InvalidEmailFormatException();
         }
 
+        //비밀번호 암호화
+        String enPassword = pwEncoder.encode(password);
+
         //중복되는 회원이 없을 때
         UserEntity userEntity = UserEntity.builder() // ==setId,password... ->
                 .userId(userId)
-                .password(password)
+                .password(enPassword) //암호화된 비밀번호 사용
                 .name(name)
                 .phoneNumber(phoneNumber)
                 .email(email)
@@ -59,6 +65,7 @@ public class JoinServiceImpl1 implements JoinService {
         joinRepository.saveUserEntity(userEntity);
     }
 
+    /* user가 입력한 인증번호가 일치하는지 검사*/
     @Override
     public Boolean verificationMail(JoinRequestDto joinRequestDto, String userAuthNum){ //인증번호가 일치하는지 검증
 
@@ -76,5 +83,6 @@ public class JoinServiceImpl1 implements JoinService {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
 
 }
