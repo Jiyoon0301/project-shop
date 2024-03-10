@@ -27,10 +27,13 @@ spring:
           auth: true
           starttls:
             enable: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+#          secret-key: e1055bdcb07d43c7ab859e9fd1418e3c2f31679a269ff2350840f1d5dd824bee
 
 logging:
   level:
     org.hibernate.SQL: debug
 #    org.hibernate.type: trace
-
-

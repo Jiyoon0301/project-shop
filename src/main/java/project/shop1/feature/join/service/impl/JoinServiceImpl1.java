@@ -62,6 +62,8 @@ public class JoinServiceImpl1 implements JoinService {
                 .rank(Rank.MEMBER)
                 .build();
 
+        System.out.println("enPassword="+userEntity.getPassword());
+
         joinRepository.saveUserEntity(userEntity);
     }
 

@@ -39,15 +39,5 @@ public class JoinRepositoryImpl implements JoinRepository {
         entityManager.persist(userEntity);
     }
 
-    /* 암호화된 비밀번호가 일치하는지 확인하는 메서드 */
-//    public Boolean login(String id, String rawPw){
-//        // 이 함수는 user repository에 따로 구현이 되어 있어야 한다.
-//        User user = userRepository.findById(id);
-//        if(passwordEncoder.matches(rawPw, user.getUserPw())){
-//            return true;
-//        } else{
-//            return false;
-//        }
-//    }
 
 }

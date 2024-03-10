@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.filters.ExpiresFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.shop1.entity.UserEntity;
@@ -20,6 +22,9 @@ import java.util.Optional;
 public class LoginServiceImpl1 implements LoginService {
 
     private final LoginRepository loginRepository;
+
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
     @Override
     public void loginUser(LoginRequestDto loginRequestDto, HttpServletRequest httpServletRequest) {
         String userId=loginRequestDto.getUserId();
@@ -33,7 +38,7 @@ public class LoginServiceImpl1 implements LoginService {
 
         UserEntity userEntity = userEntityByUserId.get();
 
-        if(!userEntity.getPassword().equals(password)){
+        if(!passwordEncoder.matches(password, userEntity.getPassword())){
             throw new NotExistUserEntity("비밀번호가 일치하지 않습니다.");
         }
 

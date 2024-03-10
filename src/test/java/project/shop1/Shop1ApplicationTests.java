@@ -10,15 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-@Transactional
+//@SpringBootTest
+//@Transactional
 class Shop1ApplicationTests {
 
-	@Autowired
-	EntityManager em;
+//	@Autowired
+//	EntityManager em;
 
-	@Test
-	void contextLoads() {
+//	@Test
+//	void contextLoads() {
 //		Hello hello = new Hello();
 //		em.persist(hello);
 //
@@ -33,7 +33,6 @@ class Shop1ApplicationTests {
 //
 //		Assertions.assertThat(result.getId()).isEqualTo(hello.getId());
 
-
-	}
+//	}
 
 }

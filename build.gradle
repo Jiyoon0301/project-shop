@@ -32,6 +32,7 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	//Validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
@@ -52,9 +53,15 @@ dependencies {
 	implementation 'ch.qos.logback:logback-classic:1.4.14'
 
 	//BCryptPasswordEncoder
-	implementation 'org.springframework.security:spring-security-core:5.6.10'
-	implementation 'org.springframework.security:spring-security-web:6.2.1'
-	implementation 'org.springframework.security:spring-security-config:5.4.2'
+	implementation 'org.springframework.security:spring-security-core'
+	implementation 'org.springframework.security:spring-security-web'
+	implementation 'org.springframework.security:spring-security-config'
+
+	//JWT
+	implementation 'io.jsonwebtoken:jjwt-api'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson'
+
 }
 
 

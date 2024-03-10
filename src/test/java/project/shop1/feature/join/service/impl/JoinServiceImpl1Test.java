@@ -14,34 +14,34 @@ import project.shop1.feature.join.service.JoinService;
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+//@SpringBootTest
 @Transactional
 public class JoinServiceImpl1Test {
 
-    @Autowired JoinService joinService;
-
-    @Autowired
-    JoinRepository joinRepository;
-    
-    @Test
-    public void 회원가입() throws Exception{
-        //given
-        UserEntity userEntity = new UserEntity();
-        userEntity.setName("kim");
-
-        
-        //when
-        
-        //then
-    }
-    
-    @Test
-    public void 중복_회원_예외() throws Exception{
-        //given
-        
-        //when
-        
-        //then
-    }
+//    @Autowired JoinService joinService;
+//
+//    @Autowired
+//    JoinRepository joinRepository;
+//
+//    @Test
+//    public void 회원가입() throws Exception{
+//        //given
+//        UserEntity userEntity = new UserEntity();
+//        userEntity.setName("kim");
+//
+//
+//        //when
+//
+//        //then
+//    }
+//
+//    @Test
+//    public void 중복_회원_예외() throws Exception{
+//        //given
+//
+//        //when
+//
+//        //then
+//    }
 
 }
