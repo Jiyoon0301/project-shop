@@ -14,9 +14,10 @@ public abstract class Item {
     @Column(name = "item_id")
     private Long id;
 
-    private String name; //이름
-    private String color; //색깔
-    private String size; //사이즈
+    private String title; //제목
+    @OneToOne(fetch = FetchType.LAZY)
+//    @Column(name = "author_id")
+    private Author author; //저자
 
     private int price; //가격
     private int stockQuantity; //재고

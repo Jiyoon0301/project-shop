@@ -1,14 +1,14 @@
 package project.shop1.feature.join.service;
 
+import project.shop1.feature.join.dto.AuthCodeRequestDto;
+import project.shop1.feature.join.dto.EmailAuthRequestDto;
 import project.shop1.feature.join.dto.JoinRequestDto;
 
 public interface JoinService {
 
-    void joinUser(JoinRequestDto joinRequestDto) throws Exception;
+    void join(JoinRequestDto joinRequestDto);
 
-    Boolean verificationMail(JoinRequestDto joinRequestDto, String userAuthNum);
+    void authEmail(EmailAuthRequestDto emailAuthRequestDto);
 
-    Boolean mailFormCheck(String email);
-
-
+    void validationAuthCode(AuthCodeRequestDto authCodeRequestDto);
 }

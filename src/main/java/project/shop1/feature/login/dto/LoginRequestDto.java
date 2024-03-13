@@ -1,14 +1,9 @@
 package project.shop1.feature.login.dto;
 
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Generated;
-import lombok.Getter;
+import lombok.*;
 
 @Data
-@Builder
-@Getter
 public class LoginRequestDto {
 
     private String userId;

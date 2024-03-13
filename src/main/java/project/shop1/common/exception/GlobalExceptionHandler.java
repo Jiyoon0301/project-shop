@@ -1,44 +1,49 @@
 package project.shop1.common.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.AbstractBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import project.shop1.common.ResponseDto;
-import project.shop1.feature.login.exception.NotExistUserEntity;
+import project.shop1.common.reponse.ErrorResponse;
+
+import java.util.Optional;
 
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
-
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    protected ResponseEntity<ResponseDto> handleUserAlreadyExistsException(){ //인자로 Exception e 받기
-//        BindingResult b = e.getMessage();
-        return new ResponseEntity<>(new ResponseDto("이미 사용 중인 아이디입니다."), new HttpHeaders(), HttpStatus.CONFLICT); //충돌 에러
-    }
-
-    @ExceptionHandler(InvalidEmailFormatException.class)
-    protected ResponseEntity<ResponseDto> handleInvalidEmailFormatException(){
-
-        return new ResponseEntity<>(new ResponseDto("올바르지 않은 이메일 형식입니다."), new HttpHeaders(), HttpStatus.CONFLICT); //충돌 에러
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<ResponseDto> joinUserValidationException(MethodArgumentNotValidException ex){
-
+    protected ResponseEntity<ErrorResponse> joinUserValidationException(MethodArgumentNotValidException ex){
+        ErrorCode errorCode = ErrorCode.PARAMETER_VALIDATION_FAIL;
         BindingResult bindingResult = ex.getBindingResult();
-        String message = bindingResult.getFieldError().getDefaultMessage(); //에러 받아와서 그 에러에 맞는 message 받아오기
 
-        return new ResponseEntity<>(new ResponseDto(message), new HttpHeaders(), HttpStatus.BAD_REQUEST); //return에 에러 메세지 담기
+        String exceptionMessage =
+                Optional.ofNullable(bindingResult.getFieldError())
+                        .orElseGet(() -> {
+                            log.error("Get Binding Result Error - Field Error is null.");
+                            throw new NullPointerException("Get Binding Result Error - Field Error is null.");
+                        })
+                        .getDefaultMessage();
+
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(ErrorResponse.of(errorCode.getCode(), exceptionMessage));
     }
 
-    @ExceptionHandler(NotExistUserEntity.class)
-    protected ResponseEntity<ResponseDto> NotExistUserEntity(NotExistUserEntity ex){
-        return new ResponseEntity(new ResponseDto(ex.getMsg()), new HttpHeaders(), HttpStatus.BAD_REQUEST); //return에 에러 메세지 담기
+    @ExceptionHandler(BusinessException.class)
+    protected ResponseEntity<ErrorResponse> BusinessExceptionHandler(BusinessException ex){
+        ErrorCode errorCode = ex.getErrorCode();
+
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(ErrorResponse.of(
+                        errorCode.getCode(), ex.getMessage()));
     }
+
 
 }

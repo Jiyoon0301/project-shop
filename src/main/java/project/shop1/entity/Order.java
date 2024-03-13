@@ -3,9 +3,8 @@ package project.shop1.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import project.shop1.common.enums.OrderStatus;
+import project.shop1.entity.enums.OrderStatus;
 
-import java.lang.reflect.Member;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

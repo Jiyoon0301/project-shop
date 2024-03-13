@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -18,8 +17,6 @@ public class QAuthor extends EntityPathBase<Author> {
 
     private static final long serialVersionUID = 835268366L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QAuthor author = new QAuthor("author");
 
     public final StringPath authorIntro = createString("authorIntro");
@@ -28,27 +25,20 @@ public class QAuthor extends EntityPathBase<Author> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final QNation nation;
+    public final StringPath nation = createString("nation");
+
+    public final DateTimePath<java.time.LocalDateTime> regDate = createDateTime("regDate", java.time.LocalDateTime.class);
 
     public QAuthor(String variable) {
-        this(Author.class, forVariable(variable), INITS);
+        super(Author.class, forVariable(variable));
     }
 
     public QAuthor(Path<? extends Author> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QAuthor(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QAuthor(PathMetadata metadata, PathInits inits) {
-        this(Author.class, metadata, inits);
-    }
-
-    public QAuthor(Class<? extends Author> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.nation = inits.isInitialized("nation") ? new QNation(forProperty("nation")) : null;
+        super(Author.class, metadata);
     }
 
 }

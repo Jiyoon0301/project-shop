@@ -22,21 +22,19 @@ public class QItem extends EntityPathBase<Item> {
 
     public static final QItem item = new QItem("item");
 
-    public final QCategory category;
+    public final QAuthor author;
 
-    public final StringPath color = createString("color");
+    public final QCategory category;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath name = createString("name");
-
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
-
-    public final StringPath size = createString("size");
 
     public final NumberPath<Integer> sold = createNumber("sold", Integer.class);
 
     public final NumberPath<Integer> stockQuantity = createNumber("stockQuantity", Integer.class);
+
+    public final StringPath title = createString("title");
 
     public QItem(String variable) {
         this(Item.class, forVariable(variable), INITS);
@@ -56,6 +54,7 @@ public class QItem extends EntityPathBase<Item> {
 
     public QItem(Class<? extends Item> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.author = inits.isInitialized("author") ? new QAuthor(forProperty("author")) : null;
         this.category = inits.isInitialized("category") ? new QCategory(forProperty("category"), inits.get("category")) : null;
     }
 

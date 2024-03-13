@@ -18,11 +18,9 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     private static final long serialVersionUID = 1555172241L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QUserEntity userEntity = new QUserEntity("userEntity");
 
-    public final QAddress address;
+    public final StringPath address = createString("address");
 
     public final StringPath email = createString("email");
 
@@ -36,29 +34,20 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public final StringPath phoneNumber = createString("phoneNumber");
 
-    public final EnumPath<project.shop1.common.enums.Rank> rank = createEnum("rank", project.shop1.common.enums.Rank.class);
+    public final EnumPath<project.shop1.entity.enums.Rank> rank = createEnum("rank", project.shop1.entity.enums.Rank.class);
 
     public final StringPath userId = createString("userId");
 
     public QUserEntity(String variable) {
-        this(UserEntity.class, forVariable(variable), INITS);
+        super(UserEntity.class, forVariable(variable));
     }
 
     public QUserEntity(Path<? extends UserEntity> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QUserEntity(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QUserEntity(PathMetadata metadata, PathInits inits) {
-        this(UserEntity.class, metadata, inits);
-    }
-
-    public QUserEntity(Class<? extends UserEntity> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.address = inits.isInitialized("address") ? new QAddress(forProperty("address")) : null;
+        super(UserEntity.class, metadata);
     }
 
 }
