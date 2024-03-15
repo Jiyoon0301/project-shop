@@ -50,18 +50,24 @@ public class JoinServiceImpl implements JoinService {
 
         Optional<UserEntity> findUserEntity = joinRepository.findUserEntityByAccount(account);
 
+
+        //아이디 중복 확인
         if(findUserEntity.isPresent()){
             throw new BusinessException(ErrorCode.RESOURCE_CONFLICT, "이미 존재하는 아이디입니다.");
         }
 
         Optional<EmailAuth> findEmailAuth = joinRepository.findEmailAuthByEmail(email);
 
-        if (!findEmailAuth.get().getAuthcode().equals(inputAuthCode)){
-            throw new BusinessException(ErrorCode.AUTHENTICATION_FAIL, "인증번호를 다시 확인해주세요.");
-        }
+        //이메일 인증 확인
+//        if (!findEmailAuth.get().getAuthcode().equals(inputAuthCode)){
+//            throw new BusinessException(ErrorCode.AUTHENTICATION_FAIL, "인증번호를 다시 확인해주세요.");
+//        }
+
+        //비밀번호 암호화
+
 
         UserEntity userEntity = UserEntity.builder()
-                .userId(account)
+                .account(account)
                 .password(password)
                 .name(name)
                 .phoneNumber(phoneNumber)

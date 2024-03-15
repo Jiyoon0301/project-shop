@@ -52,6 +52,9 @@ dependencies {
 	//Logback
 	implementation 'ch.qos.logback:logback-classic:1.4.14'
 
+	//sprign security - BCryptPasswordEncoder
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
 
 }
 

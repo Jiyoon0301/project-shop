@@ -20,6 +20,8 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public static final QUserEntity userEntity = new QUserEntity("userEntity");
 
+    public final StringPath account = createString("account");
+
     public final StringPath address = createString("address");
 
     public final StringPath email = createString("email");
@@ -35,8 +37,6 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
     public final StringPath phoneNumber = createString("phoneNumber");
 
     public final EnumPath<project.shop1.entity.enums.Rank> rank = createEnum("rank", project.shop1.entity.enums.Rank.class);
-
-    public final StringPath userId = createString("userId");
 
     public QUserEntity(String variable) {
         super(UserEntity.class, forVariable(variable));

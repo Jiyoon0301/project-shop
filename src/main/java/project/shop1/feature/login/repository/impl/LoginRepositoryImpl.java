@@ -3,6 +3,9 @@ package project.shop1.feature.login.repository.impl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import project.shop1.entity.QUserEntity;
@@ -25,10 +28,10 @@ public class LoginRepositoryImpl implements LoginRepository {
     }
 
     @Override
-    public Optional<UserEntity> findUserEntityByUserId(String userId) {
+    public Optional<UserEntity> findUserEntityByAccount(String account) {
         UserEntity result = jpaQueryFactory
                 .selectFrom(userEntity)
-                .where(userEntity.userId.eq(userId))
+                .where(userEntity.account.eq(account))
                 .fetchOne();
 
         return Optional.ofNullable(result);

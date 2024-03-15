@@ -4,8 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-@Setter
-@Getter
+@Data
 public class AuthorRequestDto {
 
     @Size(min = 3)
