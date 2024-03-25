@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -23,11 +24,17 @@ public class QAuthor extends EntityPathBase<Author> {
 
     public final StringPath authorName = createString("authorName");
 
+    public final NumberPath<Long> authorNumber = createNumber("authorNumber", Long.class);
+
+    public final ListPath<Book, QBook> book = this.<Book, QBook>createList("book", Book.class, QBook.class, PathInits.DIRECT2);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath nation = createString("nation");
 
-    public final DateTimePath<java.time.LocalDateTime> regDate = createDateTime("regDate", java.time.LocalDateTime.class);
+    public final DatePath<java.time.LocalDate> regDate = createDate("regDate", java.time.LocalDate.class);
+
+    public final DatePath<java.time.LocalDate> updateDate = createDate("updateDate", java.time.LocalDate.class);
 
     public QAuthor(String variable) {
         super(Author.class, forVariable(variable));

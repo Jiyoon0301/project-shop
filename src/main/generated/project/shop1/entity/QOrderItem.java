@@ -22,11 +22,11 @@ public class QOrderItem extends EntityPathBase<OrderItem> {
 
     public static final QOrderItem orderItem = new QOrderItem("orderItem");
 
+    public final QBook book;
+
     public final NumberPath<Integer> count = createNumber("count", Integer.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
-
-    public final QItem item;
 
     public final QOrder order;
 
@@ -50,7 +50,7 @@ public class QOrderItem extends EntityPathBase<OrderItem> {
 
     public QOrderItem(Class<? extends OrderItem> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.item = inits.isInitialized("item") ? new QItem(forProperty("item"), inits.get("item")) : null;
+        this.book = inits.isInitialized("book") ? new QBook(forProperty("book"), inits.get("book")) : null;
         this.order = inits.isInitialized("order") ? new QOrder(forProperty("order"), inits.get("order")) : null;
     }
 

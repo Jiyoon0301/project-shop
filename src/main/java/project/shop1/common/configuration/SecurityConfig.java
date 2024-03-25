@@ -21,6 +21,9 @@
 ////                .authorizeRequests()
 ////                .requestMatchers("/api/users/login", "/api/users/join").permitAll()
 ////                .and()
+//                  .oauth2Login() //Social Login 설정 (카카오톡)
+//                  .userInfoEndpoint()
+//                  .userService(memberSocialService)
 ////                .build();
 ////    }
 //

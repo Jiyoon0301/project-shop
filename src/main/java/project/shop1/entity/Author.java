@@ -3,10 +3,12 @@ package project.shop1.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Getter @Setter
+@Data
 @AllArgsConstructor //모든 필드 사용 생성자
 @NoArgsConstructor
 @Builder
@@ -14,6 +16,8 @@ public class Author {
 
     @Id @GeneratedValue
     private Long id;
+
+    private Long authorNumber;
 
     /* 작가 이름 */
     private String authorName;
@@ -25,10 +29,14 @@ public class Author {
     private String authorIntro;
 
     /* 등록 날짜 */
-    private LocalDateTime regDate; // 작가 등록될 때 자동으로 날짜 생성되도록?
+    private LocalDate regDate;
 
     /* 수정 날짜 */
-//    private Date updateDate;
+    private LocalDate updateDate;
+
+    /* 책 */
+    @OneToMany(mappedBy = "author")
+    private List<Book> book = new ArrayList<>();
 
 
 
