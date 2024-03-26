@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import project.shop1.entity.Book;
+import project.shop1.entity.CartItem;
 import project.shop1.feature.productInfo.repository.ProductInfoRepository;
 
 import java.util.List;
@@ -26,11 +27,17 @@ public class ProductInfoRepositoryImpl implements ProductInfoRepository {
 
     @Override
     public Optional<Book> findBookByProductNumber(Long productNumber){
-        List<Book> result = jpaQueryFactory
+        Book result = jpaQueryFactory
                 .selectFrom(book)
-                .orderBy(book.sold.desc())
+                .where(book.productNumber.eq(productNumber))
                 .fetchOne();
 
         return Optional.ofNullable(result);
     }
+
+    /* 장바구니 담기 버튼 */
+    public void addCart(CartItem cartItem){
+        entityManager.persist(cartItem);
+    }
+
 }

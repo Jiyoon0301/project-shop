@@ -1,8 +1,7 @@
 package project.shop1.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import project.shop1.entity.enums.OrderStatus;
 
 import java.time.LocalDateTime;
@@ -11,7 +10,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
-@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
 public class Order {
 
     @Id @GeneratedValue
@@ -21,7 +23,7 @@ public class Order {
     private LocalDateTime orderDate; //주문일자
 
     @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_entity_id")
     private UserEntity userEntity; //주문자
 
     private OrderStatus status; //주문처리상태 [ORDER, CANCEL]
@@ -34,6 +36,7 @@ public class Order {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) //Order가 persist될 때마다 Delivery도 persist됨
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
+
 
 //    public int getTotalPrice(){ //총 결제금액
 //        int totalPrice=0;

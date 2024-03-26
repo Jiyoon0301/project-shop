@@ -1,6 +1,7 @@
 package project.shop1.feature.productInfo.service;
 
 import project.shop1.entity.Book;
+import project.shop1.feature.productInfo.dto.AddCartRequestDto;
 import project.shop1.feature.productInfo.dto.ProductInfoRequestDto;
 
 import javax.swing.text.html.Option;
@@ -11,6 +12,9 @@ public interface ProductInfoService {
 
     /* 상품 상세 페이지 */
     Optional<Book> productInfo(ProductInfoRequestDto productInfoRequestDto);
+
+    /* 장바구니 담기 버튼 */
+    void addCart(AddCartRequestDto addCartRequestDto);
 
 
 }

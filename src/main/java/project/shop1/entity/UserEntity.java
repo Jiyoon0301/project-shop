@@ -16,6 +16,7 @@ import java.util.List;
 public class UserEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_entity_id")
     private Long id;
     private String account;
     private String password;
@@ -29,6 +30,9 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "userEntity")
     private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userEntity")
+    private List<CartItem> cartItem = new ArrayList<>(); // cartItems로 바꾸기
 
 
 }

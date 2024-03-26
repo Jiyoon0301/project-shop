@@ -18,7 +18,7 @@ public class JoinController {
     private final JoinService joinService;
 
     /* 회원가입*/
-    @PostMapping("/join")
+    @PostMapping("/join") // String account, String password, String name, String phoneNumber, String email
     public ResponseEntity<BooleanResponse> join(@Validated(value = ValidationSequence.class) @RequestBody JoinRequestDto joinRequestDto) {
         joinService.join(joinRequestDto);
 
