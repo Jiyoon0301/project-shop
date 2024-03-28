@@ -29,7 +29,7 @@ public class ProductController { //웹 MVC의 컨트롤러 역할
     private final AuthorService authorService;
 
     /* 상품 등록 */
-    @PostMapping("/productRegistration") // productRequestDto : String title, String authorname, int price, int stockQuantity, String category, int productNumber
+    @PostMapping("/product-registration") // productRequestDto : String title, String authorname, int price, int stockQuantity, String category, int productNumber
     public ResponseEntity<BooleanResponse> productRegistration(@Validated(value = ValidationSequence.class) @RequestBody ProductRequestDto productRequestDto){
         productService.productRegistration(productRequestDto);
 
@@ -37,13 +37,13 @@ public class ProductController { //웹 MVC의 컨트롤러 역할
     }
 
     /* 상품 등록 - 작가 검색 */
-    @PostMapping("/searchAuthor") //saerchAuthorDto : String authorName
+    @PostMapping("/search-author") //saerchAuthorDto : String authorName
     public Author searchAuthor(@Validated(value = ValidationSequence.class) @RequestBody SearchAuthorRequestDto searchAuthorRequestDto){
         return productService.searchAuthor(searchAuthorRequestDto);
     }
 
     /* 상품 등록 - 새로운 작가 등록 */
-    @PostMapping("/registerNewAuthor") // authorRequestDto : String authorName, String nation, String authorIntro
+    @PostMapping("/register-new-author") // authorRequestDto : String authorName, String nation, String authorIntro
     public ResponseEntity<BooleanResponse> registerNewAuthor(@Validated(value = ValidationSequence.class) @RequestBody AuthorRequestDto authorRequestDto){
         authorService.authorRegistration(authorRequestDto);
 
@@ -51,21 +51,21 @@ public class ProductController { //웹 MVC의 컨트롤러 역할
     }
 
     /* 상품 관리 페이지 - 전체 조회 */
-    @PostMapping("/productManagement") // productManagement : int pageNumber
+    @PostMapping("/product-management") // productManagement : int pageNumber
     public List<Book> productManagement(@RequestBody ProductManagementDto productManagementDto){
         List<Book> allBook = productService.productManagement(productManagementDto);
         return allBook;
     }
 
     /* 상품 정보 수정 */
-    @PostMapping("/updateProductInfo") // updateProdudctInfoRequestDto : Long productNumber, String title, String authorName, int price, int stockQuantity, String category
+    @PostMapping("/update-productInfo") // updateProdudctInfoRequestDto : Long productNumber, String title, String authorName, int price, int stockQuantity, String category
     public ResponseEntity<BooleanResponse> updateProductInfo(@Validated(value = ValidationSequence.class) @RequestBody UpdateProductInfoRequestDto updateProductInfoRequestDto){
         productService.updateProductInfo(updateProductInfoRequestDto);
         return ResponseEntity.ok(BooleanResponse.of(true));
     }
 
     /* 상품 삭제 */
-    @PostMapping("/deleteProduct") // deleteProductRequestDto : Long productNumber
+    @PostMapping("/delete-product") // deleteProductRequestDto : Long productNumber
     public ResponseEntity<BooleanResponse> deleteProduct(@Validated(value = ValidationSequence.class) @RequestBody DeleteProductRequestDto deleteProductRequestDto){
         productService.deleteProduct(deleteProductRequestDto);
         return ResponseEntity.ok(BooleanResponse.of(true));

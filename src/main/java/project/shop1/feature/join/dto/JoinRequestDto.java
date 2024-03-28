@@ -30,7 +30,7 @@ public class JoinRequestDto {
     @NotBlank(message = "이메일을 입력해 주세요.", groups = NotBlankGroup.class)
     private String email;
 
-    @NotBlank(message = "인증번호를 입력해 주세요.", groups = NotBlankGroup.class)
+//    @NotBlank(message = "인증번호를 입력해 주세요.", groups = NotBlankGroup.class)
     private String inputAuthCode;
 
     private String address;

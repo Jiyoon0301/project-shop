@@ -45,9 +45,6 @@ public class Book {
     /* 상품 카테고리 */
     private String category;
 
-    /* 장바구니 상품 */
-    @OneToMany(mappedBy = "book")
-    private List<CartItem> cartItem = new ArrayList<>();
 
 //    /* 이미지 경로 */
 //    private String uploadPath;

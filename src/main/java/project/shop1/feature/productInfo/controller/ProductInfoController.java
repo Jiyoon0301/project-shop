@@ -29,10 +29,4 @@ public class ProductInfoController {
         return result.get();
     }
 
-    /* 장바구니에 상품 추가 */
-    @PostMapping("/cart/add-cart") //CartRequestDto : Long cartId, String account, Long productNumber, int count
-    public ResponseEntity<BooleanResponse> addCart(@Validated(value = ValidationSequence.class) @RequestBody AddCartRequestDto addCartRequestDto){
-        productInfoService.addCart(addCartRequestDto);
-        return ResponseEntity.ok(BooleanResponse.of(true));
-    }
 }

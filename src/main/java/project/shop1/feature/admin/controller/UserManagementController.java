@@ -20,7 +20,7 @@ public class UserManagementController {
     private final ProductRepository productRepository;
 
     /* 회원 관리 */
-    @PostMapping("/UserManagement")
+    @PostMapping("/user-management")
     public ResponseEntity<BooleanResponse> UserManagement(@Validated(value = ValidationSequence.class) @RequestBody UserRequestDto userRequestDto){
 
 //        productService.productRegistration(productRequestDto);

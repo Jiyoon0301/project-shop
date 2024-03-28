@@ -12,10 +12,11 @@ public class CartInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
 
         HttpSession session = request.getSession();
-        UserEntity userEntity = (UserEntity) session.getAttribute("account"); //"userEntity"=?
+//        String account = (String) session.getAttribute("account");
+        UserEntity userEntity = (UserEntity) session.getAttribute("userEntity");
 
         if (userEntity == null){
-            return false;
+            return false; // controller로 넘어가지 않음
         } else {
             return true;
         }

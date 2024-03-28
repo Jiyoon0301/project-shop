@@ -9,8 +9,6 @@ public interface ProductInfoRepository {
 
     Optional<Book> findBookByProductNumber(Long productNumber);
 
-    /* 장바구니 담기 버튼 */
-    void addCart(CartItem cartItem);
 
 
 }

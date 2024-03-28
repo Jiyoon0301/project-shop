@@ -1,5 +1,7 @@
 package project.shop1.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -18,6 +20,7 @@ public class UserEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_entity_id")
     private Long id;
+
     private String account;
     private String password;
     private String name;
@@ -31,6 +34,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity")
     private List<Order> orders = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userEntity")
     private List<CartItem> cartItem = new ArrayList<>(); // cartItems로 바꾸기
 

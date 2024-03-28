@@ -10,6 +10,6 @@ public class AddCartRequestDto {
 
     Long productNumber;
 
-    @NotBlank(message = "아이디를 입력해 주세요.", groups=NotBlank.class)
+    @NotBlank(message = "수량을 입력해주세요.", groups=NotBlank.class)
     int quantity;
 }

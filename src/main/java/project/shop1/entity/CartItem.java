@@ -1,10 +1,9 @@
 package project.shop1.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Data
@@ -23,6 +22,7 @@ public class CartItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // 해도되냐?
     private Book book;
 
     private int quantity;

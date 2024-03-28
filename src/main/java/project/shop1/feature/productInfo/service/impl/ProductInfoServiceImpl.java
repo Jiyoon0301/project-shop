@@ -38,26 +38,4 @@ public class ProductInfoServiceImpl implements ProductInfoService {
         return result;
     }
 
-    /* 장바구니 담기 버튼 */
-    @Override
-    public void addCart(AddCartRequestDto addCartRequestDto){
-        String account = addCartRequestDto.getAccount();
-        Long productNumber = addCartRequestDto.getProductNumber();
-        int quantity = addCartRequestDto.getQuantity();
-
-        Optional<UserEntity> userEntity = joinRepository.findUserEntityByAccount(account);
-        if (userEntity.isEmpty()){
-//            throw new BusinessException(ErrorCode.RESOURCE_NOT_FOUND);
-        }
-        Optional<Book> book = productInfoRepository.findBookByProductNumber(productNumber);
-
-        CartItem cartItem = CartItem.builder()
-                .userEntity(userEntity.get())
-                .book(book.get())
-                .quantity(quantity)
-                .build();
-        productInfoRepository.addCart(cartItem);
-
-    }
-
 }

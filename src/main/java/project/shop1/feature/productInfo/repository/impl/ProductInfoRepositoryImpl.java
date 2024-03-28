@@ -35,9 +35,5 @@ public class ProductInfoRepositoryImpl implements ProductInfoRepository {
         return Optional.ofNullable(result);
     }
 
-    /* 장바구니 담기 버튼 */
-    public void addCart(CartItem cartItem){
-        entityManager.persist(cartItem);
-    }
 
 }

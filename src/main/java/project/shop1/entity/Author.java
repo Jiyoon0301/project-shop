@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor //모든 필드 사용 생성자
 @NoArgsConstructor
 @Builder
+@ToString(exclude = "book")
 public class Author {
 
     @Id @GeneratedValue

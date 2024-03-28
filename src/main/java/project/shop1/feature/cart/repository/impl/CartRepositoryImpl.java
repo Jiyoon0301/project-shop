@@ -4,11 +4,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import project.shop1.entity.CartItem;
-import project.shop1.entity.QCartItem;
-import project.shop1.entity.QUserEntity;
-import project.shop1.entity.UserEntity;
+import project.shop1.entity.*;
 import project.shop1.feature.cart.repository.CartRepository;
+
+import static project.shop1.entity.QBook.book;
 import static project.shop1.entity.QUserEntity.userEntity;
 import static project.shop1.entity.QCartItem.cartItem;
 
@@ -27,27 +26,41 @@ public class CartRepositoryImpl implements CartRepository {
         this.jpaQueryFactory=new JPAQueryFactory(entityManager);
     }
 
+    /* 장바구니 담기 버튼 */
+    public void addCart(CartItem cartItem){
+        entityManager.persist(cartItem);
+    }
+
     /* 장바구니 목록 */
     @Override
-    public List<CartItem> findAllCartItemsByUser(String account) {
-        List<CartItem> items = jpaQueryFactory
-                .selectFrom(QCartItem.cartItem)
-                .join(cartItem.userEntity, userEntity)
-                .where(userEntity.account.eq(account))
+    public List<CartItem> findAllCartItemsByUser(UserEntity userEntity) {
+        List<CartItem> result = jpaQueryFactory
+                .selectFrom(cartItem)
+                .where(cartItem.userEntity.eq(userEntity))
                 .fetch();
-        return items;
+        return result;
     }
 
     /* 장바구니에서 삭제 */
     @Override
-    public int deleteCart(int cartId) {
-        return 0;
+    public void deleteCart(CartItem cartItem) {
+        entityManager.remove(cartItem);
     }
 
     /* 장바구니 수량 수정 */
     @Override
-    public int updateProductQuantity() {
-        return 0;
+    public void increaseQuantity(Long cartItemId) {
+        Long count = jpaQueryFactory
+                .update(cartItem)
+                .set(cartItem.quantity, cartItem.quantity.add(1))
+                .execute();
+    }
+    @Override
+    public void decreaseQuantity(Long cartItemId) {
+        Long count = jpaQueryFactory
+                .update(cartItem)
+                .set(cartItem.quantity, cartItem.quantity.subtract(1))
+                .execute();
     }
 
     /* 장바구니 확인 */
@@ -56,13 +69,45 @@ public class CartRepositoryImpl implements CartRepository {
         return null;
     }
 
-//    @Override
-//    public Optional<Book> findBookByProductNumber(Long productNumber){
-//        Book result = jpaQueryFactory
-//                .selectFrom(book)
-//                .where(book.productNumber.eq(productNumber))
-//                .fetchOne();
-//
-//        return Optional.ofNullable(result);
-//    }
+    /* 장바구니 조회 */
+    @Override
+    public Optional<CartItem> findCartItemById(Long cartItemId){
+        CartItem result = jpaQueryFactory
+                .selectFrom(cartItem)
+                .where(cartItem.id.eq(cartItemId))
+                .fetchOne();
+        return Optional.ofNullable(result);
+    }
+    @Override
+    public Optional<Book> findBookByProductNumber(Long productNumber){
+        Book result = jpaQueryFactory
+                .selectFrom(book)
+                .where(book.productNumber.eq(productNumber))
+                .fetchOne();
+
+        return Optional.ofNullable(result);
+    }
+
+    @Override
+    public Optional<CartItem> findCartItemByProductNumberAndUserAccount(String account, Long productNumber){
+        CartItem result = jpaQueryFactory
+                .selectFrom(cartItem)
+                .where(cartItem.userEntity.account.eq(account))
+                .where(cartItem.book.productNumber.eq(productNumber))
+                .fetchOne();
+        return Optional.ofNullable(result);
+    }
+
+    /* 장바구니에 상품 수량 확인 */
+    @Override
+    public int checkQuantity(Long cartItemId){
+        Integer result = jpaQueryFactory
+                .select(cartItem.quantity)
+                .from(cartItem)
+                .where(cartItem.id.eq(cartItemId))
+                .fetchOne();
+        return result;
+    }
+
+
 }

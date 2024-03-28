@@ -26,8 +26,6 @@ public class QBook extends EntityPathBase<Book> {
 
     public final StringPath authorName = createString("authorName");
 
-    public final ListPath<CartItem, QCartItem> cartItem = this.<CartItem, QCartItem>createList("cartItem", CartItem.class, QCartItem.class, PathInits.DIRECT2);
-
     public final StringPath category = createString("category");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
