@@ -8,13 +8,10 @@ import project.shop1.common.exception.ErrorCode;
 import project.shop1.entity.Book;
 import project.shop1.entity.CartItem;
 import project.shop1.entity.UserEntity;
-import project.shop1.feature.cart.dto.DeleteCartRequestDto;
-import project.shop1.feature.cart.dto.FindAllCartItemsByUserRequestDto;
-import project.shop1.feature.cart.dto.UpdateQuantityByOneRequestDto;
+import project.shop1.feature.cart.dto.*;
 import project.shop1.feature.cart.repository.CartRepository;
 import project.shop1.feature.cart.service.CartService;
 import project.shop1.feature.join.repository.JoinRepository;
-import project.shop1.feature.productInfo.dto.AddCartRequestDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +23,27 @@ public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
     private final JoinRepository joinRepository;
+
+    /* 장바구니 목록 */
+    @Override
+    public List<CartItem> findAllCartItemsByUser(FindAllCartItemsByUserRequestDto findAllCartItemsByUserRequestDto) {
+        String account = findAllCartItemsByUserRequestDto.getAccount();
+        Optional<UserEntity> userEntity = joinRepository.findUserEntityByAccount(account);
+        List<CartItem> result = cartRepository.findAllCartItemsByUser(userEntity.get());
+        return result;
+    }
+
+    /* 장바구니에서 체크된 상품 총 가격 */
+    @Override
+    public int totalPrice(TotalPriceRequestDto totalPriceRequestDto) {
+        List<Long> cartItemsId= totalPriceRequestDto.getCartItemsId();
+        /* 입력 초과 방지 */
+        if (cartItemsId.size()==0){
+            return 0;
+        } else {
+            return cartRepository.totalPrice(cartItemsId);
+        }
+    }
 
     /* 장바구니 담기 버튼 */
     @Override
@@ -53,15 +71,6 @@ public class CartServiceImpl implements CartService {
                 .build();
         cartRepository.addCart(cartItem);
 
-    }
-
-    /* 장바구니 목록 */
-    @Override
-    public List<CartItem> findAllCartItemsByUser(FindAllCartItemsByUserRequestDto findAllCartItemsByUserRequestDto) {
-        String account = findAllCartItemsByUserRequestDto.getAccount();
-        Optional<UserEntity> userEntity = joinRepository.findUserEntityByAccount(account);
-        List<CartItem> result = cartRepository.findAllCartItemsByUser(userEntity.get());
-        return result;
     }
 
     /* 장바구니에서 삭제 */

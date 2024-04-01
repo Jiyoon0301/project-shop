@@ -1,4 +1,4 @@
-package project.shop1.feature.productInfo.dto;
+package project.shop1.feature.cart.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

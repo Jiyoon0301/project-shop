@@ -1,5 +1,6 @@
 package project.shop1.feature.cart.repository.impl;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,6 @@ public class CartRepositoryImpl implements CartRepository {
         this.jpaQueryFactory=new JPAQueryFactory(entityManager);
     }
 
-    /* 장바구니 담기 버튼 */
-    public void addCart(CartItem cartItem){
-        entityManager.persist(cartItem);
-    }
-
     /* 장바구니 목록 */
     @Override
     public List<CartItem> findAllCartItemsByUser(UserEntity userEntity) {
@@ -39,6 +35,28 @@ public class CartRepositoryImpl implements CartRepository {
                 .where(cartItem.userEntity.eq(userEntity))
                 .fetch();
         return result;
+    }
+
+    /* 장바구니 체크 상품 총 가격 */
+    @Override
+    public int totalPrice(List<Long> cartItemsId) {
+        int totalPrice = 0;
+        for (int i =0 ; i<cartItemsId.size();i++){
+            com.querydsl.core.Tuple result = (Tuple) jpaQueryFactory
+                    .select(cartItem.book.price, cartItem.quantity)
+                    .from(cartItem)
+                    .where(cartItem.id.eq(cartItemsId.get(0)))
+                    .fetchOne();
+            Integer price = result.get(0, Integer.class);
+            Integer quantity = result.get(1, Integer.class);
+            totalPrice+=price*quantity;
+        }
+        return totalPrice;
+    }
+
+    /* 장바구니 담기 버튼 */
+    public void addCart(CartItem cartItem){
+        entityManager.persist(cartItem);
     }
 
     /* 장바구니에서 삭제 */

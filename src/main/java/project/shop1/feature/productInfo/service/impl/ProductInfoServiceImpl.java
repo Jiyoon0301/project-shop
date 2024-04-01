@@ -6,17 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 import project.shop1.common.exception.BusinessException;
 import project.shop1.common.exception.ErrorCode;
 import project.shop1.entity.Book;
-import project.shop1.entity.CartItem;
-import project.shop1.entity.UserEntity;
 import project.shop1.feature.join.repository.JoinRepository;
-import project.shop1.feature.productInfo.dto.AddCartRequestDto;
 import project.shop1.feature.productInfo.dto.ProductInfoRequestDto;
 import project.shop1.feature.productInfo.repository.ProductInfoRepository;
 import project.shop1.feature.productInfo.service.ProductInfoService;
-import project.shop1.feature.productSearch.dto.SearchBookByRankingRequestDto;
-import project.shop1.feature.productSearch.repository.ProductSearchRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

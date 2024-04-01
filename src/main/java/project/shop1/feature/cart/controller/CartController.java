@@ -9,11 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import project.shop1.common.reponse.BooleanResponse;
 import project.shop1.common.validation.ValidationSequence;
 import project.shop1.entity.CartItem;
-import project.shop1.feature.cart.dto.DeleteCartRequestDto;
-import project.shop1.feature.cart.dto.FindAllCartItemsByUserRequestDto;
-import project.shop1.feature.cart.dto.UpdateQuantityByOneRequestDto;
+import project.shop1.feature.cart.dto.*;
 import project.shop1.feature.cart.service.CartService;
-import project.shop1.feature.productInfo.dto.AddCartRequestDto;
 
 import java.util.List;
 
@@ -23,18 +20,24 @@ public class CartController {
 
     private final CartService cartService;
 
+    /* 회원의 장바구니 상품 리스트 조회 */
+    @PostMapping("/cart/find-all-cart-items-by-user") //findAllCartItemByUserRequestDto : String account //java.lang.StackOverflowError
+    public List<CartItem> findAllCartItemsByUser(@Validated(value = ValidationSequence.class) @RequestBody FindAllCartItemsByUserRequestDto findAllCartItemsByUserRequestDto) {
+        List<CartItem> result = cartService.findAllCartItemsByUser(findAllCartItemsByUserRequestDto);
+        return result;
+    }
+
+    /* 장바구니에서 체크된 상품들 총 가격 */
+    @PostMapping("/cart/total-price") //List<Long> cartItemsId
+    public int totalPrice(@Validated(value = ValidationSequence.class) @RequestBody TotalPriceRequestDto totalPriceRequestDto) {
+        return cartService.totalPrice(totalPriceRequestDto);
+    }
+
     /* 장바구니에 상품 추가 */
-    @PostMapping("/cart/add-cart") //CartRequestDto : Long cartId, String account, Long productNumber, int quantity
+    @PostMapping("/cart/add-cart") //AddCartRequestDto : String account, Long productNumber, int quantity
     public ResponseEntity<BooleanResponse> addCart(@Validated(value = ValidationSequence.class) @RequestBody AddCartRequestDto addCartRequestDto){
         cartService.addCart(addCartRequestDto);
         return ResponseEntity.ok(BooleanResponse.of(true));
-    }
-
-    /* 회원의 장바구니 상품 리스트 조회 */
-    @PostMapping("/cart/find-all-cart-items-by-user") //findAllCartItemByUserRequestDto : String account //java.lang.StackOverflowError
-    public List<CartItem> findAllCartItemsByUser(@Validated(value = ValidationSequence.class) @RequestBody FindAllCartItemsByUserRequestDto findAllCartItemsByUserRequestDto){
-        List<CartItem> result = cartService.findAllCartItemsByUser(findAllCartItemsByUserRequestDto);
-        return result;
     }
 
     /* 장바구니에서 상품 삭제 */

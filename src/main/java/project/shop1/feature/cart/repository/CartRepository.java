@@ -15,7 +15,11 @@ public interface CartRepository {
     /* 장바구니 목록 */
     List<CartItem> findAllCartItemsByUser(UserEntity userEntity);
 
-    /* 장바구니에서 삭제 */
+    /* 장바구니 체크 상품 총 가격 */
+    int totalPrice(List<Long> cartItemsId);
+
+
+        /* 장바구니에서 삭제 */
     void deleteCart(CartItem cartItem);
 
     /* 장바구니 수량 수정 */
