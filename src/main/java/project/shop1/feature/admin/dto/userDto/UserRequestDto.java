@@ -1,4 +1,4 @@
-package project.shop1.feature.admin.dto;
+package project.shop1.feature.admin.dto.userDto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

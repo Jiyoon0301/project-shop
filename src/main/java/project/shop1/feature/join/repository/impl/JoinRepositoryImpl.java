@@ -53,4 +53,5 @@ public class JoinRepositoryImpl implements JoinRepository {
         return Optional.ofNullable(result);
     }
 
+
 }

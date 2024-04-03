@@ -49,7 +49,7 @@ public class LoginServiceImpl1 implements LoginService {
 //        }
 
         HttpSession httpSession = httpServletRequest.getSession(true);
-        httpSession.setAttribute("userEntity",userEntityByAccount.get());
+        httpSession.setAttribute("account", account);
 //        httpSession.setMaxInactiveInterval(); //로그인 유지 기간
 
     }

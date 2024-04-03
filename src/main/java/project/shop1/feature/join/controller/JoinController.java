@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import project.shop1.common.reponse.BooleanResponse;
-import project.shop1.feature.join.dto.AuthCodeRequestDto;
 import project.shop1.feature.join.dto.EmailAuthRequestDto;
 import project.shop1.feature.join.dto.JoinRequestDto;
 import project.shop1.feature.join.service.JoinService;
@@ -32,8 +31,6 @@ public class JoinController {
 
         return ResponseEntity.ok(BooleanResponse.of(true));
     }
-
-    /* 배송지 입력을 위한 조회 */
 
 
 }

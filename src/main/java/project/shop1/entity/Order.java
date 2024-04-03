@@ -18,20 +18,20 @@ public class Order {
 
     @Id @GeneratedValue
     @Column(name = "order_id")
-    private Long id; //주문번호
-
-    private LocalDateTime orderDate; //주문일자
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_entity_id")
     private UserEntity userEntity; //주문자
 
-    private OrderStatus status; //주문처리상태 [ORDER, CANCEL]
+    private String address; //주문한 사람이 배송받을 주소
+
+    private OrderStatus orderStatus; //주문처리상태 [ORDER, CANCEL] //[READY, DELIVERING, COMPLETE]
+
+    private LocalDateTime orderDate; //주문일자
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL) //Order가 persist될 때마다 OrderItem도 persist됨
     private List<OrderItem> orderItems = new ArrayList<>(); //주문상품
-
-    private String address; //배송지 정보
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) //Order가 persist될 때마다 Delivery도 persist됨
     @JoinColumn(name = "delivery_id")
@@ -70,7 +70,7 @@ public class Order {
         for(OrderItem orderItem : orderItems){
             order.addOrderItem(orderItem);
         }
-        order.setStatus(OrderStatus.ORDER); //ORDER 상태로 초기화 해놓기
+        order.setOrderStatus(OrderStatus.ORDER); //ORDER 상태로 초기화 해놓기
         order.setOrderDate(LocalDateTime.now()); //현재 시간
         return order;
     }

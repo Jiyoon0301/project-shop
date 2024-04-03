@@ -29,7 +29,7 @@ public class ProductController { //웹 MVC의 컨트롤러 역할
     private final AuthorService authorService;
 
     /* 상품 등록 */
-    @PostMapping("/product-registration") // productRequestDto : String title, String authorname, int price, int stockQuantity, String category, int productNumber
+    @PostMapping("/admin/product-registration") // productRequestDto : String title, String authorname, int price, int stockQuantity, String category, int productNumber
     public ResponseEntity<BooleanResponse> productRegistration(@Validated(value = ValidationSequence.class) @RequestBody ProductRequestDto productRequestDto){
         productService.productRegistration(productRequestDto);
 
@@ -37,13 +37,13 @@ public class ProductController { //웹 MVC의 컨트롤러 역할
     }
 
     /* 상품 등록 - 작가 검색 */
-    @PostMapping("/search-author") //saerchAuthorDto : String authorName
+    @PostMapping("/admin/search-author") //saerchAuthorDto : String authorName
     public Author searchAuthor(@Validated(value = ValidationSequence.class) @RequestBody SearchAuthorRequestDto searchAuthorRequestDto){
         return productService.searchAuthor(searchAuthorRequestDto);
     }
 
     /* 상품 등록 - 새로운 작가 등록 */
-    @PostMapping("/register-new-author") // authorRequestDto : String authorName, String nation, String authorIntro
+    @PostMapping("/admin/register-new-author") // authorRequestDto : String authorName, String nation, String authorIntro
     public ResponseEntity<BooleanResponse> registerNewAuthor(@Validated(value = ValidationSequence.class) @RequestBody AuthorRequestDto authorRequestDto){
         authorService.authorRegistration(authorRequestDto);
 
@@ -51,7 +51,7 @@ public class ProductController { //웹 MVC의 컨트롤러 역할
     }
 
     /* 상품 관리 페이지 - 전체 조회 */
-    @PostMapping("/product-management") // productManagement : int pageNumber
+    @PostMapping("/admin/product-management") // productManagement : int pageNumber
     public List<Book> productManagement(@RequestBody ProductManagementDto productManagementDto){
         List<Book> allBook = productService.productManagement(productManagementDto);
         return allBook;

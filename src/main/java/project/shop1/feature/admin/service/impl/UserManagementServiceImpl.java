@@ -3,6 +3,8 @@ package project.shop1.feature.admin.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.shop1.entity.UserEntity;
+import project.shop1.feature.admin.dto.userDto.FindUserEntityByAccountRequestDto;
 import project.shop1.feature.admin.repository.UserManagementRepository;
 import project.shop1.feature.admin.service.UserManagementService;
 
@@ -20,5 +22,13 @@ public class UserManagementServiceImpl implements UserManagementService { //핵�
 //        Optional<Author> result = productRepository.findAuthorByName(authorName);
 //        return Optional.ofNullable(result);
 //    }
+
+    /* 회원 관리 */
+    @Override
+    public UserEntity findUserEntityByAccount(FindUserEntityByAccountRequestDto findUserEntityByAccountRequestDto){
+        String account = findUserEntityByAccountRequestDto.getAccount();
+        UserEntity result = userManagementRepository.findUserEntityByAccount(account).get();
+        return result;
+    }
 
 }

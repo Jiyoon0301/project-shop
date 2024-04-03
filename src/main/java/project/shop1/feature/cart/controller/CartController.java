@@ -1,5 +1,6 @@
 package project.shop1.feature.cart.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,8 +23,8 @@ public class CartController {
 
     /* 회원의 장바구니 상품 리스트 조회 */
     @PostMapping("/cart/find-all-cart-items-by-user") //findAllCartItemByUserRequestDto : String account //java.lang.StackOverflowError
-    public List<CartItem> findAllCartItemsByUser(@Validated(value = ValidationSequence.class) @RequestBody FindAllCartItemsByUserRequestDto findAllCartItemsByUserRequestDto) {
-        List<CartItem> result = cartService.findAllCartItemsByUser(findAllCartItemsByUserRequestDto);
+    public List<CartItem> findAllCartItemsByUser(HttpServletRequest request) {
+        List<CartItem> result = cartService.findAllCartItemsByUser(request);
         return result;
     }
 
@@ -35,8 +36,8 @@ public class CartController {
 
     /* 장바구니에 상품 추가 */
     @PostMapping("/cart/add-cart") //AddCartRequestDto : String account, Long productNumber, int quantity
-    public ResponseEntity<BooleanResponse> addCart(@Validated(value = ValidationSequence.class) @RequestBody AddCartRequestDto addCartRequestDto){
-        cartService.addCart(addCartRequestDto);
+    public ResponseEntity<BooleanResponse> addCart(@Validated(value = ValidationSequence.class) @RequestBody AddCartRequestDto addCartRequestDto, HttpServletRequest request){
+        cartService.addCart(addCartRequestDto, request);
         return ResponseEntity.ok(BooleanResponse.of(true));
     }
 

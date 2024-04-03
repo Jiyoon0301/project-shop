@@ -1,5 +1,7 @@
 package project.shop1.feature.cart.service.impl;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +28,9 @@ public class CartServiceImpl implements CartService {
 
     /* 장바구니 목록 */
     @Override
-    public List<CartItem> findAllCartItemsByUser(FindAllCartItemsByUserRequestDto findAllCartItemsByUserRequestDto) {
-        String account = findAllCartItemsByUserRequestDto.getAccount();
+    public List<CartItem> findAllCartItemsByUser(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String account = (String) session.getAttribute("account"); // 세션에 저장된 사용자 정보
         Optional<UserEntity> userEntity = joinRepository.findUserEntityByAccount(account);
         List<CartItem> result = cartRepository.findAllCartItemsByUser(userEntity.get());
         return result;
@@ -48,8 +51,9 @@ public class CartServiceImpl implements CartService {
     /* 장바구니 담기 버튼 */
     @Override
     @Transactional
-    public void addCart(AddCartRequestDto addCartRequestDto){
-        String account = addCartRequestDto.getAccount();
+    public void addCart(AddCartRequestDto addCartRequestDto, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String account = (String) session.getAttribute("account"); // 세션에 저장된 사용자 정보
         Long productNumber = addCartRequestDto.getProductNumber();
         int quantity = addCartRequestDto.getQuantity();
 

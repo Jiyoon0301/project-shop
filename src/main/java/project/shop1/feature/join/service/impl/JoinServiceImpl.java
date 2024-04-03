@@ -1,5 +1,9 @@
 package project.shop1.feature.join.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import project.shop1.common.exception.BusinessException;
 import project.shop1.common.exception.ErrorCode;
 import project.shop1.entity.EmailAuth;
-import project.shop1.feature.join.dto.AuthCodeRequestDto;
-import project.shop1.feature.join.dto.EmailAuthRequestDto;
-import project.shop1.feature.join.dto.JoinRequestDto;
+import project.shop1.feature.join.dto.*;
 import project.shop1.entity.UserEntity;
 import project.shop1.entity.enums.Rank;
 import project.shop1.feature.join.repository.JoinRepository;
@@ -120,31 +122,5 @@ public class JoinServiceImpl implements JoinService {
 
     }
 
-//    private String searchAddress(String keyword) {
-//
-//        URI uri = UriComponentsBuilder
-//                .fromUriString("https://business.juso.go.kr")
-//                .path("/addrlink/addrLinkApi.do")
-//                .queryParam("keyword", keyword)
-//                .queryParam("confmKey", "devU01TX0FVVEgyMDI0MDIyNjIwMTE1OTExNDU0NzY=")
-//                .queryParam("currentPage", 1)
-//                .queryParam("countPerPage", 1)
-//                .queryParam("resultType", "json")
-//                .encode(Charset.forName("UTF-8"))
-//                .build()
-//                .toUri();
-//
-//        log.info("uri : {}", uri);
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//
-//        RequestEntity<Void> req = RequestEntity
-//                .get(uri)
-//                .build();
-//
-//        ResponseEntity<String> result = restTemplate.exchange(req, String.class);
-//
-//        return result.getBody();
-//    }
 
 }

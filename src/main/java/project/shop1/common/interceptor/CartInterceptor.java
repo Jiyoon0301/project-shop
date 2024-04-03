@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.servlet.HandlerInterceptor;
-import project.shop1.entity.UserEntity;
 
 public class CartInterceptor implements HandlerInterceptor {
 
@@ -12,10 +11,9 @@ public class CartInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
 
         HttpSession session = request.getSession();
-//        String account = (String) session.getAttribute("account");
-        UserEntity userEntity = (UserEntity) session.getAttribute("userEntity");
+        String account = (String) session.getAttribute("account");
 
-        if (userEntity == null){
+        if (account == null){
             return false; // controller로 넘어가지 않음
         } else {
             return true;

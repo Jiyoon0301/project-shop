@@ -1,5 +1,6 @@
 package project.shop1.feature.cart.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import project.shop1.entity.CartItem;
 import project.shop1.feature.cart.dto.*;
 
@@ -8,14 +9,14 @@ import java.util.List;
 public interface CartService {
 
     /* 장바구니 목록 */
-    List<CartItem> findAllCartItemsByUser(FindAllCartItemsByUserRequestDto findAllCartItemsByUserRequestDto);
+    List<CartItem> findAllCartItemsByUser(HttpServletRequest request);
 
     /* 장바구니 체크 상품 총 가격 */
     int totalPrice(TotalPriceRequestDto totalPriceRequestDto);
 
 
     /* 장바구니 담기 버튼 */
-    void addCart(AddCartRequestDto addCartRequestDto);
+    void addCart(AddCartRequestDto addCartRequestDto, HttpServletRequest request);
 
         /* 장바구니에서 삭제 */
     void deleteCart(DeleteCartRequestDto deleteCartRequestDto);

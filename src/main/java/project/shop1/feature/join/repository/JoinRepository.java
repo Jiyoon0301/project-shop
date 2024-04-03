@@ -14,4 +14,5 @@ public interface JoinRepository {
     void saveEmailAuth(EmailAuth emailAuth);
 
     Optional<EmailAuth> findEmailAuthByEmail(String email);
+
 }

@@ -1,11 +1,13 @@
 package project.shop1.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
-@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
 public class OrderItem {
 
     @Id @GeneratedValue
@@ -33,7 +35,6 @@ public class OrderItem {
         book.removeStock(count); //주문한 만큼 재고 감소 시키기
         return orderItem;
     }
-
 
     public int getTotalPrice() {
         return getOrderPrice()*getCount();
