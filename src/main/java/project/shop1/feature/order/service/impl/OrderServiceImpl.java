@@ -15,21 +15,21 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import project.shop1.common.exception.BusinessException;
 import project.shop1.common.exception.ErrorCode;
+import project.shop1.common.repository.UserRepository;
 import project.shop1.common.repository.impl.UserRepositoryImpl;
 import project.shop1.entity.*;
+import project.shop1.entity.enums.OrderStatus;
 import project.shop1.feature.cart.repository.CartRepository;
 import project.shop1.feature.join.repository.JoinRepository;
 import project.shop1.feature.order.common.AddressPairs;
 import project.shop1.feature.order.common.ProductInfoPairs;
-import project.shop1.feature.order.dto.OrderPageRequestDto;
-import project.shop1.feature.order.dto.OrderPageResponseDto;
-import project.shop1.feature.order.dto.SaveAddressRequestDto;
-import project.shop1.feature.order.dto.SearchAddressRequestDto;
+import project.shop1.feature.order.dto.*;
 import project.shop1.feature.order.repository.OrderRepository;
 import project.shop1.feature.order.service.OrderService;
 
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +40,7 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final UserRepositoryImpl userRepositoryImpl;
+    private final UserRepository userRepository;
     private final JoinRepository joinRepository;
     private final CartRepository cartRepository;
 
@@ -98,12 +98,65 @@ public class OrderServiceImpl implements OrderService {
         return orderPageResponseDto;
 
     }
-    /* 주문 */
-//    @Transactional
-//    public void order(Long userId, Long itemId, int count){
-//        //엔티티 조회
-//        UserEntity userEntity = userRepositoryImpl.findOne(userId);
-//    }
+    /* 주문(구매하기 버튼) */
+    @Transactional
+    @Override
+    public Order submitOrder(SubmitOrderRequestDto submitOrderRequestDto, HttpServletRequest request){
+        String address = submitOrderRequestDto.getAddress();
+        HttpSession session = request.getSession();
+        String account = (String) session.getAttribute("account"); // 세션에 저장된 사용자 정보
+
+        UserEntity userEntity = userRepository.findUserEntityByAccount(account).get();
+
+        List<OrderItem> orderItems = new ArrayList<>();
+        if (submitOrderRequestDto.getIsFromCartPage()){ //장바구니 페이지에서 넘어온 경우
+            List<Long> cartItemIds = submitOrderRequestDto.getCartItemId();
+            orderItems = createOrderItemList(cartItemIds);
+        } else{ //단일아이템 구매시
+            Long bookId = submitOrderRequestDto.getBookId();
+            int count = submitOrderRequestDto.getCount();
+            Book book = orderRepository.findBookbyBookId(bookId).get();
+            OrderItem orderItem = OrderItem.builder()
+                    .book(book)
+                    .orderPrice(book.getPrice())
+                    .count(count)
+                    .build();
+            orderItems.add(orderItem);
+        }
+        Delivery delivery = Delivery.builder()
+                .address(address)
+                .status(DeliveryStatus.READY)
+                .build();
+
+        Order order = Order.builder()
+                .userEntity(userEntity)
+                .address(address)
+                .orderStatus(OrderStatus.ORDER)
+                .orderDate(LocalDateTime.now())
+                .orderItems(orderItems)
+                .delivery(delivery)
+                .build();
+        orderRepository.saveOrder(order);
+
+        return order;
+    }
+
+    /* 카트 목록으로 orderItem 리스트 생성 */
+    @Transactional
+    @Override
+    public List<OrderItem> createOrderItemList(List<Long> cartItemsId){
+        List<OrderItem> orderItemList = new ArrayList<>();
+        for (Long cartItemsid : cartItemsId) {
+            CartItem cartItem = cartRepository.findCartItemById(cartItemsid).get();
+            OrderItem orderItem = OrderItem.builder()
+                    .book(cartItem.getBook())
+                    .orderPrice(cartItem.getBook().getPrice())
+                    .count(cartItem.getQuantity())
+                    .build();
+            orderItemList.add(orderItem);
+        }
+        return orderItemList;
+    }
 
     /* 주소 검색 */
     @Override

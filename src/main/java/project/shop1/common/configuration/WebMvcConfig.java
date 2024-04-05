@@ -18,8 +18,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors (InterceptorRegistry registry) {
         // CartInterceptor를 "/cart/**" URL 패턴에 적용
-        registry.addInterceptor(new CartInterceptor())
-                .addPathPatterns("/cart/**");
+//        registry.addInterceptor(new CartInterceptor())
+//                .addPathPatterns("/cart/**");
 //                .addPathPatterns("/order/**");
 
         // LoginInterceptor를 "/login/**" URL 패턴에 적용
@@ -27,8 +27,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/login/**");
 
         // AdminInterceptor를 "/admin/**" URL 패턴에 적용
-        registry.addInterceptor(new AdminInterceptor(joinRepository))
-                .addPathPatterns("/admin/**");
+//        registry.addInterceptor(new AdminInterceptor(joinRepository))
+//                .addPathPatterns("/admin/**");
     }
 
 }

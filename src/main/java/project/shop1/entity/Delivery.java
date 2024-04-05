@@ -1,11 +1,16 @@
 package project.shop1.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Getter @Setter
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Delivery {
 
     @Id @GeneratedValue
@@ -15,8 +20,8 @@ public class Delivery {
     @OneToOne(mappedBy = "delivery")
     private Order order;
 
-    @Embedded
-    private Address address;
+//    @Embedded
+    private String address;
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status; // [READY, DELIVERING, COMPLETE]

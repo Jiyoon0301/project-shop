@@ -3,6 +3,8 @@ package project.shop1.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import project.shop1.common.exception.BusinessException;
+import project.shop1.common.exception.ErrorCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,12 +59,13 @@ public class Book {
 
 
     //재고 증가
-//    public void addStock(int quantity){this.stockQuantity+=quantity;}
+    public void addStock(int quantity){this.stockQuantity+=quantity;}
 
     //재고 감소, 0 이하 불가능
     public void removeStock(int quantity){
         int restStock=this.stockQuantity-quantity;
         if(restStock<0){
+            throw new BusinessException(ErrorCode.INSUFFICIENT_STOCK, "재고가 부족합니다.");
 //            throw new NotEnoughStockException("need more stock");
         }
         this.stockQuantity=restStock;

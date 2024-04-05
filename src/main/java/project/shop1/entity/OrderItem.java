@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 @Builder
+@ToString(exclude = "order")
 public class OrderItem {
 
     @Id @GeneratedValue
@@ -34,6 +35,12 @@ public class OrderItem {
 
         book.removeStock(count); //주문한 만큼 재고 감소 시키기
         return orderItem;
+    }
+
+    /* 연관관계 메서드 */
+    public void setOrder(Order order){ //order, orderItem
+        this.order=order;
+        order.getOrderItems().add(this);
     }
 
     public int getTotalPrice() {

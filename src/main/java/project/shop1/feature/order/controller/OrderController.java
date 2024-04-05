@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import project.shop1.common.reponse.BooleanResponse;
+import project.shop1.entity.Order;
 import project.shop1.feature.order.common.AddressPairs;
-import project.shop1.feature.order.dto.OrderPageRequestDto;
-import project.shop1.feature.order.dto.OrderPageResponseDto;
-import project.shop1.feature.order.dto.SaveAddressRequestDto;
-import project.shop1.feature.order.dto.SearchAddressRequestDto;
+import project.shop1.feature.order.dto.*;
 import project.shop1.feature.order.service.OrderService;
 
 import java.util.List;
@@ -28,6 +26,14 @@ public class OrderController {
     public OrderPageResponseDto order (@PathVariable("userEntityId") Long userEntityId, @RequestBody OrderPageRequestDto orderPageRequestDto, HttpServletRequest request){
         OrderPageResponseDto orderPageResponseDto = orderService.orderPage(orderPageRequestDto, request);
         return orderPageResponseDto;
+    }
+
+    /* 주문 페이지에서 구매하기 버튼 */
+    @PostMapping("/order/order-submitOrder-{userEntityId}") // SubmitOrderRequestDto : Boolean isFromCartPage, String address, Long bookid, int count
+    public Order submitOrder (@PathVariable("userEntityId") Long userEntityId, @RequestBody SubmitOrderRequestDto submitOrderRequestDto, HttpServletRequest request){
+        Order order = orderService.submitOrder(submitOrderRequestDto, request);
+
+        return order;
     }
 
     /* 배송지 입력을 위한 조회 */

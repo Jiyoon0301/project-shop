@@ -6,5 +6,4 @@ import project.shop1.entity.UserEntity;
 import java.util.Optional;
 
 public interface LoginRepository{
-    Optional<UserEntity> findUserEntityByAccount(String userId);
 }

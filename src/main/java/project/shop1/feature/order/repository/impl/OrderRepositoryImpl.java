@@ -36,6 +36,12 @@ public class OrderRepositoryImpl implements OrderRepository {
 //        return null;
 //    }
 
+    /* 주문 저장 */
+    @Override
+    public void saveOrder(Order order){
+        entityManager.persist(order);
+    }
+
     /* 주소 저장 */
     @Override
     public void saveAddress(String account, String roadAddress, String detailedAddress) {

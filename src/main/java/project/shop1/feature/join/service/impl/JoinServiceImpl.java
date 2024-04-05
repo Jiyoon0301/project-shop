@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import project.shop1.common.exception.BusinessException;
 import project.shop1.common.exception.ErrorCode;
+import project.shop1.common.repository.UserRepository;
 import project.shop1.entity.EmailAuth;
 import project.shop1.feature.join.dto.*;
 import project.shop1.entity.UserEntity;
@@ -37,6 +38,7 @@ public class JoinServiceImpl implements JoinService {
 
     private final JoinRepository joinRepository;
     private final JavaMailSender javaMailSender;
+    private final UserRepository userRepository;
     private final Random random = new Random();
 
     @Override
@@ -50,7 +52,7 @@ public class JoinServiceImpl implements JoinService {
         String inputAuthCode = joinRequestDto.getInputAuthCode();
         String address = joinRequestDto.getAddress();
 
-        Optional<UserEntity> findUserEntity = joinRepository.findUserEntityByAccount(account);
+        Optional<UserEntity> findUserEntity = userRepository.findUserEntityByAccount(account);
 
 
         //아이디 중복 확인

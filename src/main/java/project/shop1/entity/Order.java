@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
+@ToString(exclude = "userEntity")
 public class Order {
 
     @Id @GeneratedValue

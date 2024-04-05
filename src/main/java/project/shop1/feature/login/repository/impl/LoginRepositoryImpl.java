@@ -27,13 +27,5 @@ public class LoginRepositoryImpl implements LoginRepository {
         this.jpaQueryFactory = new JPAQueryFactory(entityManager);
     }
 
-    @Override
-    public Optional<UserEntity> findUserEntityByAccount(String account) {
-        UserEntity result = jpaQueryFactory
-                .selectFrom(userEntity)
-                .where(userEntity.account.eq(account))
-                .fetchOne();
 
-        return Optional.ofNullable(result);
-    }
 }
