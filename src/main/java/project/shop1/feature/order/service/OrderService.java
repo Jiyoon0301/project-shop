@@ -14,10 +14,14 @@ public interface OrderService {
     OrderPageResponseDto orderPage(OrderPageRequestDto orderPageRequestDto, HttpServletRequest request);
 
     /* 주문(구매하기 버튼) */
-    Order submitOrder(SubmitOrderRequestDto submitOrderRequestDto, HttpServletRequest request);
+    SubmitOrderResponseDto submitOrder(SubmitOrderRequestDto submitOrderRequestDto, HttpServletRequest request);
 
     /* 카트 목록으로 orderItems 리스트 생성 */
     List<OrderItem> createOrderItemList(List<Long> cartItemsId);
+
+    /* 장바구니 목록 총 가격 */
+    int calTotalPrice(List<OrderItem> orderItemList);
+
 
 
 

@@ -38,8 +38,13 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity")
     private List<CartItem> cartItem = new ArrayList<>(); // cartItems로 바꾸기
 
+    @OneToMany(mappedBy = "userEntity")
+    private List<Review> reviews = new ArrayList<>();
+
     /* 관리자, 일반 계정 구분 */
     private int adminCk = 0; // 0 = 일반계정, 1 = 관리자 계정
+
+    /* 연관관계 메서드 */
 
 
 }

@@ -47,6 +47,13 @@ public class Book {
     /* 상품 카테고리 */
     private String category;
 
+    /* 상품의 리뷰 */
+    @OneToMany(mappedBy = "book")
+    private List<Review> reviews = new ArrayList<>();
+
+    /* 평점 평균 */
+    private double averageRating;
+
 
 //    /* 이미지 경로 */
 //    private String uploadPath;
@@ -57,17 +64,34 @@ public class Book {
 //    /* 파일 이름 */
 //    private String fileName;
 
+    /* 연관관계 메서드 */
+     public void addReview(Review review){
+         this.reviews.add(review);
+     }
 
     //재고 증가
     public void addStock(int quantity){this.stockQuantity+=quantity;}
 
     //재고 감소, 0 이하 불가능
-    public void removeStock(int quantity){
+    public void removeStock(int quantity)throws BusinessException{
         int restStock=this.stockQuantity-quantity;
         if(restStock<0){
             throw new BusinessException(ErrorCode.INSUFFICIENT_STOCK, "재고가 부족합니다.");
 //            throw new NotEnoughStockException("need more stock");
         }
         this.stockQuantity=restStock;
+    }
+
+    /* 평점 평균 메서드 */
+    public void calAverageRating(){
+        if (this.reviews.size()==0){
+            this.averageRating = 0.0;
+        }else{
+            double totalRating = 0.0;
+            for (Review review : this.reviews) {
+                totalRating += review.getRating();
+            }
+            this.averageRating = (totalRating/this.reviews.size());
+        }
     }
 }

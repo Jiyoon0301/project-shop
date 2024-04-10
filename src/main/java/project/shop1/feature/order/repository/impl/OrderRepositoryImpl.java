@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import project.shop1.entity.Book;
 import project.shop1.entity.Order;
-import project.shop1.entity.QBook;
-import project.shop1.entity.UserEntity;
 import project.shop1.feature.order.repository.OrderRepository;
 import static project.shop1.entity.QUserEntity.userEntity;
 import static project.shop1.entity.QBook.book;

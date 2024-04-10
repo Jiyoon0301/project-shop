@@ -16,7 +16,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import project.shop1.common.exception.BusinessException;
 import project.shop1.common.exception.ErrorCode;
 import project.shop1.common.repository.UserRepository;
-import project.shop1.common.repository.impl.UserRepositoryImpl;
 import project.shop1.entity.*;
 import project.shop1.entity.enums.OrderStatus;
 import project.shop1.feature.cart.repository.CartRepository;
@@ -29,7 +28,7 @@ import project.shop1.feature.order.service.OrderService;
 
 import java.net.URI;
 import java.nio.charset.Charset;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,61 +100,89 @@ public class OrderServiceImpl implements OrderService {
     /* 주문(구매하기 버튼) */
     @Transactional
     @Override
-    public Order submitOrder(SubmitOrderRequestDto submitOrderRequestDto, HttpServletRequest request){
+    public SubmitOrderResponseDto submitOrder(SubmitOrderRequestDto submitOrderRequestDto, HttpServletRequest request){
         String address = submitOrderRequestDto.getAddress();
         HttpSession session = request.getSession();
         String account = (String) session.getAttribute("account"); // 세션에 저장된 사용자 정보
+        int totalProductPrice = 0;
 
         UserEntity userEntity = userRepository.findUserEntityByAccount(account).get();
 
         List<OrderItem> orderItems = new ArrayList<>();
         if (submitOrderRequestDto.getIsFromCartPage()){ //장바구니 페이지에서 넘어온 경우
             List<Long> cartItemIds = submitOrderRequestDto.getCartItemId();
-            orderItems = createOrderItemList(cartItemIds);
+            try {
+                orderItems = createOrderItemList(cartItemIds);
+            } catch (BusinessException e){
+                throw e;
+            }
         } else{ //단일아이템 구매시
             Long bookId = submitOrderRequestDto.getBookId();
             int count = submitOrderRequestDto.getCount();
             Book book = orderRepository.findBookbyBookId(bookId).get();
-            OrderItem orderItem = OrderItem.builder()
-                    .book(book)
-                    .orderPrice(book.getPrice())
-                    .count(count)
-                    .build();
+            book.removeStock(count);
+            OrderItem orderItem = OrderItem.createOrderItem(book, book.getPrice(), count);
             orderItems.add(orderItem);
         }
-        Delivery delivery = Delivery.builder()
-                .address(address)
-                .status(DeliveryStatus.READY)
-                .build();
+        Delivery delivery = Delivery.createDelivery(address,DeliveryStatus.READY);
 
-        Order order = Order.builder()
-                .userEntity(userEntity)
-                .address(address)
-                .orderStatus(OrderStatus.ORDER)
-                .orderDate(LocalDateTime.now())
-                .orderItems(orderItems)
-                .delivery(delivery)
-                .build();
+        Order order = Order.createOrder(userEntity, address, delivery, orderItems);
+
         orderRepository.saveOrder(order);
 
-        return order;
+        List<String> bookNameList = new ArrayList<>();
+        List<Integer> countList = new ArrayList<>();
+        List<Integer> priceList = new ArrayList<>();
+        for (OrderItem orderItem : orderItems){
+            bookNameList.add(orderItem.getBook().getTitle());
+            countList.add(orderItem.getCount());
+            priceList.add(orderItem.getOrderPrice());
+        }
+
+        /* Order 세팅 */
+        userEntity.getOrders().add(order); // userEntity - order
+        for (OrderItem orderItem : orderItems){ // orderItem - order
+            orderItem.setOrder(order);
+        }
+
+        SubmitOrderResponseDto submitOrderResponseDto = SubmitOrderResponseDto.builder()
+                .orderId(order.getId())
+                .orderDate(LocalDate.now())
+                .bookName(bookNameList)
+                .count(countList)
+                .price(priceList)
+                .userEntityName(userEntity.getName())
+                .userEntityPhoneNumber(userEntity.getPhoneNumber())
+                .address(address)
+                .orderstatus(OrderStatus.ORDER)
+                .delivery(delivery)
+                .totalProductPrice(calTotalPrice(orderItems))
+                .deliveryFee(2500)
+                .totalPrice(totalProductPrice+2500)
+                .build();
+        return submitOrderResponseDto;
     }
 
     /* 카트 목록으로 orderItem 리스트 생성 */
     @Transactional
     @Override
-    public List<OrderItem> createOrderItemList(List<Long> cartItemsId){
+    public List<OrderItem> createOrderItemList(List<Long> cartItemsId) throws BusinessException{
         List<OrderItem> orderItemList = new ArrayList<>();
         for (Long cartItemsid : cartItemsId) {
             CartItem cartItem = cartRepository.findCartItemById(cartItemsid).get();
-            OrderItem orderItem = OrderItem.builder()
-                    .book(cartItem.getBook())
-                    .orderPrice(cartItem.getBook().getPrice())
-                    .count(cartItem.getQuantity())
-                    .build();
+            OrderItem orderItem = OrderItem.createOrderItem(cartItem.getBook(),cartItem.getBook().getPrice(),cartItem.getQuantity());
             orderItemList.add(orderItem);
         }
         return orderItemList;
+    }
+    /* 장바구니 목록 전체 가격 */
+    @Override
+    public int calTotalPrice(List<OrderItem> orderItemList){
+        int result = 0;
+        for (OrderItem orderItem : orderItemList){
+            result += orderItem.getTotalPrice();
+        }
+        return result;
     }
 
     /* 주소 검색 */

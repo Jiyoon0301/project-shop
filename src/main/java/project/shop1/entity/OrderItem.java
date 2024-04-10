@@ -1,14 +1,17 @@
 package project.shop1.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import project.shop1.common.exception.BusinessException;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-@ToString(exclude = "order")
+@JsonIgnoreProperties("orderItems")
 public class OrderItem {
 
     @Id @GeneratedValue
@@ -19,6 +22,8 @@ public class OrderItem {
     @JoinColumn(name="book_id")
     private Book book;
 
+//    @JsonIgnoreProperties("orderItems")
+    @JsonIgnore
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
@@ -27,7 +32,7 @@ public class OrderItem {
     private int count; //주문 수량
 
     //==생성 메서드==//
-    public static OrderItem createOrderItem(Book book, int orderPrice, int count){
+    public static OrderItem createOrderItem(Book book, int orderPrice, int count) throws BusinessException {
         OrderItem orderItem = new OrderItem();
         orderItem.setBook(book);
         orderItem.setOrderPrice(orderPrice);
@@ -40,7 +45,6 @@ public class OrderItem {
     /* 연관관계 메서드 */
     public void setOrder(Order order){ //order, orderItem
         this.order=order;
-        order.getOrderItems().add(this);
     }
 
     public int getTotalPrice() {

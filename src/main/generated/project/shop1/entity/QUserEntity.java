@@ -42,6 +42,8 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public final EnumPath<project.shop1.entity.enums.Rank> rank = createEnum("rank", project.shop1.entity.enums.Rank.class);
 
+    public final ListPath<Review, QReview> reviews = this.<Review, QReview>createList("reviews", Review.class, QReview.class, PathInits.DIRECT2);
+
     public QUserEntity(String variable) {
         super(UserEntity.class, forVariable(variable));
     }
