@@ -3,6 +3,7 @@ package project.shop1.feature.order.repository;
 import project.shop1.entity.Book;
 import project.shop1.entity.Order;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface OrderRepository {
@@ -13,8 +14,8 @@ public interface OrderRepository {
     /* 주소 저장 */
     void saveAddress(String account, String roadAddress, String detailedAddress);
 
-    /* bookId로 상품 찾기 */
-    Optional<Book> findBookbyBookId(Long bookId);
+    /* userEntity account로 order 찾기 */
+    List<Order> findOrdersByUserEntityAccount(String account);
 
 
 

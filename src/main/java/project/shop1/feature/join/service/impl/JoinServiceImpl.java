@@ -9,11 +9,14 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import project.shop1.common.configuration.EncoderConfig;
 import project.shop1.common.exception.BusinessException;
 import project.shop1.common.exception.ErrorCode;
 import project.shop1.common.repository.UserRepository;
@@ -68,11 +71,13 @@ public class JoinServiceImpl implements JoinService {
 //        }
 
         //비밀번호 암호화
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(password);
 
 
         UserEntity userEntity = UserEntity.builder()
                 .account(account)
-                .password(password)
+                .password(encodedPassword)
                 .name(name)
                 .phoneNumber(phoneNumber)
                 .email(email)

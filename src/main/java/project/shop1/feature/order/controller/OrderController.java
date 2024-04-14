@@ -28,7 +28,7 @@ public class OrderController {
     }
 
     /* 주문 페이지에서 구매하기 버튼 */
-    @PostMapping("/order/order-submitOrder-{userEntityId}") // SubmitOrderRequestDto : Boolean isFromCartPage, String address, Long bookid, int count
+    @PostMapping("/order/order-submitOrder-{userEntityId}") // SubmitOrderRequestDto : Boolean isFromCartPage, Long CartItemId, String address, Long bookid, int count
     public SubmitOrderResponseDto submitOrder (@PathVariable("userEntityId") Long userEntityId, @RequestBody SubmitOrderRequestDto submitOrderRequestDto, HttpServletRequest request){
         SubmitOrderResponseDto result= orderService.submitOrder(submitOrderRequestDto, request);
 

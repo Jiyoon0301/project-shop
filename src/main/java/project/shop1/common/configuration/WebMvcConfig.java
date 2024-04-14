@@ -23,8 +23,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 //                .addPathPatterns("/order/**");
 
         // LoginInterceptor를 "/login/**" URL 패턴에 적용
-        registry.addInterceptor(new LoginInterceptor())
-                .addPathPatterns("/login/**");
+//        registry.addInterceptor(new LoginInterceptor())
+//                .addPathPatterns("/login/**");
 
         // AdminInterceptor를 "/admin/**" URL 패턴에 적용
 //        registry.addInterceptor(new AdminInterceptor(joinRepository))

@@ -27,12 +27,12 @@ public class LoginServiceImpl1 implements LoginService {
     private final LoginRepository loginRepository;
     private final UserRepository userRepository;
 
-//    @Autowired
-//    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
     @Override
-    public void loginUser(LoginRequestDto loginRequestDto, HttpServletRequest httpServletRequest) {
-        String account=loginRequestDto.getAccount();
-        String password=loginRequestDto.getPassword();
+    public void loginUser(LoginRequestDto loginRequestDto, HttpServletRequest request) {
+        String account = loginRequestDto.getAccount();
+        String password = loginRequestDto.getPassword();
 
         Optional<UserEntity> userEntityByAccount = userRepository.findUserEntityByAccount(account);
 
@@ -40,17 +40,16 @@ public class LoginServiceImpl1 implements LoginService {
             throw new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "존재하지 않는 아이디입니다.");
         }
 
-        System.out.println(userEntityByAccount.get());
-        if(!userEntityByAccount.get().getPassword().equals(password)){
-            throw new BusinessException(ErrorCode.INVALID_PASSWORD, "비밀번호가 일치하지 않습니다.");
-        }
-
-        /* 비밀번호 인코딩 */
-//        if(!passwordEncoder.matches(password, userEntity.getPassword())){
-//            throw new NotExistUserEntity("비밀번호가 일치하지 않습니다.");
+//        if(!userEntityByAccount.get().getPassword().equals(password)){
+//            throw new BusinessException(ErrorCode.INVALID_PASSWORD, "비밀번호가 일치하지 않습니다.");
 //        }
 
-        HttpSession httpSession = httpServletRequest.getSession(true);
+        /* 인코딩된 비밀번호 matches로 확인 */
+        if(!passwordEncoder.matches(password, userEntityByAccount.get().getPassword())){
+            throw new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "비밀번호가 일치하지 않습니다.");
+        }
+
+        HttpSession httpSession = request.getSession(true);
         httpSession.setAttribute("account", account);
 //        httpSession.setMaxInactiveInterval(); //로그인 유지 기간
 

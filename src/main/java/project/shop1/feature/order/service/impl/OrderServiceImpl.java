@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import project.shop1.common.exception.BusinessException;
 import project.shop1.common.exception.ErrorCode;
+import project.shop1.common.repository.BookRepository;
 import project.shop1.common.repository.UserRepository;
 import project.shop1.entity.*;
 import project.shop1.entity.enums.OrderStatus;
@@ -42,6 +43,7 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final JoinRepository joinRepository;
     private final CartRepository cartRepository;
+    private final BookRepository bookRepository;
 
 //    @Transactional
 //    public void addStock(String itemName, int quantity) {
@@ -79,7 +81,7 @@ public class OrderServiceImpl implements OrderService {
         } else {
             Long bookId = orderPageRequestDto.getBookId();
             int count = orderPageRequestDto.getCount();
-            Book bookToBuy = orderRepository.findBookbyBookId(bookId).get();
+            Book bookToBuy = bookRepository.findBookByBookId(bookId).get();
             totalPrice = count * bookToBuy.getPrice();
             productInfoPairs.add(new ProductInfoPairs(bookToBuy.getTitle(), count, bookToBuy.getPrice()));
         }
@@ -119,7 +121,7 @@ public class OrderServiceImpl implements OrderService {
         } else{ //단일아이템 구매시
             Long bookId = submitOrderRequestDto.getBookId();
             int count = submitOrderRequestDto.getCount();
-            Book book = orderRepository.findBookbyBookId(bookId).get();
+            Book book = bookRepository.findBookByBookId(bookId).get();
             book.removeStock(count);
             OrderItem orderItem = OrderItem.createOrderItem(book, book.getPrice(), count);
             orderItems.add(orderItem);

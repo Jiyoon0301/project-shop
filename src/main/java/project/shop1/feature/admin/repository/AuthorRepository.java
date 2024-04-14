@@ -12,7 +12,7 @@ public interface AuthorRepository{
     void saveAuthor(Author author);
 
     /* 작가 관리 페이지 - 작가 전체 조회 */
-    Optional<List<Author>> findAll(int pageNumber);
+    List<Author> findAll(int pageNumber);
 
 
         /* 작가 조회 */

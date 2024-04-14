@@ -49,13 +49,13 @@ public class AuthorServiceImpl implements AuthorService { //핵심 비즈니스 
     @Override
     public List<Author> authorManagement(AuthorManagementRequestDto authorManagementRequestDto){
         int pageNumber = authorManagementRequestDto.getPageNumber();
-        Optional<List<Author>> allAuthor = authorRepository.findAll(pageNumber);
+        List<Author> allAuthor = authorRepository.findAll(pageNumber);
 
         if(allAuthor.isEmpty()){
             throw new BusinessException(ErrorCode.RESOURCE_NOT_FOUND,"등록된 작가가 없습니다.");
         }
         log.info("(service)authorManagement().....");
-        return allAuthor.get();
+        return allAuthor;
     }
 
     /* 작가 정보 수정 */

@@ -4,11 +4,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import project.shop1.entity.Book;
 import project.shop1.entity.Order;
 import project.shop1.feature.order.repository.OrderRepository;
 import static project.shop1.entity.QUserEntity.userEntity;
-import static project.shop1.entity.QBook.book;
+import static project.shop1.entity.QOrder.order;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,15 +49,17 @@ public class OrderRepositoryImpl implements OrderRepository {
                 .execute();
     }
 
-    /* bookId로 상품 찾기 */
+    /* userEntity account로 order 찾기 */
     @Override
-    public Optional<Book> findBookbyBookId(Long bookId) {
-        Book findbook = jpaQueryFactory
-                .selectFrom(book)
-                .where(book.id.eq(bookId))
-                .fetchOne();
-        return Optional.ofNullable(findbook);
+    public List<Order> findOrdersByUserEntityAccount(String account){
+        List<Order> findOrder = jpaQueryFactory
+                .selectFrom(order)
+                .where(order.userEntity.account.eq(account))
+                .orderBy(order.orderDate.desc())
+                .fetch();
+        return findOrder;
     }
+
 
 
 //    public List<Order> findAll(OrderSearch orderSearch){}

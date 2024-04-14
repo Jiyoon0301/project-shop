@@ -12,20 +12,20 @@
 //@RequiredArgsConstructor
 //public class SecurityConfig {
 //
-////    @Bean
-////    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
-////        return httpSecurity
-////                .httpBasic().disable()
-////                .csrf().disable()
-////                .cors().and()
-////                .authorizeRequests()
-////                .requestMatchers("/api/users/login", "/api/users/join").permitAll()
-////                .and()
-//                  .oauth2Login() //Social Login 설정 (카카오톡)
-//                  .userInfoEndpoint()
-//                  .userService(memberSocialService)
-////                .build();
-////    }
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+//        return httpSecurity
+//                .httpBasic().disable()
+//                .csrf().disable()
+//                .cors().and()
+//                .authorizeRequests()
+//                .requestMatchers("/api/users/login", "/api/users/join").permitAll()
+//                .and()
+////                  .oauth2Login() //Social Login 설정 (카카오톡)
+////                  .userInfoEndpoint()
+////                  .userService(memberSocialService)
+//                .build();
+//    }
 //
-//    // securityFilterChain 다시 채우기, 암호화된 비밀번호로 바꿔서 저장하기, login 메서드 손 보기
+//    // securityFilterChain 다시 채우기, 암호화된 비밀번호로 바꿔서 저장하기, login 메서드 수정
 //}

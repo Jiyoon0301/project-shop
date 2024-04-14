@@ -37,14 +37,14 @@ public class AuthorRepositoryImpl implements AuthorRepository{ //데이터베이
 
     /* 작가 관리 페이지 - 작가 전체 조회 */
     @Override
-    public Optional<List<Author>> findAll(int pageNumber){
+    public List<Author> findAll(int pageNumber){
         List<Author> result = jpaQueryFactory
                 .selectFrom(author)
                 .orderBy(author.authorNumber.asc())
                 .offset((pageNumber-1)*10)
                 .limit(10)
                 .fetch();
-        return Optional.ofNullable(result);
+        return result;
 
     }
 
