@@ -15,5 +15,13 @@ public interface UserRepository {
     /* account로 한 명 찾기 */
     Optional<UserEntity> findUserEntityByAccount(String account);
 
+    /* id로 한 명 찾기 */
+    Optional<UserEntity> findUserEntityById(Long id);
+
+    /* 이름으로 한 명 찾기 */
+    Optional<UserEntity> findUserEntityByName(String name);
+
+
+
 
     }

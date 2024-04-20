@@ -21,6 +21,7 @@ import project.shop1.common.exception.BusinessException;
 import project.shop1.common.exception.ErrorCode;
 import project.shop1.common.repository.UserRepository;
 import project.shop1.entity.EmailAuth;
+import project.shop1.entity.RoleType;
 import project.shop1.feature.join.dto.*;
 import project.shop1.entity.UserEntity;
 import project.shop1.entity.enums.Rank;
@@ -84,6 +85,8 @@ public class JoinServiceImpl implements JoinService {
                 .rank(Rank.MEMBER)
                 .address(address)
                 .build();
+
+        userEntity.addRole("USER"); //******************************************
 
         joinRepository.saveUserEntity(userEntity);
     }

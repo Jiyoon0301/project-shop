@@ -3,6 +3,7 @@ package project.shop1.feature.order.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +23,7 @@ public class OrderController {
 
     /* 주문 페이지 */ // orderByCart, orderByProductInfo
     @PostMapping("/order/order-page-{userEntityId}") // OrderRequestDto : Boolean isFromCartPage, Long bookId, int count;
+    @PreAuthorize("hasRole('USER')")
     public OrderPageResponseDto order (@PathVariable("userEntityId") Long userEntityId, @RequestBody OrderPageRequestDto orderPageRequestDto, HttpServletRequest request){
         OrderPageResponseDto orderPageResponseDto = orderService.orderPage(orderPageRequestDto, request);
         return orderPageResponseDto;
@@ -29,6 +31,7 @@ public class OrderController {
 
     /* 주문 페이지에서 구매하기 버튼 */
     @PostMapping("/order/order-submitOrder-{userEntityId}") // SubmitOrderRequestDto : Boolean isFromCartPage, Long CartItemId, String address, Long bookid, int count
+    @PreAuthorize("hasRole('USER')")
     public SubmitOrderResponseDto submitOrder (@PathVariable("userEntityId") Long userEntityId, @RequestBody SubmitOrderRequestDto submitOrderRequestDto, HttpServletRequest request){
         SubmitOrderResponseDto result= orderService.submitOrder(submitOrderRequestDto, request);
 
@@ -37,6 +40,7 @@ public class OrderController {
 
     /* 배송지 입력을 위한 조회 */
     @PostMapping("/order/search-address") // String keyword, int pageNumber
+    @PreAuthorize("hasRole('USER')")
     public List<AddressPairs> searchAddress(@RequestBody SearchAddressRequestDto searchAddressRequestDto) {
         List<AddressPairs> result = orderService.searchAddress(searchAddressRequestDto);
         return result;
@@ -44,6 +48,7 @@ public class OrderController {
 
     /* 주소 저장 - 도로명 + 상세주소 저장 */
     @PostMapping("/order/save-address") //SaveAddressRequestDto : String roadAddress, String detailedAddress
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BooleanResponse> saveAddress(@RequestBody SaveAddressRequestDto saveAddressRequestDto, HttpServletRequest request) {
         orderService.saveAddress(saveAddressRequestDto, request);
 

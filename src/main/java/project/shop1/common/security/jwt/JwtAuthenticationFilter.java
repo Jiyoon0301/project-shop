@@ -6,6 +6,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -18,27 +19,28 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    /* JWT 토큰 검증 필터 수행 */
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException{
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        // 1. Request Header에서 JWT 토큰 추출
+        //Request Header 에서 JWT 토큰 추출
         String token = resolveToken((HttpServletRequest) request);
 
-        // 2. validateToken으로 토큰 유효성 검사
-        if (token != null && jwtTokenProvider.validateToken(token)) { //토큰의 유효성 검증
+        //validationToken 으로 토큰 유효성 검사
+        if (token != null && jwtTokenProvider.validateToken(token)) {
+            //토큰이 유효할 경우 토큰에서 Authentication 객체 가지고 와 SecurityContext 에 저장
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication); //인증 객체를 SecurityContext에 저장 -> 요청을 처리하는 동안 인증 정보가 유지된다
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        chain.doFilter(request, response); //다음 필터로 요청을 전달
+        chain.doFilter(request, response);
     }
 
-    // Request Header(주어진 HttpServletRequest)에서 토큰 정보 추출
+    /* Request Header 에서 토큰 정보 추출 */
     private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization"); //"Authorization" 헤더에서
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) { //"Bearer" 접두사로 시작하는 토큰을 추출하여 반환
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
             return bearerToken.substring(7);
         }
-        return null;
+        return "token 추출 실패"; //**********************************************
     }
-
 }

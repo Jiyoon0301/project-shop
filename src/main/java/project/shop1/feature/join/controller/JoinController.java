@@ -25,7 +25,7 @@ public class JoinController {
     }
 
     /* 이메일 인증을 위한 인증번호 발송*/
-    @PostMapping("/auth-email")
+    @PostMapping("/join/auth-email")
     public ResponseEntity<BooleanResponse> authEmail(@Validated(value = ValidationSequence.class) @RequestBody EmailAuthRequestDto emailAuthRequestDto) {
         joinService.authEmail(emailAuthRequestDto);
 

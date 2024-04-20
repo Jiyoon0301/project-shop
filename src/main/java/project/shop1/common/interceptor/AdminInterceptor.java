@@ -22,10 +22,11 @@ public class AdminInterceptor implements HandlerInterceptor {
             return false;
         }
         UserEntity userEntity = joinRepository.findUserEntityByAccount(account).get();
-        if (userEntity.getAdminCk()==0) { //로그인 상태가 아니거나 관리자 계정 아닌 경우
-            return false;
-        } else {
-            return true; //관리자 계정인 경우
-        }
+//        if (userEntity.getAdminCk()==0) { //로그인 상태가 아니거나 관리자 계정 아닌 경우
+//            return false;
+//        } else {
+//            return true; //관리자 계정인 경우
+//        }
+        return true; // *****
     }
 }

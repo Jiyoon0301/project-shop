@@ -2,6 +2,7 @@ package project.shop1.feature.admin.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,7 @@ public class UserManagementController {
 
     /* 회원 관리 */
     @PostMapping("/admin/user-management")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BooleanResponse> UserManagement(@Validated(value = ValidationSequence.class) @RequestBody UserRequestDto userRequestDto){
 
 //        productService.productRegistration(productRequestDto);
@@ -33,6 +35,7 @@ public class UserManagementController {
 
     /* 회원 찾기 - 한 명 */
     @PostMapping("/admin/find-user-entity-by-account")
+    @PreAuthorize("hasRole('ADMIN')")
     public UserEntity findUserEntityByAccount(@Validated(value = ValidationSequence.class) @RequestBody FindUserEntityByAccountRequestDto findUserEntityByAccountRequestDto){
         UserEntity findUser = userManagementService.findUserEntityByAccount(findUserEntityByAccountRequestDto);
 

@@ -3,6 +3,7 @@ package project.shop1.common.repository.impl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import project.shop1.common.repository.UserRepository;
@@ -48,5 +49,21 @@ public class UserRepositoryImpl implements UserRepository {
                 .fetchOne();
         return Optional.ofNullable(result);
     }
-//    public List<UserEntity> findByName(String name){}
+
+    @Override
+    public Optional<UserEntity> findUserEntityById(Long id){
+        UserEntity result = jpaQueryFactory
+                .selectFrom(userEntity)
+                .where(userEntity.id.eq(id))
+                .fetchOne();
+        return Optional.ofNullable(result);
+    }
+    @Override
+    public Optional<UserEntity> findUserEntityByName(String name){
+        UserEntity result = jpaQueryFactory
+                .selectFrom(userEntity)
+                .where(userEntity.name.eq(name))
+                .fetchOne();
+        return Optional.ofNullable(result);
+    }
 }

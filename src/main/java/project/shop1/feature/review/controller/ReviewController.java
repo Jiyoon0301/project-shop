@@ -3,6 +3,7 @@ package project.shop1.feature.review.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ public class ReviewController {
 
     /* 리뷰 등록 버튼 */
     @PostMapping("/register-review") //RegisterReviewRequestDto : Long productId, String content, double rating
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BooleanResponse> registerReview(@RequestBody RegisterReviewRequestDto registerReviewRequestDto, HttpServletRequest request) {
         reviewService.registerReview(registerReviewRequestDto, request);
 
@@ -36,6 +38,7 @@ public class ReviewController {
 
     /* 리뷰 수정 등록 버튼 */
     @PostMapping("/update-review") //UpdateReviewRequestDto : Long productId, String content, double rating
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BooleanResponse> updateReview(@RequestBody UpdateReviewRequestDto updateReviewRequestDto, HttpServletRequest request) {
         reviewService.updateReview(updateReviewRequestDto, request);
 
@@ -44,6 +47,7 @@ public class ReviewController {
 
     /* 리뷰 삭제 */
     @PostMapping("/delete-review") //DeleteReviewRequestDto : Long productId
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BooleanResponse> deleteReview(@RequestBody DeleteReviewRequestDto deleteReviewRequestDto, HttpServletRequest request) {
         reviewService.deleteReview(deleteReviewRequestDto, request);
 

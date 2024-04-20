@@ -21,14 +21,14 @@ public class ProductSearchController {
 
 
     /* 상품 검색 - 검색어, 카테고리 */
-    @PostMapping("/find-by-keyword-and-category") //searchBookByTitleRequestDto : String criteria, String keyword, String category, int amount, int pageNumber
+    @PostMapping("/search/find-by-keyword-and-category") //searchBookByTitleRequestDto : String criteria, String keyword, String category, int amount, int pageNumber
     public List<Book> findByKeywordAndCategory(@Validated(value = ValidationSequence.class) @RequestBody findByKeywordAndCategoryRequestDto findByKeywordAndCategoryRequestDto){
         List<Book> result = productSearchService.findByKeywordAndCategory(findByKeywordAndCategoryRequestDto);
         return result;
     }
 
     /* 인기순위(판매순) 상품 조회 */
-    @PostMapping("/search-book-by-ranking") //searchBookByRankingRequestDto : int amount, int pageNumber
+    @PostMapping("/search/search-book-by-ranking") //searchBookByRankingRequestDto : int amount, int pageNumber
     public List<Book> searchBookByRanking(@Validated(value = ValidationSequence.class) @RequestBody SearchBookByRankingRequestDto searchBookByRankingRequestDto){
         List<Book> result = productSearchService.searchBookByRanking(searchBookByRankingRequestDto);
         return result;

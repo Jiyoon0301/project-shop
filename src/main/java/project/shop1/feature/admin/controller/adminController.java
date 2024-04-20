@@ -2,6 +2,7 @@ package project.shop1.feature.admin.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import project.shop1.feature.admin.dto.authorDto.AuthorRequestDto;
 public class adminController {
 
     @PostMapping("/admin/main")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BooleanResponse> authorRegistraion(){
 
         return ResponseEntity.ok(BooleanResponse.of(true));

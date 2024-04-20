@@ -1,6 +1,7 @@
 package project.shop1.feature.admin.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ public class viewOrderController {
 
     /* 주문 현황 리스트 조회 */
     @PostMapping("/admin/view-order")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<ViewOrderResponseDto> viewOrder(){
         List<ViewOrderResponseDto> result = viewOrderService.viewOrder();
         return result;
@@ -26,6 +28,7 @@ public class viewOrderController {
 
     /* 주문 기능 추가하기 */
     @PostMapping("/admin/search-order-by-account")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<SearchOrderByAccountResponseDto> viewOrder(@RequestBody SearchOrderByAccountRequestDto searchOrderByAccountRequestDto){
         List<SearchOrderByAccountResponseDto> result = viewOrderService.searchOrderByAccount(searchOrderByAccountRequestDto);
 
