@@ -3,7 +3,6 @@ package project.shop1.feature.login.service.impl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.antlr.v4.runtime.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -85,7 +84,6 @@ public class LoginServiceImpl1 implements LoginService {
         }
 
         //username(account) + password 를 기반으로 Authentication 객체 생성
-        //authentication 은 인증 여부를 확인하는 authenticated 값이 false
         //Username = account, Password = password
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(account, password);
 
@@ -98,14 +96,10 @@ public class LoginServiceImpl1 implements LoginService {
 
         /* 토큰을 redis 에 저장 */ //***************수정
         TokenRedis tokenRedis = new TokenRedis(authentication.getName(), jwtToken.getAccessToken(), jwtToken.getRefreshToken());
-
-        System.out.println("accesToken:");
-        System.out.println(jwtToken.getAccessToken());
-
-        tokenRedisRepository.save(tokenRedis);
+//        tokenRedisRepository.save(tokenRedis);
 //        tokenRedisRepository.save(new TokenRedis(authentication.getName(), jwtToken.getAccessToken(), jwtToken.getRefreshToken())); //account, accessToken, RefreshToken
 
         return jwtToken;
-
     }
+
 }

@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -22,7 +22,7 @@ import project.shop1.feature.logout.service.LogoutService;
 /* SecurityContext */
 @Configuration
 @EnableWebSecurity //Spring Security 컨텍스트임을 명시
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) //Annotation을 통해 Controller의 API들의 보안 수준을 설정할 수 있도록 활성화한다.
+@EnableMethodSecurity(securedEnabled = true) //@PreAuthorize 활성화, EnableGlobalMethodSecurity deprecated됨
 @AllArgsConstructor
 public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
@@ -50,8 +50,8 @@ public class SecurityConfig {
         http.formLogin((form) -> form.disable()); //폼 로그인과 HTTP 기본 인증을 비활성화 : Spring 웹 페이제엇 제공되는 로그인 폼을 통해 사용자를 인증하는 메커니즘과 HTTP 기반 기본 인증 비활성화
         http.httpBasic(AbstractHttpConfigurer::disable);
 
-        //JwtAuthFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
-        //JwtAuthFilter를 통과하여 Authentication을 획득하였다면 인증 필요(Authenticated)한 자원의 사용이 가능
+        //JwtAuthFilter 를 UsernamePasswordAuthenticationFilter 앞에 추가
+        //JwtAuthFilter 를 통과하여 Authentication 을 획득하였다면 인증 필요(Authenticated)한 자원의 사용이 가능
         http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling((exceptionHandling) -> exceptionHandling

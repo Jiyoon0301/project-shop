@@ -21,6 +21,10 @@ public interface UserRepository {
     /* 이름으로 한 명 찾기 */
     Optional<UserEntity> findUserEntityByName(String name);
 
+    /* email로 한 명 찾기 */
+    Optional<UserEntity> findUserEntityByEmail(String email);
+
+
 
 
 

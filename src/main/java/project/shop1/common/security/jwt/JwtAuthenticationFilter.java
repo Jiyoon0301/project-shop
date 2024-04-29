@@ -41,6 +41,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
             return bearerToken.substring(7);
         }
-        return "token 추출 실패"; //**********************************************
+        return null;
     }
 }

@@ -19,7 +19,7 @@ import static project.shop1.entity.QUserEntity.userEntity;
 public class UserRepositoryImpl implements UserRepository {
 
     private final EntityManager entityManager;
-    private JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory jpaQueryFactory;
     @Autowired
     public UserRepositoryImpl(EntityManager entityManager){
         this.entityManager=entityManager;
@@ -63,6 +63,15 @@ public class UserRepositoryImpl implements UserRepository {
         UserEntity result = jpaQueryFactory
                 .selectFrom(userEntity)
                 .where(userEntity.name.eq(name))
+                .fetchOne();
+        return Optional.ofNullable(result);
+    }
+
+    @Override
+    public Optional<UserEntity> findUserEntityByEmail(String email){
+        UserEntity result = jpaQueryFactory
+                .selectFrom(userEntity)
+                .where(userEntity.email.eq(email))
                 .fetchOne();
         return Optional.ofNullable(result);
     }

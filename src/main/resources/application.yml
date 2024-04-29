@@ -41,9 +41,7 @@ spring:
 #          header: Authorization
 #          secret: e1055bdcb07d43c7ab859e9fd1418e3c2f31679a269ff2350840f1d5dd824bee
 
-  kakao:
-    client_id: 8e1195f51d733edc8a79e51967b3065d
-    redirect_uri: http://localhost:8080/login/oauth2/code/kakao
+
 
 logging:
   level:
@@ -52,3 +50,7 @@ logging:
 
 jwt:
   secret: e1055bdcb07d43c7ab859e9fd1418e3c2f31679a269ff2350840f1d5dd824bee
+
+kakao:
+  client_id: 8e1195f51d733edc8a79e51967b3065d
+  redirect_uri: http://localhost:8080/login/kakao-callback

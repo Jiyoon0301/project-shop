@@ -82,6 +82,7 @@ public class JoinServiceImpl implements JoinService {
                 .name(name)
                 .phoneNumber(phoneNumber)
                 .email(email)
+                .loginType("internal")
                 .rank(Rank.MEMBER)
                 .address(address)
                 .build();

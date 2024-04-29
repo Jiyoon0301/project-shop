@@ -1,14 +1,12 @@
 package project.shop1.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import project.shop1.entity.enums.Rank;
 
-import javax.management.relation.Role;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -31,6 +29,7 @@ public class UserEntity {
     private String address;
     private String phoneNumber;
     private String email;
+    private String loginType; // internal, kakao ...
     @Enumerated(value=EnumType.STRING)
     private Rank rank;
 

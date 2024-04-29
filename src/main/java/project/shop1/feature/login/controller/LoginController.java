@@ -2,11 +2,7 @@ package project.shop1.feature.login.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import project.shop1.common.repository.UserRepository;
@@ -16,6 +12,9 @@ import project.shop1.common.security.jwt.configuration.SecurityConfig;
 import project.shop1.common.security.jwt.dto.JwtToken;
 import project.shop1.common.validation.ValidationSequence;
 import project.shop1.feature.login.dto.JwtLoginRequestDto;
+import project.shop1.feature.login.dto.kakaoLogin.KakaoLoginResponseDto;
+import project.shop1.feature.login.dto.kakaoLogin.KakaoUserLoginResponseDto;
+import project.shop1.feature.login.service.KakaoLoginService;
 import project.shop1.feature.login.service.LoginService;
 
 @RestController
@@ -27,6 +26,7 @@ public class LoginController {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final SecurityConfig securityConfig;
+    private final KakaoLoginService kakaoLoginService;
 
 //    @Value("${kakao.client_id}")
     private final String client_id = "8e1195f51d733edc8a79e51967b3065d";
@@ -37,7 +37,7 @@ public class LoginController {
     private final String uri = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+client_id+"redirect_uri="+redirect_uri;
 
 
-    /* 로그인 메서드 */
+    /* 로그인 - 세션 */
 //    @PostMapping("/login")
 //    public ResponseEntity<BooleanResponse> login(@Validated(value = ValidationSequence.class) @RequestBody LoginRequestDto loginRequestDto, HttpServletRequest request){
 //        loginService.loginUser(loginRequestDto, request);
@@ -45,7 +45,7 @@ public class LoginController {
 //        return ResponseEntity.ok(BooleanResponse.of(true));
 //    }
 
-    /* Jwt 인증 로그인 */
+    /* 로그인 - jwt */
     @PostMapping("/login") // JwtLoginRequestDto : String account, String password
     public JwtToken login(@Validated(value = ValidationSequence.class) @RequestBody JwtLoginRequestDto jwtLoginRequestDto){
         JwtToken jwtToken = loginService.login(jwtLoginRequestDto);
@@ -54,25 +54,22 @@ public class LoginController {
         return jwtToken;
     }
 
-    /* 로그인 확인 */
+    /* 로그인 테스트 - jwt  */
     @PostMapping("/test")
     @PreAuthorize("hasRole('USER')")
     public String test() {
         return SecurityUtil.getCurrentUsername();
     }
 
-//    @GetMapping("/login/kakao-auth")
-//    public ResponseEntity<String> kakaoAuth(Model model){
-//        String location = uri;
-//
-//        return ResponseEntity.status(HttpStatus.FOUND).header("Location", location).build();
-//    }
-
-    /* 카카오 로그인 - 프론트로부터 인가코드 전달받는 메서드 */
+    /* 로그인 - 카카오 */
+    // token 과 email 리턴(프런트에서 현재 유저 저장할 때 필요)
     @GetMapping("/login/kakao-callback")
-    public String kakaoCallBack(@RequestParam("code") String code){
-        log.info("code : "+ code);
-        return null;
+    @PreAuthorize("permitAll()")
+    public KakaoLoginResponseDto kakaoCallBack(@RequestParam("code") String code){ //return KakaoLoginResponseDto - id, nickname, email, access/refreshToken, expiresIn
+        KakaoLoginResponseDto kakaoLoginResponseDto = kakaoLoginService.kakaoLogin(code);
+
+        return kakaoLoginResponseDto;
     }
+
 
 }

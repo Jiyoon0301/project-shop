@@ -30,6 +30,8 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final StringPath loginType = createString("loginType");
+
     public final StringPath name = createString("name");
 
     public final ListPath<Order, QOrder> orders = this.<Order, QOrder>createList("orders", Order.class, QOrder.class, PathInits.DIRECT2);
