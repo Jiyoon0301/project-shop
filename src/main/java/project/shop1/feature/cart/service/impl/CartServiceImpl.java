@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.shop1.common.exception.BusinessException;
 import project.shop1.common.exception.ErrorCode;
+import project.shop1.common.security.SecurityUtil;
 import project.shop1.entity.Book;
 import project.shop1.entity.CartItem;
 import project.shop1.entity.UserEntity;
@@ -28,9 +29,8 @@ public class CartServiceImpl implements CartService {
 
     /* 장바구니 목록 */
     @Override
-    public List<CartItem> findAllCartItemsByUser(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        String account = (String) session.getAttribute("account"); // 세션에 저장된 사용자 정보
+    public List<CartItem> findAllCartItemsByUser() {
+        String account = SecurityUtil.getCurrentUsername();
         Optional<UserEntity> userEntity = joinRepository.findUserEntityByAccount(account);
         List<CartItem> result = cartRepository.findAllCartItemsByUser(userEntity.get());
         return result;
@@ -51,9 +51,8 @@ public class CartServiceImpl implements CartService {
     /* 장바구니 담기 버튼 */
     @Override
     @Transactional
-    public void addCart(AddCartRequestDto addCartRequestDto, HttpServletRequest request){
-        HttpSession session = request.getSession();
-        String account = (String) session.getAttribute("account"); // 세션에 저장된 사용자 정보
+    public void addCart(AddCartRequestDto addCartRequestDto){
+        String account = SecurityUtil.getCurrentUsername();
         Long productNumber = addCartRequestDto.getProductNumber();
         int quantity = addCartRequestDto.getQuantity();
 

@@ -4,19 +4,21 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import project.shop1.common.repository.UserRepository;
 import project.shop1.common.security.jwt.JwtAuthenticationFilter;
 import project.shop1.common.security.jwt.JwtTokenProvider;
 import project.shop1.common.security.jwt.handler.CustomAccessDeniedHandler;
 import project.shop1.common.security.jwt.handler.CustomAuthenticationEntryPoint;
-import project.shop1.feature.login.common.CustomUserDetailsService;
+import project.shop1.common.security.redis.repository.RefreshTokenRepository;
+import project.shop1.feature.login.local.common.CustomUserDetailsService;
 import project.shop1.feature.logout.service.LogoutService;
 
 /* SecurityContext */
@@ -30,6 +32,10 @@ public class SecurityConfig {
     private final CustomAccessDeniedHandler accessDeniedHandler;
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     private final LogoutService logoutService;
+
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final UserRepository userRepository;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     private static final String[] AUTH_WHITELIST={
         "/join/**", "/login/**", "/main/**", "/search/**"
@@ -52,7 +58,7 @@ public class SecurityConfig {
 
         //JwtAuthFilter 를 UsernamePasswordAuthenticationFilter 앞에 추가
         //JwtAuthFilter 를 통과하여 Authentication 을 획득하였다면 인증 필요(Authenticated)한 자원의 사용이 가능
-        http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, refreshTokenRepository, userRepository, authenticationManagerBuilder), UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling((exceptionHandling) -> exceptionHandling
                 .authenticationEntryPoint(authenticationEntryPoint) //인증되지 않은 사용자에 대해 처리

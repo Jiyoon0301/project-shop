@@ -8,6 +8,6 @@ import java.util.List;
 public interface GetUserOrdersService {
 
     /* 회원의 주문 내역 확인 버튼 */
-    List<GetUserOrdersResponseDto> getUserOrders(HttpServletRequest request);
+    List<GetUserOrdersResponseDto> getUserOrders();
 
     }

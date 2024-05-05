@@ -22,8 +22,8 @@ public class ReviewController {
     /* 리뷰 등록 버튼 */
     @PostMapping("/register-review") //RegisterReviewRequestDto : Long productId, String content, double rating
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<BooleanResponse> registerReview(@RequestBody RegisterReviewRequestDto registerReviewRequestDto, HttpServletRequest request) {
-        reviewService.registerReview(registerReviewRequestDto, request);
+    public ResponseEntity<BooleanResponse> registerReview(@RequestBody RegisterReviewRequestDto registerReviewRequestDto) {
+        reviewService.registerReview(registerReviewRequestDto);
 
         return ResponseEntity.ok(BooleanResponse.of(true));
     }
@@ -39,8 +39,8 @@ public class ReviewController {
     /* 리뷰 수정 등록 버튼 */
     @PostMapping("/update-review") //UpdateReviewRequestDto : Long productId, String content, double rating
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<BooleanResponse> updateReview(@RequestBody UpdateReviewRequestDto updateReviewRequestDto, HttpServletRequest request) {
-        reviewService.updateReview(updateReviewRequestDto, request);
+    public ResponseEntity<BooleanResponse> updateReview(@RequestBody UpdateReviewRequestDto updateReviewRequestDto) {
+        reviewService.updateReview(updateReviewRequestDto);
 
         return ResponseEntity.ok(BooleanResponse.of(true));
     }
@@ -48,8 +48,8 @@ public class ReviewController {
     /* 리뷰 삭제 */
     @PostMapping("/delete-review") //DeleteReviewRequestDto : Long productId
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<BooleanResponse> deleteReview(@RequestBody DeleteReviewRequestDto deleteReviewRequestDto, HttpServletRequest request) {
-        reviewService.deleteReview(deleteReviewRequestDto, request);
+    public ResponseEntity<BooleanResponse> deleteReview(@RequestBody DeleteReviewRequestDto deleteReviewRequestDto) {
+        reviewService.deleteReview(deleteReviewRequestDto);
 
         return ResponseEntity.ok(BooleanResponse.of(true));
     }

@@ -9,6 +9,7 @@ import project.shop1.common.exception.BusinessException;
 import project.shop1.common.exception.ErrorCode;
 import project.shop1.common.repository.BookRepository;
 import project.shop1.common.repository.UserRepository;
+import project.shop1.common.security.SecurityUtil;
 import project.shop1.entity.Book;
 import project.shop1.entity.Review;
 import project.shop1.entity.UserEntity;
@@ -33,9 +34,8 @@ public class ReviewServiceImpl implements ReviewService {
     /* 리뷰 등록 버튼 */
     @Override
     @Transactional
-    public void registerReview(RegisterReviewRequestDto registerReviewRequestDto, HttpServletRequest request){
-        HttpSession session = request.getSession();
-        String account = (String) session.getAttribute("account"); // 세션에 저장된 사용자 정보
+    public void registerReview(RegisterReviewRequestDto registerReviewRequestDto){
+        String account = SecurityUtil.getCurrentUsername();
         UserEntity userEntity = userRepository.findUserEntityByAccount(account).get();
 
         Long productId = registerReviewRequestDto.getProductId();
@@ -85,9 +85,8 @@ public class ReviewServiceImpl implements ReviewService {
     /* 리뷰 수정 등록 버튼 */
     @Override
     @Transactional
-    public void updateReview(UpdateReviewRequestDto updateReviewRequestDto, HttpServletRequest request){
-        HttpSession session = request.getSession();
-        String account = (String) session.getAttribute("account"); // 세션에 저장된 사용자 정보
+    public void updateReview(UpdateReviewRequestDto updateReviewRequestDto){
+        String account = SecurityUtil.getCurrentUsername();
 
         Long productId = updateReviewRequestDto.getProductId();
         String content = updateReviewRequestDto.getContent();
@@ -105,9 +104,8 @@ public class ReviewServiceImpl implements ReviewService {
     /* 리뷰 삭제 버튼 */
     @Override
     @Transactional
-    public void deleteReview(DeleteReviewRequestDto deleteReviewRequestDto, HttpServletRequest request){
-        HttpSession session = request.getSession();
-        String account = (String) session.getAttribute("account"); // 세션에 저장된 사용자 정보
+    public void deleteReview(DeleteReviewRequestDto deleteReviewRequestDto){
+        String account = SecurityUtil.getCurrentUsername();
         Long productId = deleteReviewRequestDto.getProductId();
 
         Review review = reviewRepository.findReviewByProductIdAndUserEntityAccount(productId, account).get();

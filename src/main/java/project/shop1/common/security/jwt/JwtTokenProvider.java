@@ -48,17 +48,17 @@ public class JwtTokenProvider {
         long now = (new Date()).getTime();
 
         //Access Token 생성
-        Date accessTokenExpiresln = new Date(now+86400000);
+        Date accessTokenExpiresIn = new Date(now + 1000*60*30); //30분
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
-                .setExpiration(accessTokenExpiresln)
+                .setExpiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         //Refresh Token 생성
         String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now + 86400000))
+                .setExpiration(new Date(now + 1000*60*60*24*3)) //3일
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
@@ -87,7 +87,7 @@ public class JwtTokenProvider {
                 .collect(Collectors.toList());
 
         //UserDetails 객체 만들어서 Authentication return
-        //UserDetails: interface, User: UserDetails를 구현한 class
+        //UserDetails: interface, User: UserDetails 를 구현한 class
         UserDetails principal = new User(claims.getSubject(), "", authorities); //***********************
         return new UsernamePasswordAuthenticationToken(principal,"",authorities);
     }

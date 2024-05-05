@@ -25,8 +25,8 @@ public class CartController {
     /* 회원의 장바구니 상품 리스트 조회 */
     @PostMapping("/cart/find-all-cart-items-by-user") //findAllCartItemByUserRequestDto : String account //java.lang.StackOverflowError
     @PreAuthorize("hasRole('USER')")
-    public List<CartItem> findAllCartItemsByUser(HttpServletRequest request) {
-        List<CartItem> result = cartService.findAllCartItemsByUser(request);
+    public List<CartItem> findAllCartItemsByUser() {
+        List<CartItem> result = cartService.findAllCartItemsByUser();
         return result;
     }
 
@@ -40,8 +40,8 @@ public class CartController {
     /* 장바구니에 상품 추가 */
     @PostMapping("/cart/add-cart") //AddCartRequestDto : String account, Long productNumber, int quantity
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<BooleanResponse> addCart(@Validated(value = ValidationSequence.class) @RequestBody AddCartRequestDto addCartRequestDto, HttpServletRequest request){
-        cartService.addCart(addCartRequestDto, request);
+    public ResponseEntity<BooleanResponse> addCart(@Validated(value = ValidationSequence.class) @RequestBody AddCartRequestDto addCartRequestDto){
+        cartService.addCart(addCartRequestDto);
         return ResponseEntity.ok(BooleanResponse.of(true));
     }
 

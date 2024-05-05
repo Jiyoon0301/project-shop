@@ -17,6 +17,7 @@ import project.shop1.common.exception.BusinessException;
 import project.shop1.common.exception.ErrorCode;
 import project.shop1.common.repository.BookRepository;
 import project.shop1.common.repository.UserRepository;
+import project.shop1.common.security.SecurityUtil;
 import project.shop1.entity.*;
 import project.shop1.entity.enums.OrderStatus;
 import project.shop1.feature.cart.repository.CartRepository;
@@ -63,9 +64,8 @@ public class OrderServiceImpl implements OrderService {
 
     /* 주문 페이지 */
     @Override
-    public OrderPageResponseDto orderPage(OrderPageRequestDto orderPageRequestDto, HttpServletRequest request){
-        HttpSession session = request.getSession();
-        String account = (String) session.getAttribute("account"); // 세션에 저장된 사용자 정보
+    public OrderPageResponseDto orderPage(OrderPageRequestDto orderPageRequestDto){
+        String account = SecurityUtil.getCurrentUsername();
         UserEntity userEntity = joinRepository.findUserEntityByAccount(account).get();
 
         List<ProductInfoPairs> productInfoPairs = new ArrayList<>();
@@ -102,10 +102,9 @@ public class OrderServiceImpl implements OrderService {
     /* 주문(구매하기 버튼) */
     @Transactional
     @Override
-    public SubmitOrderResponseDto submitOrder(SubmitOrderRequestDto submitOrderRequestDto, HttpServletRequest request){
+    public SubmitOrderResponseDto submitOrder(SubmitOrderRequestDto submitOrderRequestDto){
         String address = submitOrderRequestDto.getAddress();
-        HttpSession session = request.getSession();
-        String account = (String) session.getAttribute("account"); // 세션에 저장된 사용자 정보
+        String account = SecurityUtil.getCurrentUsername();
         int totalProductPrice = 0;
 
         UserEntity userEntity = userRepository.findUserEntityByAccount(account).get();
@@ -230,16 +229,15 @@ public class OrderServiceImpl implements OrderService {
             return addressPairs;
         }catch (JsonProcessingException e){
             e.printStackTrace();
-            throw new BusinessException(ErrorCode.RESOURCE_ACCESS_NOT_ACCEPTABLE,"fail");
+            throw new BusinessException(ErrorCode.RESOURCE_ACCESS_NOT_ACCEPTABLE, "fail");
         }
     }
 
     /* 주소 저장 */
     @Override
     @Transactional
-    public void saveAddress(SaveAddressRequestDto saveAddressRequestDto, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        String account = (String) session.getAttribute("account"); // 세션에 저장된 사용자 정보
+    public void saveAddress(SaveAddressRequestDto saveAddressRequestDto) {
+        String account = SecurityUtil.getCurrentUsername();
 
         String roadAddress = saveAddressRequestDto.getRoadAddress();
         String detailedAddress = saveAddressRequestDto.getDetailedAddress();

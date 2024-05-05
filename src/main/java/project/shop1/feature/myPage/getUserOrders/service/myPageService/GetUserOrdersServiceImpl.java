@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.shop1.common.security.SecurityUtil;
 import project.shop1.entity.DeliveryStatus;
 import project.shop1.entity.Order;
 import project.shop1.entity.OrderItem;
@@ -29,9 +30,8 @@ public class GetUserOrdersServiceImpl implements GetUserOrdersService {
     /* 회원의 주문 내역 확인 버튼 */
     @Override
     @Transactional
-    public List<GetUserOrdersResponseDto> getUserOrders(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        String account = (String) session.getAttribute("account"); // 세션에 저장된 사용자 정보
+    public List<GetUserOrdersResponseDto> getUserOrders(){
+        String account = SecurityUtil.getCurrentUsername();
 
         List<Order> orderList = orderRepository.findOrdersByUserEntityAccount(account);
 

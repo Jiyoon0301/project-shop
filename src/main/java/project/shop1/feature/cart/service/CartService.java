@@ -9,14 +9,14 @@ import java.util.List;
 public interface CartService {
 
     /* 장바구니 목록 */
-    List<CartItem> findAllCartItemsByUser(HttpServletRequest request);
+    List<CartItem> findAllCartItemsByUser();
 
     /* 장바구니 체크 상품 총 가격 */
     int totalPrice(TotalPriceRequestDto totalPriceRequestDto);
 
 
     /* 장바구니 담기 버튼 */
-    void addCart(AddCartRequestDto addCartRequestDto, HttpServletRequest request);
+    void addCart(AddCartRequestDto addCartRequestDto);
 
         /* 장바구니에서 삭제 */
     void deleteCart(DeleteCartRequestDto deleteCartRequestDto);

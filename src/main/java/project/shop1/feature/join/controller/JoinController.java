@@ -2,6 +2,7 @@ package project.shop1.feature.join.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import project.shop1.common.reponse.BooleanResponse;
@@ -18,6 +19,7 @@ public class JoinController {
 
     /* 회원가입*/
     @PostMapping("/join") // String account, String password, String name, String phoneNumber, String email
+    @PreAuthorize("permitAll()")
     public ResponseEntity<BooleanResponse> join(@Validated(value = ValidationSequence.class) @RequestBody JoinRequestDto joinRequestDto) {
         joinService.join(joinRequestDto);
 

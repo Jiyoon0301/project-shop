@@ -24,16 +24,16 @@ public class OrderController {
     /* 주문 페이지 */ // orderByCart, orderByProductInfo
     @PostMapping("/order/order-page-{userEntityId}") // OrderRequestDto : Boolean isFromCartPage, Long bookId, int count;
     @PreAuthorize("hasRole('USER')")
-    public OrderPageResponseDto order (@PathVariable("userEntityId") Long userEntityId, @RequestBody OrderPageRequestDto orderPageRequestDto, HttpServletRequest request){
-        OrderPageResponseDto orderPageResponseDto = orderService.orderPage(orderPageRequestDto, request);
+    public OrderPageResponseDto order (@PathVariable("userEntityId") Long userEntityId, @RequestBody OrderPageRequestDto orderPageRequestDto){
+        OrderPageResponseDto orderPageResponseDto = orderService.orderPage(orderPageRequestDto);
         return orderPageResponseDto;
     }
 
     /* 주문 페이지에서 구매하기 버튼 */
     @PostMapping("/order/order-submitOrder-{userEntityId}") // SubmitOrderRequestDto : Boolean isFromCartPage, Long CartItemId, String address, Long bookid, int count
     @PreAuthorize("hasRole('USER')")
-    public SubmitOrderResponseDto submitOrder (@PathVariable("userEntityId") Long userEntityId, @RequestBody SubmitOrderRequestDto submitOrderRequestDto, HttpServletRequest request){
-        SubmitOrderResponseDto result= orderService.submitOrder(submitOrderRequestDto, request);
+    public SubmitOrderResponseDto submitOrder (@PathVariable("userEntityId") Long userEntityId, @RequestBody SubmitOrderRequestDto submitOrderRequestDto){
+        SubmitOrderResponseDto result= orderService.submitOrder(submitOrderRequestDto);
 
         return result;
     }
@@ -49,8 +49,8 @@ public class OrderController {
     /* 주소 저장 - 도로명 + 상세주소 저장 */
     @PostMapping("/order/save-address") //SaveAddressRequestDto : String roadAddress, String detailedAddress
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<BooleanResponse> saveAddress(@RequestBody SaveAddressRequestDto saveAddressRequestDto, HttpServletRequest request) {
-        orderService.saveAddress(saveAddressRequestDto, request);
+    public ResponseEntity<BooleanResponse> saveAddress(@RequestBody SaveAddressRequestDto saveAddressRequestDto) {
+        orderService.saveAddress(saveAddressRequestDto);
 
         return ResponseEntity.ok(BooleanResponse.of(true));
     }

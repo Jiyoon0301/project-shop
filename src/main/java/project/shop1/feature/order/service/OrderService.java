@@ -11,10 +11,10 @@ import java.util.List;
 public interface OrderService {
 
     /* 주문 페이지 */
-    OrderPageResponseDto orderPage(OrderPageRequestDto orderPageRequestDto, HttpServletRequest request);
+    OrderPageResponseDto orderPage(OrderPageRequestDto orderPageRequestDto);
 
     /* 주문(구매하기 버튼) */
-    SubmitOrderResponseDto submitOrder(SubmitOrderRequestDto submitOrderRequestDto, HttpServletRequest request);
+    SubmitOrderResponseDto submitOrder(SubmitOrderRequestDto submitOrderRequestDto);
 
     /* 카트 목록으로 orderItems 리스트 생성 */
     List<OrderItem> createOrderItemList(List<Long> cartItemsId);
@@ -29,7 +29,7 @@ public interface OrderService {
     List<AddressPairs> searchAddress(SearchAddressRequestDto searchAddressRequestDto);
 
     /* 주소 저장 */
-    void saveAddress(SaveAddressRequestDto saveAddressRequestDto, HttpServletRequest request);
+    void saveAddress(SaveAddressRequestDto saveAddressRequestDto);
 
 
 
