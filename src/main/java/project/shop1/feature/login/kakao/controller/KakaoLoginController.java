@@ -20,7 +20,7 @@ public class KakaoLoginController {
     // token 과 email 리턴(프런트에서 현재 유저 저장할 때 필요)
     @GetMapping("/login/kakao-callback")
     @PreAuthorize("permitAll()")
-    public KakaoLoginResponseDto kakaoCallBack(@RequestParam("code") String code){ //return KakaoLoginResponseDto - id, nickname, email, access/refreshToken, expiresIn
+    public KakaoLoginResponseDto kakaoLogin(@RequestParam("code") String code){ //return KakaoLoginResponseDto - id, nickname, email, access/refreshToken, expiresIn
         KakaoLoginResponseDto kakaoLoginResponseDto = kakaoLoginService.kakaoLogin(code);
 
         return kakaoLoginResponseDto; //String id(=password), String nickname, String email, String accessToken, String refreshToken, String grantType

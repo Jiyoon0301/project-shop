@@ -16,14 +16,16 @@ public class NaverLoginController {
 
     private final NaverLoginService naverLoginService;
 
-    /* 로그인 - 네이버 */
-    // token 과 email 리턴(프런트에서 현재 유저 저장할 때 필요)
+    /*  로그인 - 네이버
+     *  return
+     *  naverEmail, accessToken, refreshToken, grantType;
+     */
     @GetMapping("/login/naver-callback")
     @PreAuthorize("permitAll()")
-    public NaverLoginResponseDto naverCallback(@RequestParam("code") String code){ //return KakaoLoginResponseDto - id, nickname, email, access/refreshToken, expiresIn
-//        NaverLoginResponseDto naverLoginResponseDto = naverLoginService.naverLogin(code);
+    public NaverLoginResponseDto naverLogin(@RequestParam("code") String code){ //return KakaoLoginResponseDto - id, nickname, email, access/refreshToken, expiresIn
+        NaverLoginResponseDto result = naverLoginService.naverLogin(code);
 
-        return null;
+        return result;
     }
 
 }

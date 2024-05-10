@@ -21,6 +21,8 @@ import org.springframework.web.client.RestTemplate;
 import project.shop1.common.repository.UserRepository;
 import project.shop1.common.security.jwt.JwtTokenProvider;
 import project.shop1.common.security.jwt.dto.JwtToken;
+import project.shop1.common.security.redis.dto.RefreshToken;
+import project.shop1.common.security.redis.repository.RefreshTokenRepository;
 import project.shop1.entity.UserEntity;
 import project.shop1.entity.enums.Rank;
 import project.shop1.feature.login.kakao.dto.KakaoLoginResponseDto;
@@ -38,6 +40,7 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Value("${kakao.client_id}")
     private String clientId;
@@ -57,7 +60,7 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
         // 2. 토큰으로 카카오 API 호출
         HashMap<String, Object> userInfo = getKakaoUserInfo(accessToken);
 
-        // 3. 카카오ID로 회원가입 & 로그인 처리
+        // 3. 카카오 ID 로 회원가입 & 로그인 처리
         KakaoUserLoginResponseDto kakaoUserLoginResponseDto = kakaoUserLogin(userInfo);
 
         // 4. 자체 토큰 발급
@@ -183,7 +186,9 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(kakaoEmail, id);
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
+
         //redis 에 토큰 저장
+        refreshTokenRepository.save(new RefreshToken(authentication.getName(), jwtToken.getRefreshToken(), jwtToken.getAccessToken())); //account, refreshToken, accessToken
 
         return new KakaoLoginResponseDto(id, nickName, kakaoEmail, jwtToken.getAccessToken(), jwtToken.getRefreshToken(), jwtToken.getGrantType());}
 }

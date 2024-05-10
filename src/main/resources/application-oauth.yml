@@ -1,0 +1,15 @@
+#spring:
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            client-id: 603014937589-elvqqerun1lfrlquo1l85em9vtpsd2dr.apps.googleusercontent.com
+#            client-secret: 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
+#            redirect-uri: http://localhost:8080/login/google-callback
+#            authorization-grant-type: authorization_code
+#            scope:
+#              - profile
+#              - email
+#  profiles:
+#    include: oauth

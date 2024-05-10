@@ -1,6 +1,8 @@
 package project.shop1.common.security.jwt.configuration;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -23,15 +25,15 @@ import project.shop1.feature.logout.service.LogoutService;
 
 /* SecurityContext */
 @Configuration
-@EnableWebSecurity //Spring Security 컨텍스트임을 명시
-@EnableMethodSecurity(securedEnabled = true) //@PreAuthorize 활성화, EnableGlobalMethodSecurity deprecated됨
+@EnableWebSecurity //Spring Security 설정 활성화
+@EnableMethodSecurity(securedEnabled = true) //@PreAuthorize 활성화, EnableGlobalMethodSecurity deprecated 됨
 @AllArgsConstructor
+//@RequiredArgsConstructor
 public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomAccessDeniedHandler accessDeniedHandler;
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
-    private final LogoutService logoutService;
 
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
@@ -48,7 +50,7 @@ public class SecurityConfig {
         http.csrf((csrf) -> csrf.disable()); //CSRF 보호 비활성화 : CSRF 토큰을 사용하지 않을 것이므로 확인하지 않도록 설정
         http.cors(Customizer.withDefaults()); //CORS 설정을 적용 : 다른 도메인의 웹 페이지에서 리소스에 접근할 수 있도록 허용
 
-        //JWT를 사용하기 때문에 세션 사용하지 않음
+        //JWT 를 사용하기 때문에 세션 사용하지 않음
         http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
                 SessionCreationPolicy.STATELESS));
 
@@ -63,6 +65,7 @@ public class SecurityConfig {
         http.exceptionHandling((exceptionHandling) -> exceptionHandling
                 .authenticationEntryPoint(authenticationEntryPoint) //인증되지 않은 사용자에 대해 처리
                 .accessDeniedHandler(accessDeniedHandler)); //인증되었지만, 특정 리소스에 대한 권한이 없을 경우 처리
+
 
         //권한 규칙 작성
         //anyRequest()에 대해 permitAll() 해주었는데 기본적으로는 모두 허용해줄 것이고, EnableGlobalMethodSecurity를 설정해둔 이유가 Annotation으로 접근을 제한하려고 했기 때문에 메서드 단위로 보안 수준을 설정해줄 것이다.
