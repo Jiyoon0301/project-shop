@@ -81,23 +81,13 @@ public class NaverLoginServiceImpl implements NaverLoginService {
         // HTTP 요청 보내기
         HttpEntity<MultiValueMap<String, String>> naverTokenRequest = new HttpEntity<>(body, headers);
         RestTemplate rt = new RestTemplate();
-        ResponseEntity<String> response = rt.exchange(
+        ResponseEntity<NaverAccessTokenResponseDto> response = rt.exchange(
                 "https://nid.naver.com/oauth2.0/token",
                 HttpMethod.POST,
                 naverTokenRequest,
-                String.class
+                NaverAccessTokenResponseDto.class
         );
-
-        // HTTP 응답 (JSON) -> 액세스 토큰 파싱
-        String responseBody = response.getBody();
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = null;
-        try {
-            jsonNode = objectMapper.readTree(responseBody);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return jsonNode.get("access_token").asText();
+        return response.getBody().getAccess_token();
     }
 
     /* 2. 액세스 토큰으로 Naver 계정 프로필 정보 요청 */

@@ -1,7 +1,6 @@
 package project.shop1.feature.admin.repository;
 
 import project.shop1.entity.Order;
-import project.shop1.feature.admin.dto.viewOrderDto.ViewOrderResponseDto;
 
 import java.util.List;
 

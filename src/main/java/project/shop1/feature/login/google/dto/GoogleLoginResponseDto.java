@@ -7,8 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class GoogleLoginResponseDto {
 
-    private String googleEmail;
     private String accessToken;
     private String refreshToken;
-    private String grantType;
 }

@@ -24,6 +24,4 @@ public interface CartService {
     /* 장바구니 수량 수정 */
     void updateProductQuantity(UpdateQuantityByOneRequestDto updateQuantityByOneRequestDto);
 
-    /* 장바구니 확인 */
-    CartItem checkCart();
 }

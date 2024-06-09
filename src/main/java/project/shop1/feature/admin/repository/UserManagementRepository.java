@@ -1,7 +1,6 @@
 package project.shop1.feature.admin.repository;
 
 import project.shop1.entity.UserEntity;
-import project.shop1.feature.admin.dto.userDto.FindUserEntityByAccountRequestDto;
 
 import java.util.Optional;
 

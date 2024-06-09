@@ -1,7 +1,6 @@
 package project.shop1.feature.admin.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.Delete;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -18,31 +17,37 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-public class AuthorController { //웹 MVC의 컨트롤러 역할
+public class AuthorController {
 
     private final AuthorService authoreService;
     private final AuthorRepository authorRepository;
 
-    /* 작가 등록 */
-    //인자 productRequestDto : authorName, nation, authorIntro
+    /* 작가 등록
+    * AuthorRequestDto :  String authorName, String nation, String authorIntro;
+    */
     @PostMapping("/admin/author-registration")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<BooleanResponse> authorRegistraion(@Validated(value = ValidationSequence.class) @RequestBody AuthorRequestDto authorRequestDto){
-        authoreService.authorRegistration(authorRequestDto);
+    public ResponseEntity<BooleanResponse> authorRegistraion(@Validated(value = ValidationSequence.class) @RequestBody AuthorRegistrationRequestDto authorRegistrationRequestDto){
+        authoreService.authorRegistration(authorRegistrationRequestDto);
 
         return ResponseEntity.ok(BooleanResponse.of(true));
     }
 
-    /* 작가 관리 페이지 */
-    @PostMapping("/admin/author-management") // authorRequestDto : int pageNumber
+    /* 작가 관리 페이지 - 전체 작가 검색
+    * AuthorManagementRequestDot :
+    * int pageNumber
+    */
+    @PostMapping("/admin/author-management")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<Author> authorManagement(@RequestBody AuthorManagementRequestDto authorManagementRequestDto){
-        List<Author> allAuthor = authoreService.authorManagement(authorManagementRequestDto);
+    public List<Author> adminSearchAllAuthor(@RequestBody AdminSearchAllAuthorRequestDto adminSearchAllAuthorRequestDto){
+        List<Author> allAuthor = authoreService.adminSearchAllAuthor(adminSearchAllAuthorRequestDto);
         return allAuthor;
     }
 
-    /* 작가 정보 수정 */
-    // authorNumberRequestDto:Long authorNumber, updateAuthorInfoRequestDto:String authorName, String nation, String authorIntro;
+    /* 작가 정보 수정
+    * UpdateAuthorInfoRequestDto :
+    * Long authorNumber, String authorName, String nation, String authorIntro
+    */
     @PostMapping("/admin/update-authorInfo") // validated 테스트
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BooleanResponse> updateAuthorInfo(@Validated(value = ValidationSequence.class) @RequestBody UpdateAuthorInfoRequestDto updateAuthorInfoRequestDto){
@@ -50,20 +55,26 @@ public class AuthorController { //웹 MVC의 컨트롤러 역할
         return ResponseEntity.ok(BooleanResponse.of(true));
     }
 
-    /* 작가 이름으로 상세 정보 조회 */
+    /* 작가 이름으로 상세 정보 조회
+    * AuthorGetDetailRequestDto :
+    * String authorName
+    */
     @PostMapping("/admin/author-getDetail")
     @PreAuthorize("hasRole('ADMIN')")
     public Author authorGetDetail(@RequestBody AuthorGetDetailRequestDto authorGetDetailRequestDto){ // 인자 받기 수정
-        Optional<Author> author = authoreService.authorGetDetail(authorGetDetailRequestDto);
+        Optional<Author> authorDetail = authoreService.getAuthorDetail(authorGetDetailRequestDto);
 
-        return author.get();
+        return authorDetail.get();
     }
 
-    /* 작가 삭제 */
+    /* 작가 삭제
+    * DeleteAuthorByAuthorNumberRequestDto :
+    * Long authorNumber
+    */
     @PostMapping("/admin/delete-author")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<BooleanResponse> deleteAuthor(@Validated(value = ValidationSequence.class) @RequestBody DeleteAuthorRequestDto deleteAuthorRequestDto) {
-        authoreService.deleteAuthor(deleteAuthorRequestDto);
+    public ResponseEntity<BooleanResponse> deleteAuthorByAuthorNumber(@Validated(value = ValidationSequence.class) @RequestBody DeleteAuthorByAuthorNumberRequestDto deleteAuthorByAuthorNumberRequestDto) {
+        authoreService.deleteAuthorByAuthorNumber(deleteAuthorByAuthorNumberRequestDto);
         return ResponseEntity.ok(BooleanResponse.of(true));
     }
 

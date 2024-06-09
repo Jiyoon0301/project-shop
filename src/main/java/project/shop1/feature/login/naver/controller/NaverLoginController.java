@@ -25,7 +25,7 @@ public class NaverLoginController {
     public NaverLoginResponseDto naverLogin(@RequestParam("code") String code){ //return KakaoLoginResponseDto - id, nickname, email, access/refreshToken, expiresIn
         NaverLoginResponseDto result = naverLoginService.naverLogin(code);
 
-        return result;
+        return result; // String accessToken, String refreshToken
     }
 
 }

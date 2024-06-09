@@ -9,10 +9,10 @@ import java.util.Optional;
 public interface AuthorService {
 
     /* 작가 등록 */
-    void authorRegistration(AuthorRequestDto authorRequestDto);
+    void authorRegistration(AuthorRegistrationRequestDto authorRegistrationRequestDto);
 
     /* 작가 관리 페이지 - 전체 조회 */
-    List<Author> authorManagement(AuthorManagementRequestDto authorManagementRequestDto);
+    List<Author> adminSearchAllAuthor(AdminSearchAllAuthorRequestDto adminSearchAllAuthorRequestDto);
 
 
 
@@ -21,10 +21,10 @@ public interface AuthorService {
 
 
     /* 작가 세부 정보 */
-    Optional<Author> authorGetDetail(AuthorGetDetailRequestDto authorGetDetailRequestDto);
+    Optional<Author> getAuthorDetail(AuthorGetDetailRequestDto authorGetDetailRequestDto);
 
     /* 작가 삭제 */
-    void deleteAuthor(DeleteAuthorRequestDto deleteAuthorRequestDto);
+    void deleteAuthorByAuthorNumber(DeleteAuthorByAuthorNumberRequestDto deleteAuthorByAuthorNumberRequestDto);
 
 
 

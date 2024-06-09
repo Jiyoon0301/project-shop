@@ -28,7 +28,7 @@ public interface ProductRepository {
 
 
         /* 상품 번호 */
-    Long productNumber();
+    Long setproductNumber();
 
 
 

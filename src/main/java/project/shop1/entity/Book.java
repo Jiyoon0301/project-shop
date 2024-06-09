@@ -51,7 +51,7 @@ public class Book {
     @OneToMany(mappedBy = "book")
     private List<Review> reviews = new ArrayList<>();
 
-    /* 평점 평균 */
+    /* 평점 평균 - 상품의 전체 평점들을 더한 값의 평균 */
     private double averageRating;
 
 

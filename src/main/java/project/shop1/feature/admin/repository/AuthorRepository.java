@@ -21,7 +21,7 @@ public interface AuthorRepository{
     Optional<Author> findAuthorByAuthorNumber(Long authorNumber);
 
     /* authorNumber 설정 */
-    Long numberOfAuthor();
+    Long setAuthorNumber();
 
     /* 작가 정보 수정 */
     void updateAuthorInfo(UpdateAuthorInfoRequestDto updateAuthorInfoRequestDto);

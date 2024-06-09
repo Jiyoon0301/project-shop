@@ -190,5 +190,5 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
         //redis 에 토큰 저장
         refreshTokenRepository.save(new RefreshToken(authentication.getName(), jwtToken.getRefreshToken(), jwtToken.getAccessToken())); //account, refreshToken, accessToken
 
-        return new KakaoLoginResponseDto(id, nickName, kakaoEmail, jwtToken.getAccessToken(), jwtToken.getRefreshToken(), jwtToken.getGrantType());}
+        return new KakaoLoginResponseDto(jwtToken.getAccessToken(), jwtToken.getRefreshToken());}
 }

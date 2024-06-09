@@ -26,10 +26,10 @@ public class MainRepositoryImpl implements MainRepository {
 
     /* 상품 조회 - 평점 높은 순서 */
     @Override
-    public List<Book> findProductsByRating(int page){
+    public List<Book> findProductsByRanking(int page){
         List<Book> findBook = jpaQueryFactory
                 .selectFrom(book)
-                .orderBy(book.averageRating.desc())
+                .orderBy(book.sold.desc())
                 .offset(4*(page-1))
                 .limit(4)
                 .fetch();

@@ -1,7 +1,7 @@
 package project.shop1.feature.admin.service;
 
 import project.shop1.entity.UserEntity;
-import project.shop1.feature.admin.dto.userDto.FindUserEntityByAccountRequestDto;
+import project.shop1.feature.admin.dto.userDto.AdminSearchUserByAccountRequestDto;
 
 public interface UserManagementService {
 
@@ -10,7 +10,7 @@ public interface UserManagementService {
 //    public Optional<Author> authorGetDetail(String authorName);
 
     /* account로 userEntity 한 명 찾기 */
-    UserEntity findUserEntityByAccount(FindUserEntityByAccountRequestDto findUserEntityByAccountRequestDto);
+    UserEntity adminSearchUserByAccount(AdminSearchUserByAccountRequestDto adminSearchUserByAccountRequestDto);
 
 
 

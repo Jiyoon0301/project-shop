@@ -7,7 +7,7 @@ import lombok.Data;
 public class UserRequestDto {
 
     @NotBlank
-    private String accoutn;
+    private String account;
 
     @NotBlank
     private String password;

@@ -41,6 +41,6 @@ public class GoogleLoginController {
     public GoogleLoginResponseDto googleLogin(@RequestParam("code") String code){
         GoogleLoginResponseDto googleLoginResponseDto = googleLoginService.googleLogin(code);
 
-        return googleLoginResponseDto;
+        return googleLoginResponseDto; // String accessToken, String refreshToken
     }
 }

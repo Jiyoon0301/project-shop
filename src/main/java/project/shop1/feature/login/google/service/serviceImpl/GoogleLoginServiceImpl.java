@@ -137,5 +137,6 @@ public class GoogleLoginServiceImpl implements GoogleLoginService {
         //redis 에 토큰 저장
         refreshTokenRepository.save(new RefreshToken(authentication.getName(), jwtToken.getRefreshToken(), jwtToken.getAccessToken())); //account, refreshToken, accessToken
 
-        return new GoogleLoginResponseDto(googleEmail, jwtToken.getAccessToken(), jwtToken.getRefreshToken(), jwtToken.getGrantType());}
+        return new GoogleLoginResponseDto(jwtToken.getAccessToken(), jwtToken.getRefreshToken());
+    }
 }

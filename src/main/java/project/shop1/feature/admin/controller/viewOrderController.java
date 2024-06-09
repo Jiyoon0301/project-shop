@@ -5,9 +5,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import project.shop1.feature.admin.dto.viewOrderDto.SearchOrderByAccountRequestDto;
-import project.shop1.feature.admin.dto.viewOrderDto.SearchOrderByAccountResponseDto;
-import project.shop1.feature.admin.dto.viewOrderDto.ViewOrderResponseDto;
+import project.shop1.feature.admin.dto.viewOrderDto.AdminSearchOrderByUserAccountRequestDto;
+import project.shop1.feature.admin.dto.viewOrderDto.AdminSearchOrderByUserAccountResponseDto;
+import project.shop1.feature.admin.dto.viewOrderDto.AdminSearchAllOrderResponseDto;
 import project.shop1.feature.admin.service.ViewOrderService;
 
 import java.util.List;
@@ -18,19 +18,22 @@ public class viewOrderController {
 
     private final ViewOrderService viewOrderService;
 
-    /* 주문 현황 리스트 조회 */
-    @PostMapping("/admin/view-order")
+    /* 주문 현황 리스트 전체 조회 */
+    @PostMapping("/admin/search-all-order-status")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<ViewOrderResponseDto> viewOrder(){
-        List<ViewOrderResponseDto> result = viewOrderService.viewOrder();
+    public List<AdminSearchAllOrderResponseDto> adminSearchAllOrder(){
+        List<AdminSearchAllOrderResponseDto> result = viewOrderService.adminSearchAllOrder();
         return result;
     }
 
-    /* 주문 기능 추가하기 */
-    @PostMapping("/admin/search-order-by-account")
+    /* 주문 기능 추가하기
+    * AdminSearchOrderStatusByUserAccountRequestDto :
+    * String account
+    */
+    @PostMapping("/admin/search-order-by-user-account")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<SearchOrderByAccountResponseDto> viewOrder(@RequestBody SearchOrderByAccountRequestDto searchOrderByAccountRequestDto){
-        List<SearchOrderByAccountResponseDto> result = viewOrderService.searchOrderByAccount(searchOrderByAccountRequestDto);
+    public List<AdminSearchOrderByUserAccountResponseDto> adminSearchOrderByUserAccount(@RequestBody AdminSearchOrderByUserAccountRequestDto adminSearchOrderByUserAccountRequestDto){
+        List<AdminSearchOrderByUserAccountResponseDto> result = viewOrderService.adminSearchOrderByUserAccount(adminSearchOrderByUserAccountRequestDto);
 
         return result;
     }

@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.shop1.entity.Book;
-import project.shop1.feature.main.dto.GetProductsByRatingRequestDto;
-import project.shop1.feature.main.dto.GetProductsByRatingResponseDto;
+import project.shop1.feature.main.dto.GetProductsByRankingRequestDto;
+import project.shop1.feature.main.dto.GetProductsByRankingResponseDto;
 import project.shop1.feature.main.repository.MainRepository;
 import project.shop1.feature.main.service.MainService;
 
@@ -19,15 +19,15 @@ public class MainServiceImpl implements MainService {
 
     private final MainRepository mainRepository;
 
-    /* 평점 순 상품 노출 */
+    /* 판매 순 상품 노출 */
     @Override
-    public List<GetProductsByRatingResponseDto> getProductsByRating(GetProductsByRatingRequestDto getProductsByRatingRequestDto){
-        int page = getProductsByRatingRequestDto.getPage();
-        List<Book> bookList = mainRepository.findProductsByRating(page);
-        List<GetProductsByRatingResponseDto> result = new ArrayList<>();
+    public List<GetProductsByRankingResponseDto> getProductsByRanking(GetProductsByRankingRequestDto getProductsByRankingRequestDto){
+        int page = getProductsByRankingRequestDto.getPage();
+        List<Book> bookList = mainRepository.findProductsByRanking(page);
+        List<GetProductsByRankingResponseDto> result = new ArrayList<>();
 
         for (Book book : bookList){
-            GetProductsByRatingResponseDto dto = new GetProductsByRatingResponseDto(book.getTitle(), book.getCategory(), book.getAverageRating());
+            GetProductsByRankingResponseDto dto = new GetProductsByRankingResponseDto(book.getTitle(), book.getCategory(), book.getAverageRating());
             result.add(dto);
         }
         return result;

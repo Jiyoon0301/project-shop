@@ -1,18 +1,18 @@
 package project.shop1.feature.admin.service;
 
 
-import project.shop1.feature.admin.dto.viewOrderDto.SearchOrderByAccountRequestDto;
-import project.shop1.feature.admin.dto.viewOrderDto.SearchOrderByAccountResponseDto;
-import project.shop1.feature.admin.dto.viewOrderDto.ViewOrderResponseDto;
+import project.shop1.feature.admin.dto.viewOrderDto.AdminSearchOrderByUserAccountRequestDto;
+import project.shop1.feature.admin.dto.viewOrderDto.AdminSearchOrderByUserAccountResponseDto;
+import project.shop1.feature.admin.dto.viewOrderDto.AdminSearchAllOrderResponseDto;
 
 import java.util.List;
 
 public interface ViewOrderService {
 
     /* 주문 현황 리스트 조회 */
-    List<ViewOrderResponseDto> viewOrder();
+    List<AdminSearchAllOrderResponseDto> adminSearchAllOrder();
 
     /* userEntity account로 주문 리스트 조회 */
-    List<SearchOrderByAccountResponseDto> searchOrderByAccount(SearchOrderByAccountRequestDto searchOrderByAccountRequestDto);
+    List<AdminSearchOrderByUserAccountResponseDto> adminSearchOrderByUserAccount(AdminSearchOrderByUserAccountRequestDto adminSearchOrderByUserAccountRequestDto);
 
     }

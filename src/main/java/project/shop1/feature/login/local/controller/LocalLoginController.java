@@ -27,7 +27,7 @@ public class LocalLoginController {
         JwtToken jwtToken = localLoginService.login(localLoginRequestDto);
         log.info("accessToken = {}, refreshToken = {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
 
-        return jwtToken;
+        return jwtToken; // String accessToken, String refreshToken, String grantType
     }
 
     /* 로그인 테스트 - jwt */

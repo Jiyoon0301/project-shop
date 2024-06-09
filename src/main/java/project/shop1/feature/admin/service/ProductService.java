@@ -9,20 +9,20 @@ import java.util.List;
 public interface ProductService {
 
     /* 상품 등록 */
-    void productRegistration(ProductRequestDto productRequestDto);
+    void productRegistration(ProductRegistrationRequestDto productRegistrationRequestDto);
 
     /* 상품 등록 - 작가 검색 */
     Author searchAuthor(SearchAuthorRequestDto searchAuthorRequestDto);
 
 
     /* 상품 관리 페이지 */
-    List<Book> productManagement(ProductManagementDto productManagementDto);
+    List<Book> adminSearchAllProduct(AdminSearchAllProductRequestDto adminSearchAllProductRequestDto);
 
     /* 상품 수정 */
     void updateProductInfo(UpdateProductInfoRequestDto updateProductInfoRequestDto);
 
     /* 상품 삭제 */
-    void deleteProduct(DeleteProductRequestDto deleteProductRequestDto);
+    void deleteProductByProductNumber(DeleteProductByProductNumberRequestDto deleteProductByProductNumberRequestDto);
 
 
 

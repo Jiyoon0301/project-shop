@@ -23,6 +23,6 @@ public class KakaoLoginController {
     public KakaoLoginResponseDto kakaoLogin(@RequestParam("code") String code){ //return KakaoLoginResponseDto - id, nickname, email, access/refreshToken, expiresIn
         KakaoLoginResponseDto kakaoLoginResponseDto = kakaoLoginService.kakaoLogin(code);
 
-        return kakaoLoginResponseDto; //String id(=password), String nickname, String email, String accessToken, String refreshToken, String grantType
+        return kakaoLoginResponseDto; // String accessToken, String refreshToken
     }
 }
