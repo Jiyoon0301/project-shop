@@ -1,8 +1,6 @@
 package project.shop1.common.security.jwt.configuration;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -21,7 +19,6 @@ import project.shop1.common.security.jwt.handler.CustomAccessDeniedHandler;
 import project.shop1.common.security.jwt.handler.CustomAuthenticationEntryPoint;
 import project.shop1.common.security.redis.repository.RefreshTokenRepository;
 import project.shop1.feature.login.local.common.CustomUserDetailsService;
-import project.shop1.feature.logout.service.LogoutService;
 
 /* SecurityContext */
 @Configuration

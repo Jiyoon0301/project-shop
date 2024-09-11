@@ -2,7 +2,7 @@ package project.shop1.feature.admin.dto.viewOrderDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import project.shop1.entity.DeliveryStatus;
+import project.shop1.entity.enums.DeliveryStatus;
 
 import java.time.LocalDate;
 

@@ -1,9 +1,8 @@
 package project.shop1.feature.myPage.getUserOrders.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import project.shop1.entity.DeliveryStatus;
+import project.shop1.entity.enums.DeliveryStatus;
 import project.shop1.entity.enums.OrderStatus;
 import project.shop1.feature.myPage.getUserOrders.common.OrderItemsPairs;
 

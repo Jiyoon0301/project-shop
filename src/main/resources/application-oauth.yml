@@ -11,7 +11,7 @@ spring:
         registration:
           naver:
             client-id: aZnt50bn3mhLRaHheH5O
-            client-secret: mW4dTzcQBW
+            client-secret: ${CLIENT_SECRET_NAVER}
             scope:
               - name
               - email
@@ -20,9 +20,12 @@ spring:
             redirect-uri: http://localhost:8080/login/naver-callback
           google:
             client-id: 603014937589-elvqqerun1lfrlquo1l85em9vtpsd2dr.apps.googleusercontent.com
-            client-secret: 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
+            client-secret: ${CLIENT_SECRET_GOOGLE}
             redirect-uri: http://localhost:8080/login/google-callback
             authorization-grant-type: authorization_code
             scope:
               - profile
               - email
+kakao:
+  client_id: 8e1195f51d733edc8a79e51967b3065d
+  redirect_uri: http://localhost:8080/login/kakao-callback

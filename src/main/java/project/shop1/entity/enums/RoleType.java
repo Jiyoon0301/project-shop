@@ -1,4 +1,4 @@
-package project.shop1.entity;
+package project.shop1.entity.enums;
 
 public enum RoleType {
 

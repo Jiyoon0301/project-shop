@@ -1,35 +1,22 @@
 package project.shop1.feature.join.service.serviceImpl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-import project.shop1.common.configuration.EncoderConfig;
 import project.shop1.common.exception.BusinessException;
 import project.shop1.common.exception.ErrorCode;
 import project.shop1.common.repository.UserRepository;
 import project.shop1.entity.EmailAuth;
-import project.shop1.entity.RoleType;
 import project.shop1.feature.join.dto.*;
 import project.shop1.entity.UserEntity;
 import project.shop1.entity.enums.Rank;
 import project.shop1.feature.join.repository.JoinRepository;
 import project.shop1.feature.join.service.JoinService;
 
-import java.net.URI;
-import java.nio.charset.Charset;
 import java.util.Random;
 
 import java.util.Optional;
@@ -57,7 +44,6 @@ public class JoinServiceImpl implements JoinService {
         String address = joinRequestDto.getAddress();
 
         Optional<UserEntity> findUserEntity = userRepository.findUserEntityByAccount(account);
-
 
         //아이디 중복 확인
         if(findUserEntity.isPresent()){

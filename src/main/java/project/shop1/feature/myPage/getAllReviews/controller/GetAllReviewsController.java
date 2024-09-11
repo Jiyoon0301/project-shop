@@ -2,10 +2,7 @@ package project.shop1.feature.myPage.getAllReviews.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import project.shop1.entity.Review;
-import project.shop1.feature.main.dto.GetProductsByRankingRequestDto;
 import project.shop1.feature.myPage.getAllReviews.dto.GetAllReviewsResponseDto;
 import project.shop1.feature.myPage.getAllReviews.service.GetAllReviewsService;
 

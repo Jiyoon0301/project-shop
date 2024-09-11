@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import project.shop1.common.exception.BusinessException;
+import project.shop1.entity.enums.DeliveryStatus;
 
 @Entity
 @Data

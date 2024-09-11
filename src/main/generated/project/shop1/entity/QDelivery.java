@@ -23,7 +23,7 @@ public class QDelivery extends EntityPathBase<Delivery> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final EnumPath<DeliveryStatus> status = createEnum("status", DeliveryStatus.class);
+    public final EnumPath<project.shop1.entity.enums.DeliveryStatus> status = createEnum("status", project.shop1.entity.enums.DeliveryStatus.class);
 
     public QDelivery(String variable) {
         super(Delivery.class, forVariable(variable));

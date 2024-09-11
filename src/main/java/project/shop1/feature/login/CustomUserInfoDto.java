@@ -1,7 +1,7 @@
 package project.shop1.feature.login;
 
 import lombok.*;
-import project.shop1.entity.RoleType;
+import project.shop1.entity.enums.RoleType;
 
 @Data
 @AllArgsConstructor

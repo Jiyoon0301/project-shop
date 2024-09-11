@@ -17,6 +17,7 @@ import project.shop1.common.repository.BookRepository;
 import project.shop1.common.repository.UserRepository;
 import project.shop1.common.security.SecurityUtil;
 import project.shop1.entity.*;
+import project.shop1.entity.enums.DeliveryStatus;
 import project.shop1.entity.enums.OrderStatus;
 import project.shop1.feature.cart.repository.CartRepository;
 import project.shop1.feature.join.repository.JoinRepository;
@@ -123,7 +124,7 @@ public class OrderServiceImpl implements OrderService {
             OrderItem orderItem = OrderItem.createOrderItem(book, book.getPrice(), count);
             orderItems.add(orderItem);
         }
-        Delivery delivery = Delivery.createDelivery(address,DeliveryStatus.READY);
+        Delivery delivery = Delivery.createDelivery(address, DeliveryStatus.READY);
 
         Order order = Order.createOrder(userEntity, address, delivery, orderItems);
 

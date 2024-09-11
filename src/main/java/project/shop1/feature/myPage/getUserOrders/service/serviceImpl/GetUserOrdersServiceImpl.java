@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.shop1.common.security.SecurityUtil;
-import project.shop1.entity.DeliveryStatus;
+import project.shop1.entity.enums.DeliveryStatus;
 import project.shop1.entity.Order;
 import project.shop1.entity.OrderItem;
 import project.shop1.entity.enums.OrderStatus;

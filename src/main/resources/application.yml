@@ -1,17 +1,32 @@
 spring:
   datasource:
+    # h2 database 설정
     url: jdbc:h2:tcp://localhost/~/shop1
     username: sa
     password:
     driver-class-name: org.h2.Driver
 
+    # aws 배포 시 사용할 설정
+#    url: jdbc:mysql://shoptestdb.c3e0s4mis5lk.us-east-1.rds.amazonaws.com:3306/shop1
+#    username: admin
+#    password: wldbs007!
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    # MySQL database 설정
+#    url: jdbc:mysql://localhost:3306/shop1?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username: root # 유저 이름
+#    password: ${MYSQL_PASSWORD} # 비밀번호 (비워두면 비밀번호 x)
+
+
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create # update
     properties:
       hibernate:
         format_sql: true
-#        show_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+  #        show_sql: true
 
 
   #mail smtp 설정
@@ -20,8 +35,6 @@ spring:
     port: 587
     username: ${EMAIL_USERNAME}
     password: ${EMAIL_PASSWORD}
-#    username: "j1y00n000301@gmail.com"
-#    password: "ymal yxay rvzh uvxc"
     properties:
       mail:
         smtp:
@@ -36,6 +49,13 @@ spring:
   profiles:
     active: oauth
 
+#  mvc:
+#    view:
+#      prefix: /WEB-INF/view/
+#      suffix:
+
+
+
 
 logging:
   level:
@@ -44,10 +64,6 @@ logging:
 
 jwt:
   secret: e1055bdcb07d43c7ab859e9fd1418e3c2f31679a269ff2350840f1d5dd824bee
-
-kakao:
-  client_id: 8e1195f51d733edc8a79e51967b3065d
-  redirect_uri: http://localhost:8080/login/kakao-callback
 
 url:
   access-token: https://oauth2.googleapis.com/token
