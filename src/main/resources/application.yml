@@ -1,10 +1,10 @@
 spring:
   datasource:
     # h2 database 설정
-    url: jdbc:h2:tcp://localhost/~/shop1
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:tcp://localhost/~/shop1
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
 
     # aws 배포 시 사용할 설정
 #    url: jdbc:mysql://shoptestdb.c3e0s4mis5lk.us-east-1.rds.amazonaws.com:3306/shop1
@@ -13,11 +13,10 @@ spring:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 
     # MySQL database 설정
-#    url: jdbc:mysql://localhost:3306/shop1?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    username: root # 유저 이름
-#    password: ${MYSQL_PASSWORD} # 비밀번호 (비워두면 비밀번호 x)
-
+    url: jdbc:mysql://localhost:3306/shop1?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root # 유저 이름
+    password: ${MYSQL_PASSWORD} # 비밀번호 (비워두면 비밀번호 x)
 
   jpa:
     hibernate:
@@ -25,7 +24,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-#        dialect: org.hibernate.dialect.MySQLDialect # MySQL 8
+        dialect: org.hibernate.dialect.MySQLDialect # MySQL 8
   #        show_sql: true
 
 

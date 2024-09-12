@@ -40,11 +40,11 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public final StringPath phoneNumber = createString("phoneNumber");
 
-    public final EnumPath<project.shop1.entity.enums.Rank> rank = createEnum("rank", project.shop1.entity.enums.Rank.class);
-
     public final ListPath<Review, QReview> reviews = this.<Review, QReview>createList("reviews", Review.class, QReview.class, PathInits.DIRECT2);
 
     public final ListPath<String, StringPath> roles = this.<String, StringPath>createList("roles", String.class, StringPath.class, PathInits.DIRECT2);
+
+    public final EnumPath<project.shop1.entity.enums.UserRank> userRank = createEnum("userRank", project.shop1.entity.enums.UserRank.class);
 
     public QUserEntity(String variable) {
         super(UserEntity.class, forVariable(variable));

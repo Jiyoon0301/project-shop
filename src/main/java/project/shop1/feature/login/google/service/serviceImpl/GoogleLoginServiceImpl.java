@@ -16,7 +16,7 @@ import project.shop1.common.security.jwt.dto.JwtToken;
 import project.shop1.common.security.redis.dto.RefreshToken;
 import project.shop1.common.security.redis.repository.RefreshTokenRepository;
 import project.shop1.entity.UserEntity;
-import project.shop1.entity.enums.Rank;
+import project.shop1.entity.enums.UserRank;
 import project.shop1.feature.login.google.dto.*;
 import project.shop1.feature.login.google.service.GoogleLoginService;
 
@@ -116,7 +116,7 @@ public class GoogleLoginServiceImpl implements GoogleLoginService {
                     .phoneNumber(null)
                     .email(googleEmail)
                     .loginType("google")
-                    .rank(Rank.MEMBER)
+                    .userRank(UserRank.MEMBER)
                     .address(null)
                     .build();
             userEntity.addRole("USER");

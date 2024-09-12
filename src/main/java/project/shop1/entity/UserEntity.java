@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import project.shop1.entity.enums.Rank;
+import project.shop1.entity.enums.UserRank;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-//@Table(name = "user_entities")
+@Table(name = "user_entity")
 @Builder
 @Getter @Setter
 @AllArgsConstructor
@@ -32,7 +32,7 @@ public class UserEntity {
     private String email;
     private String loginType; // internal, kakao ...
     @Enumerated(value=EnumType.STRING)
-    private Rank rank;
+    private UserRank userRank;
 
 
     @OneToMany(mappedBy = "userEntity")
@@ -46,7 +46,7 @@ public class UserEntity {
     private List<Review> reviews = new ArrayList<>();
 
     /* 관리자, 일반 계정 구분 */
-//    private int adminCk = 0; // 0 = 일반계정, 1 = 관리자 계정
+    //private int adminCk = 0; // 0 = 일반계정, 1 = 관리자 계정
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();

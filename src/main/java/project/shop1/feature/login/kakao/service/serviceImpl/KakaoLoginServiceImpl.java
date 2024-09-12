@@ -24,7 +24,7 @@ import project.shop1.common.security.jwt.dto.JwtToken;
 import project.shop1.common.security.redis.dto.RefreshToken;
 import project.shop1.common.security.redis.repository.RefreshTokenRepository;
 import project.shop1.entity.UserEntity;
-import project.shop1.entity.enums.Rank;
+import project.shop1.entity.enums.UserRank;
 import project.shop1.feature.login.kakao.dto.KakaoLoginResponseDto;
 import project.shop1.feature.login.kakao.dto.KakaoUserLoginResponseDto;
 import project.shop1.feature.login.kakao.service.KakaoLoginService;
@@ -167,7 +167,7 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
                     .phoneNumber(null)
                     .email(kakaoEmail)
                     .loginType("kakao")
-                    .rank(Rank.MEMBER)
+                    .userRank(UserRank.MEMBER)
                     .address(null)
                     .build();
             userEntity.addRole("USER");

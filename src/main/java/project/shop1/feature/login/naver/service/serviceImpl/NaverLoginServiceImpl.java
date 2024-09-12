@@ -1,8 +1,5 @@
 package project.shop1.feature.login.naver.service.serviceImpl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -24,7 +21,7 @@ import project.shop1.common.security.jwt.dto.JwtToken;
 import project.shop1.common.security.redis.dto.RefreshToken;
 import project.shop1.common.security.redis.repository.RefreshTokenRepository;
 import project.shop1.entity.UserEntity;
-import project.shop1.entity.enums.Rank;
+import project.shop1.entity.enums.UserRank;
 import project.shop1.feature.login.naver.dto.*;
 import project.shop1.feature.login.naver.service.NaverLoginService;
 
@@ -138,7 +135,7 @@ public class NaverLoginServiceImpl implements NaverLoginService {
                     .phoneNumber(null)
                     .email(naverEmail)
                     .loginType("naver")
-                    .rank(Rank.MEMBER)
+                    .userRank(UserRank.MEMBER)
                     .address(null)
                     .roles(roles)
                     .build();
