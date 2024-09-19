@@ -52,7 +52,7 @@ public class JoinServiceImpl implements JoinService {
 
         Optional<EmailAuth> findEmailAuth = joinRepository.findEmailAuthByEmail(email);
 
-        //이메일 인증 확인
+//        //이메일 인증 확인
 //        if (!findEmailAuth.get().getAuthcode().equals(inputAuthCode)){
 //            throw new BusinessException(ErrorCode.AUTHENTICATION_FAIL, "인증번호를 다시 확인해주세요.");
 //        }
@@ -79,6 +79,7 @@ public class JoinServiceImpl implements JoinService {
     }
 
     @Override
+    @Transactional
     public void authEmail(EmailAuthRequestDto emailAuthRequestDto) {
         String authCode = Integer.toString(random.nextInt(888888) + 111111);
 

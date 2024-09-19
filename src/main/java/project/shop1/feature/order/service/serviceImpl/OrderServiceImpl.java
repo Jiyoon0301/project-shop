@@ -195,7 +195,7 @@ public class OrderServiceImpl implements OrderService {
                 .fromUriString("https://business.juso.go.kr")
                 .path("/addrlink/addrLinkApi.do")
                 .queryParam("keyword", keyword)
-                .queryParam("confmKey", "devU01TX0FVVEgyMDI0MDIyNjIwMTE1OTExNDU0NzY=")
+                .queryParam("confmKey", "devU01TX0FVVEgyMDI0MDkxMzA0MDE1NzExNTA4NTg=")
                 .queryParam("currentPage", pageNumber)
                 .queryParam("countPerPage", 10)
                 .queryParam("resultType", "json")

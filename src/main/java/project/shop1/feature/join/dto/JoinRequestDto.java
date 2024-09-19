@@ -17,7 +17,7 @@ public class JoinRequestDto {
     private String account;
 
     @NotBlank(message = "비밀번호 항목은 필수 입력값입니다.", groups=NotBlank.class)
-    @Size(min=8, max=16, groups = SizeCheckGroup.class,message = "비밀번호는 8자 이상 16자 이하여야합니다.")
+//    @Size(min=8, max=16, groups = SizeCheckGroup.class,message = "비밀번호는 8자 이상 16자 이하여야합니다.")
 
     private String password;
 

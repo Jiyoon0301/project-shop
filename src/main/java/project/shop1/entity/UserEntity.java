@@ -13,11 +13,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "user_entity")
+//@Table(name = "user_entity")
 @Builder
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "user_entity", indexes = @Index(name = "idx_account", columnList = "account"))
 public class UserEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

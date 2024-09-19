@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import project.shop1.entity.EmailAuth;
 import project.shop1.entity.UserEntity;
 import project.shop1.feature.join.repository.JoinRepository;

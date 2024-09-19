@@ -7,8 +7,8 @@ spring:
 #    driver-class-name: org.h2.Driver
 
     # aws 배포 시 사용할 설정
-#    url: jdbc:mysql://shoptestdb.c3e0s4mis5lk.us-east-1.rds.amazonaws.com:3306/shop1
-#    username: admin
+#    url: jdbc:mysql://shoptestdb.cb0emgsuey66.ap-northeast-2.rds.amazonaws.com:3306/shop1
+#    username: root
 #    password: ${MYSQL_PASSWORD_AWS}
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 
