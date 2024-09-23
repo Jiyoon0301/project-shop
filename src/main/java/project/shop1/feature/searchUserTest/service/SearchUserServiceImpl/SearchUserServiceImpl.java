@@ -19,7 +19,7 @@ public class SearchUserServiceImpl implements SearchUserService {
     private final SearchUserRepository searchUserRepository;
 
     @Override
-//    @Cacheable(value = "userCache", key = "#searchUserRequestDto.account")
+    @Cacheable(value = "userCache", key = "#searchUserRequestDto.account")
     public SearchUserResponseDto searchUser(SearchUserRequestDto searchUserRequestDto){
 
         String account = searchUserRequestDto.getAccount();
