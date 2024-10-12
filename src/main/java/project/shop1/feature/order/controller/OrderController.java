@@ -22,7 +22,7 @@ public class OrderController {
     private final OrderService orderService;
 
     /* 주문 페이지 */ // orderByCart, orderByProductInfo
-    @PostMapping("/order/order-page-{userEntityId}") // OrderRequestDto : Boolean isFromCartPage, Long bookId, int count;
+    @PostMapping("/users/{userEntityId}/orders") // OrderRequestDto : Boolean isFromCartPage, Long bookId, int count;
     @PreAuthorize("hasRole('USER')")
     public OrderPageResponseDto order (@PathVariable("userEntityId") Long userEntityId, @RequestBody OrderPageRequestDto orderPageRequestDto){
         OrderPageResponseDto orderPageResponseDto = orderService.orderPage(orderPageRequestDto);
@@ -37,6 +37,8 @@ public class OrderController {
 
         return result;
     }
+
+    /* 사용자 주문 상세 조회 기능 추가 */
 
     /* 배송지 입력을 위한 조회 */
     @PostMapping("/order/search-address") // String keyword, int pageNumber
