@@ -11,7 +11,7 @@ import project.shop1.entity.Book;
 import project.shop1.feature.admin.dto.productDto.DeleteProductByProductNumberRequestDto;
 import project.shop1.feature.admin.dto.productDto.ProductRegistrationRequestDto;
 import project.shop1.feature.admin.dto.productDto.UpdateProductInfoRequestDto;
-import project.shop1.feature.productSearch.dto.findByKeywordAndCategoryRequestDto;
+import project.shop1.feature.product_refact.dto.RequestDto.AddProductRequestDto;
 import project.shop1.feature.product_refact.service.ProductService;
 
 import java.util.List;
@@ -22,12 +22,14 @@ public class ProductController {
 
     private final ProductService productService;
 
-    /* 상품 검색: 상품명으로 검색
-    * searchBookByTitleRequestDto :
+    /* 상품 검색: 상품명(제목)으로 검색
+    * searchBooksRequestDto :
     * String criteria, String keyword, int amount, int pageNumber
+    * SearchBooksResponseDto:
+    * List<Book>
     */
     @GetMapping("/products/serach")
-    public List<Book> searchProducts(@Validated(value = ValidationSequence.class) @RequestBody findByKeywordAndCategoryRequestDto findByKeywordAndCategoryRequestDto){
+    public List<Book> searchProducts(@Validated(value = ValidationSequence.class) @RequestParam String keyword){
 //        List<Book> result = productService.findProductsByKeyword(findByKeywordAndCategoryRequestDto);
         return null;
     }
@@ -45,13 +47,13 @@ public class ProductController {
     }
 
     /* 상품 등록
-     * ProductRegistrationRequestDto :
+     * AddProductRequestDto:
      * String title, String authorName, int price, int stockQuantity, String category
      */
     @PostMapping("/products")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<BooleanResponse> addProduct(@Validated(value = ValidationSequence.class) @RequestBody ProductRegistrationRequestDto productRegistrationRequestDto){
-//        productService.addProduct();
+//    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<BooleanResponse> addProduct(@Validated(value = ValidationSequence.class) @RequestBody AddProductRequestDto addProductRequestDto){
+//        productService.addProduct(addProductRequestDto);
 
         return ResponseEntity.ok(BooleanResponse.of(true));
     }
