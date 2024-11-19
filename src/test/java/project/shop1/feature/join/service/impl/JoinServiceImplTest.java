@@ -3,10 +3,13 @@ package project.shop1.feature.join.service.impl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import project.shop1.entity.UserEntity;
+import project.shop1.feature.join.controller.JoinController;
 import project.shop1.feature.join.dto.JoinRequestDto;
 import project.shop1.feature.join.repository.JoinRepository;
 import project.shop1.feature.join.service.JoinService;
@@ -25,20 +28,20 @@ public class JoinServiceImplTest {
     @Autowired
     JoinRepository joinRepository;
 
-//    @Test
-//    void 회원가입() throws Exception{
-//        //given
-//        JoinRequestDto dto = new JoinRequestDto("account", "password", "name", "phoneNumber", "email");
-//        String expected = "name";
-//
-//        //when
-//        joinService.join(dto);
-//        UserEntity userEntity = joinRepository.findUserEntityByAccount("account").get();
-//        String result = userEntity.getName();
-//
-//        //then
-//        assertThat(result).isEqualTo(expected);
-//    }
+    @Test
+    void 회원가입() throws Exception{
+        //given
+        JoinRequestDto dto = new JoinRequestDto("account", "password", "name", "phoneNumber", "email");
+        String expected = "name";
+
+        //when
+        joinService.join(dto);
+        UserEntity userEntity = joinRepository.findUserEntityByAccount("account").get();
+        String result = userEntity.getName();
+
+        //then
+        assertThat(result).isEqualTo(expected);
+    }
 
 //    @Test
 //    public void 중복_회원_예외() throws Exception{
