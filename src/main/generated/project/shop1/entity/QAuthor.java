@@ -22,13 +22,13 @@ public class QAuthor extends EntityPathBase<Author> {
 
     public final StringPath authorIntro = createString("authorIntro");
 
-    public final StringPath authorName = createString("authorName");
-
     public final NumberPath<Long> authorNumber = createNumber("authorNumber", Long.class);
 
     public final ListPath<Book, QBook> book = this.<Book, QBook>createList("book", Book.class, QBook.class, PathInits.DIRECT2);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final StringPath name = createString("name");
 
     public final StringPath nation = createString("nation");
 

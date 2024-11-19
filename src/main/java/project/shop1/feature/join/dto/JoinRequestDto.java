@@ -34,4 +34,12 @@ public class JoinRequestDto {
     private String inputAuthCode;
 
     private String address;
+
+    public JoinRequestDto(String account, String password, String name, String phoneNumber, String email) {
+        this.account = account;
+        this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
 }

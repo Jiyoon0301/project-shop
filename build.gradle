@@ -25,15 +25,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
-    testImplementation 'junit:junit:4.13.1'
-	testImplementation 'junit:junit:4.13.1'
-	testImplementation 'junit:junit:4.13.1'
 	compileOnly 'org.projectlombok:lombok'
-//	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'com.mysql:mysql-connector-j' // migration(H2 -> MySQL)
+	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	//Test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	test {
+		useJUnitPlatform()
+	}
+	//    testImplementation 'junit:junit:4.13.1'
+	testRuntimeOnly 'com.h2database:h2'
 	//Validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 

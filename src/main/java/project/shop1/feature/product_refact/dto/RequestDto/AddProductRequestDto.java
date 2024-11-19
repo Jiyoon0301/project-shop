@@ -1,9 +1,11 @@
 package project.shop1.feature.product_refact.dto.RequestDto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class AddProductRequestDto {
 
     @NotBlank(message = "책 제목을 입력해주세요.", groups=NotBlank.class)

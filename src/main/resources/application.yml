@@ -46,7 +46,7 @@ spring:
       port: 6379
 
   profiles:
-    active: oauth
+    active: oauth, test, testOauth
 
 #  mvc:
 #    view:

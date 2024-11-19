@@ -15,32 +15,32 @@ import java.util.List;
 @ToString(exclude = "book")
 public class Author {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     private Long authorNumber;
 
-    /* 작가 이름 */
-    private String authorName;
+    // 작가 이름
+    private String name;
 
-    /* 작가 소속 국가 */
+    // 작가 소속 국가
     private String nation;
 
-    /* 작가 소개 */
+    // 작가 소개
     private String authorIntro;
 
-    /* 등록 날짜 */
+    // 등록 날짜
     private LocalDate regDate;
 
-    /* 수정 날짜 */
+    // 수정 날짜
     private LocalDate updateDate;
 
-    /* 책 */
+    // 책
     @OneToMany(mappedBy = "author")
     private List<Book> book = new ArrayList<>();
 
-
-
-
-
+    public Author(String name) {
+        this.name = name;
+    }
 }

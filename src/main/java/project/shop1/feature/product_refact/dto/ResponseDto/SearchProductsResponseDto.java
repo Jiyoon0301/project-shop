@@ -10,7 +10,10 @@ import java.util.List;
 @Builder
 public class SearchProductsResponseDto {
 
-    private List<Book> books;
+    private String bookTitle;
+    private String authorName;
+    private int price;
+    private int stockQuantity;
 
 
 }
