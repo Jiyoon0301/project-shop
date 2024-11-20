@@ -9,7 +9,7 @@ public interface JoinRepository {
 
     Optional<UserEntity> findUserEntityByAccount(String account);
 
-    void saveUserEntity(UserEntity userEntity);
+    UserEntity saveUserEntity(UserEntity userEntity);
 
     void saveEmailAuth(EmailAuth emailAuth);
 

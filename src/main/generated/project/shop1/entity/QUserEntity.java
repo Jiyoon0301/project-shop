@@ -24,7 +24,7 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public final StringPath address = createString("address");
 
-    public final ListPath<CartItem, QCartItem> cartItem = this.<CartItem, QCartItem>createList("cartItem", CartItem.class, QCartItem.class, PathInits.DIRECT2);
+    public final ListPath<CartItem, QCartItem> cartItems = this.<CartItem, QCartItem>createList("cartItems", CartItem.class, QCartItem.class, PathInits.DIRECT2);
 
     public final StringPath email = createString("email");
 

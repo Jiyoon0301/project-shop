@@ -35,8 +35,9 @@ public class JoinRepositoryImpl implements JoinRepository {
     }
 
     @Override
-    public void saveUserEntity(UserEntity userEntity){
+    public UserEntity saveUserEntity(UserEntity userEntity){
         entityManager.persist(userEntity);
+        return userEntity;
     }
 
     @Override

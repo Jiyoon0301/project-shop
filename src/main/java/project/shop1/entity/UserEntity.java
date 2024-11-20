@@ -15,13 +15,15 @@ import java.util.stream.Collectors;
 @Entity
 //@Table(name = "user_entity")
 @Builder
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_entity", indexes = @Index(name = "idx_account", columnList = "account"))
 public class UserEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_entity_id")
     private Long id;
 
@@ -32,19 +34,26 @@ public class UserEntity {
     private String phoneNumber;
     private String email;
     private String loginType; // internal, kakao ...
-    @Enumerated(value=EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     private UserRank userRank;
-
 
     @OneToMany(mappedBy = "userEntity")
     private List<Order> orders = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "userEntity")
-    private List<CartItem> cartItem = new ArrayList<>(); // cartItems로 바꾸기
+    private List<CartItem> cartItems = new ArrayList<>(); // cartItems로 바꾸기
 
     @OneToMany(mappedBy = "userEntity")
     private List<Review> reviews = new ArrayList<>();
+
+    public UserEntity(String account, String password, String name, String phoneNumber, String email) {
+        this.account = account;
+        this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
 
     /* 관리자, 일반 계정 구분 */
     //private int adminCk = 0; // 0 = 일반계정, 1 = 관리자 계정
@@ -53,7 +62,7 @@ public class UserEntity {
     private List<String> roles = new ArrayList<>();
 
     /* 회원이 가지고 있는 권한(authority) 목록을 SimpleGrantedAuthority로 변환하여 반환 */
-    public Collection<? extends GrantedAuthority> getAuthorities(){
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
@@ -61,17 +70,8 @@ public class UserEntity {
 
     /* 연관관계 메서드 */
 
-    /* 기본 생성자 */ //***************************************************88
-    public UserEntity(Long id, String account, String password, String name, String role) {
-        this.id = id;
-        this.account = account;
-        this.password = password;
-        this.name = name;
-        this.roles.add(role);
-    }
-
     /* role 추가 메서드 */
-    public void addRole(String role){
+    public void addRole(String role) {
         this.roles.add(role);
     }
 
