@@ -1,30 +1,21 @@
 package project.shop1.domain.join.service.impl;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import project.shop1.common.exception.BusinessException;
 import project.shop1.domain.emailAuth.service.EmailAuthService;
 import project.shop1.domain.user.repository.UserRepository;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.domain.user.dto.JoinRequestDto;
-import project.shop1.domain.user.service.UserService;
 import project.shop1.domain.user.service.impl.UserServiceImpl;
 
-import javax.naming.Name;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -46,7 +37,6 @@ public class UserServiceTest {
 
     @InjectMocks
     private UserServiceImpl userService; // 테스트 대상 클래스
-//    private UserServiceImpl userService = null; // 테스트 대상 클래스
 
     @Test
     void 회원가입_요청이_유효하면_회원이_저장된다() {
@@ -63,5 +53,20 @@ public class UserServiceTest {
 
         //then
         verify(userRepository, times(1)).save(any(UserEntity.class));  // 회원이 한 번 저장되었는지 확인}
+    }
+
+    @Test
+    void 중복된_아이디로_회원가입을_시도하면_예외가_발생한다() {
+        //given
+        JoinRequestDto joinRequestDto = new JoinRequestDto(ACCOUNT, PASSWORD, NAME, PHONE, EMAIL);
+        when(userRepository.findByAccount(ACCOUNT)).thenReturn(Optional.of(new UserEntity()));
+
+        //when & then
+        BusinessException exception = assertThrows(BusinessException.class, () -> {
+            userService.join(joinRequestDto);  // 중복된 아이디로 회원가입 시도
+        });
+
+        // 예외 메시지 검증
+        assertEquals("이미 존재하는 아이디입니다.", exception.getMessage());
     }
 }
