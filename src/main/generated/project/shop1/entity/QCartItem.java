@@ -28,7 +28,7 @@ public class QCartItem extends EntityPathBase<CartItem> {
 
     public final NumberPath<Integer> quantity = createNumber("quantity", Integer.class);
 
-    public final QUserEntity userEntity;
+    public final project.shop1.domain.user.entity.QUserEntity userEntity;
 
     public QCartItem(String variable) {
         this(CartItem.class, forVariable(variable), INITS);
@@ -49,7 +49,7 @@ public class QCartItem extends EntityPathBase<CartItem> {
     public QCartItem(Class<? extends CartItem> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.book = inits.isInitialized("book") ? new QBook(forProperty("book"), inits.get("book")) : null;
-        this.userEntity = inits.isInitialized("userEntity") ? new QUserEntity(forProperty("userEntity")) : null;
+        this.userEntity = inits.isInitialized("userEntity") ? new project.shop1.domain.user.entity.QUserEntity(forProperty("userEntity")) : null;
     }
 
 }

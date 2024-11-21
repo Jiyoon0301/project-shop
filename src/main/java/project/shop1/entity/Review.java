@@ -2,6 +2,7 @@ package project.shop1.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import project.shop1.domain.user.entity.UserEntity;
 
 import java.time.LocalDateTime;
 

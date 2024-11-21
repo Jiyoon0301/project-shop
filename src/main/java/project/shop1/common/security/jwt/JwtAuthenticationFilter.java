@@ -1,33 +1,20 @@
 package project.shop1.common.security.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
-import org.springframework.web.util.CookieGenerator;
-import project.shop1.common.exception.BusinessException;
-import project.shop1.common.exception.ErrorCode;
-import project.shop1.common.repository.UserRepository;
-import project.shop1.common.security.redis.dto.RefreshToken;
+import project.shop1.domain.user.repository.UserRepository;
 import project.shop1.common.security.redis.repository.RefreshTokenRepository;
-import project.shop1.entity.UserEntity;
 
 import java.io.IOException;
-import java.security.Key;
-import java.util.Date;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
@@ -64,7 +51,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 //            // refresh token 이 유효 -> redis 에 함께 저장해둔 employeeId 가져온다
 //            String userEntityAccount = foundTokenInfo.getAccount();
 //
-//            UserEntity found = userRepository.findUserEntityByAccount(userEntityAccount)
+//            UserEntity found = userRepository.findByAccount(userEntityAccount)
 //                    .orElseThrow(()-> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "존재하지 않는 회원입니다."));
 //
 //            //위 사용자 정보로 다시 Access Token 을 만들어 발급

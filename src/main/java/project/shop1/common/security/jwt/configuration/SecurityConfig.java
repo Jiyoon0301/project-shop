@@ -12,13 +12,13 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import project.shop1.common.repository.UserRepository;
+import project.shop1.domain.user.repository.UserRepository;
 import project.shop1.common.security.jwt.JwtAuthenticationFilter;
 import project.shop1.common.security.jwt.JwtTokenProvider;
 import project.shop1.common.security.jwt.handler.CustomAccessDeniedHandler;
 import project.shop1.common.security.jwt.handler.CustomAuthenticationEntryPoint;
 import project.shop1.common.security.redis.repository.RefreshTokenRepository;
-import project.shop1.feature.login.local.common.CustomUserDetailsService;
+import project.shop1.domain.login.local.common.CustomUserDetailsService;
 
 /* SecurityContext */
 @Configuration

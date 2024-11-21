@@ -34,7 +34,7 @@ public class QOrder extends EntityPathBase<Order> {
 
     public final EnumPath<project.shop1.entity.enums.OrderStatus> orderStatus = createEnum("orderStatus", project.shop1.entity.enums.OrderStatus.class);
 
-    public final QUserEntity userEntity;
+    public final project.shop1.domain.user.entity.QUserEntity userEntity;
 
     public QOrder(String variable) {
         this(Order.class, forVariable(variable), INITS);
@@ -55,7 +55,7 @@ public class QOrder extends EntityPathBase<Order> {
     public QOrder(Class<? extends Order> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.delivery = inits.isInitialized("delivery") ? new QDelivery(forProperty("delivery")) : null;
-        this.userEntity = inits.isInitialized("userEntity") ? new QUserEntity(forProperty("userEntity")) : null;
+        this.userEntity = inits.isInitialized("userEntity") ? new project.shop1.domain.user.entity.QUserEntity(forProperty("userEntity")) : null;
     }
 
 }

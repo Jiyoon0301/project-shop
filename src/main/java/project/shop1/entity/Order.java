@@ -3,6 +3,7 @@ package project.shop1.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.entity.enums.OrderStatus;
 
 import java.time.LocalDateTime;
