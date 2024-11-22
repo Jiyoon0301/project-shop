@@ -1,4 +1,4 @@
-package project.shop1.common.configuration;
+package project.shop1.config;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

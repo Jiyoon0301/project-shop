@@ -1,4 +1,4 @@
-package project.shop1.common.configuration;
+package project.shop1.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

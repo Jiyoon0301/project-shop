@@ -10,6 +10,7 @@ import project.shop1.domain.emailAuth.service.EmailAuthService;
 import project.shop1.domain.user.repository.UserRepository;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.domain.user.dto.JoinRequestDto;
+import project.shop1.domain.user.service.impl.JoinServiceImpl;
 import project.shop1.domain.user.service.impl.UserServiceImpl;
 
 import java.util.Optional;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(SpringExtension.class) //Junit5
-public class UserServiceTest {
+public class JoinServiceTest {
 
     private static final String ACCOUNT = "account";
     private static final String PASSWORD = "password";
@@ -36,7 +37,7 @@ public class UserServiceTest {
     private EmailAuthService emailAuthService;
 
     @InjectMocks
-    private UserServiceImpl userService; // 테스트 대상 클래스
+    private JoinServiceImpl joinService; // 테스트 대상 클래스
 
     @Test
     void 회원가입_요청이_유효하면_회원이_저장된다() {
@@ -49,7 +50,7 @@ public class UserServiceTest {
         when(userRepository.save(any(UserEntity.class))).thenReturn(savedUser);
 
         //when
-        userService.join(dto);
+        joinService.join(dto);
 
         //then
         verify(userRepository, times(1)).save(any(UserEntity.class));  // 회원이 한 번 저장되었는지 확인}
@@ -63,7 +64,7 @@ public class UserServiceTest {
 
         //when & then
         BusinessException exception = assertThrows(BusinessException.class, () -> {
-            userService.join(joinRequestDto);  // 중복된 아이디로 회원가입 시도
+            joinService.join(joinRequestDto);  // 중복된 아이디로 회원가입 시도
         });
 
         // 예외 메시지 검증
