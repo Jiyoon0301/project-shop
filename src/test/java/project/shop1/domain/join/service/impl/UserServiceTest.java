@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import project.shop1.common.exception.BusinessException;
 import project.shop1.domain.user.dto.GetUserResponseDto;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.domain.user.repository.UserRepository;
@@ -13,8 +14,7 @@ import project.shop1.domain.user.service.impl.UserServiceImpl;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class) //Junit5
@@ -42,4 +42,16 @@ public class UserServiceTest {
         assertThat(responseDto).isNotNull();
         assertThat(responseDto.getId()).isEqualTo(id);  // id가 일치하는지 확인
     }
+
+    @Test
+    void 존재하지_않는_사용자를_조회하면_예외가_발생한다() {
+        // given
+        Long id = 1L;
+
+        // when & then
+        assertThatThrownBy(() -> userService.findUserById(id))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("사용자를 찾을 수 없습니다.");
+    }
 }
+
