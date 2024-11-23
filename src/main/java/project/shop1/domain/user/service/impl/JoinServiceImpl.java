@@ -9,9 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import project.shop1.common.exception.BusinessException;
 import project.shop1.common.exception.ErrorCode;
 import project.shop1.domain.emailAuth.service.EmailAuthService;
+import project.shop1.domain.user.dto.GetUserResponseDto;
 import project.shop1.domain.user.dto.JoinRequestDto;
-import project.shop1.domain.user.dto.SearchRequestDto;
-import project.shop1.domain.user.dto.SearchResponseDto;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.domain.user.repository.UserRepository;
 import project.shop1.domain.user.service.UserService;
@@ -30,7 +29,7 @@ public class JoinServiceImpl implements UserService {
 
     @Override
     public Long getCurrentMember(Authentication authentication) {
-        throw new UnsupportedOperationException("사용자 조회는 UserServiceImpl에서 처리해야 합니다.");
+        throw new UnsupportedOperationException("현재 사용자 조회는 UserServiceImpl에서 처리해야 합니다.");
     }
 
     @Override
@@ -77,7 +76,12 @@ public class JoinServiceImpl implements UserService {
     }
 
     @Override
-    public SearchResponseDto searchByAccount(SearchRequestDto searchRequestDto) {
+    public GetUserResponseDto findUserById(Long id) {
         throw new UnsupportedOperationException("사용자 조회는 UserServiceImpl에서 처리해야 합니다.");
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        throw new UnsupportedOperationException("사용자 삭제는 UserServiceImpl에서 처리해야 합니다.");
     }
 }

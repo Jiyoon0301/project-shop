@@ -2,29 +2,19 @@ package project.shop1.domain.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.shop1.common.exception.BusinessException;
 import project.shop1.common.exception.ErrorCode;
-import project.shop1.domain.emailAuth.repository.EmailAuthRepository;
-import project.shop1.domain.emailAuth.dto.AuthCodeRequestDto;
-import project.shop1.domain.emailAuth.dto.EmailAuthRequestDto;
 import project.shop1.domain.emailAuth.service.EmailAuthService;
+import project.shop1.domain.user.dto.GetUserResponseDto;
 import project.shop1.domain.user.dto.JoinRequestDto;
-import project.shop1.domain.user.dto.SearchRequestDto;
-import project.shop1.domain.user.dto.SearchResponseDto;
 import project.shop1.domain.user.repository.UserRepository;
 import project.shop1.domain.user.service.UserService;
 import project.shop1.domain.user.entity.UserEntity;
-import project.shop1.domain.emailAuth.entity.EmailAuth;
-import project.shop1.entity.enums.UserRank;
 
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -48,9 +38,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SearchResponseDto searchByAccount(SearchRequestDto searchRequestDto) {
-        String account = searchRequestDto.getAccount();
-        String name = userRepository.findByAccount(account).get().getName();
-        return new SearchResponseDto(name);
+    public GetUserResponseDto findUserById(Long id) {
+        UserEntity userEntity = userRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "사용자를 찾을 수 없습니다."));
+
+        return GetUserResponseDto.builder()
+                .id(userEntity.getId())
+                .account(userEntity.getAccount())
+                .name(userEntity.getName())
+                .email(userEntity.getEmail())
+                .phoneNumber(userEntity.getPhoneNumber())
+                .roles(userEntity.getRoles())
+                .build();
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+
     }
 }

@@ -1,6 +1,5 @@
 package project.shop1.domain.user.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,9 +7,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import project.shop1.common.reponse.BooleanResponse;
 import project.shop1.common.validation.ValidationSequence;
+import project.shop1.domain.user.dto.GetUserResponseDto;
 import project.shop1.domain.user.dto.JoinRequestDto;
-import project.shop1.domain.user.dto.SearchRequestDto;
-import project.shop1.domain.user.dto.SearchResponseDto;
 import project.shop1.domain.user.service.UserService;
 
 @RestController
@@ -35,16 +33,16 @@ public class UserController {
         return ResponseEntity.ok(BooleanResponse.of(true));
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<GetUserResponseDto> getUserById(@PathVariable Long id) {
-//        GetUserResponseDto getUserResponseDto = userService.findUserById(id);
-//        return ResponseEntity.ok(getUserResponseDto);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<BooleanResponse> deleteUser(@PathVariable Long id) {
-//        userService.deleteUser(id);
-//        return ResponseEntity.ok(BooleanResponse.of(true));
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<GetUserResponseDto> getUserById(@PathVariable Long id) {
+        GetUserResponseDto getUserResponseDto = userService.findUserById(id);
+        return ResponseEntity.ok(getUserResponseDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<BooleanResponse> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok(BooleanResponse.of(true));
+    }
 }
 

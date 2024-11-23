@@ -17,7 +17,6 @@ public enum ErrorCode {
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, 2206, "비밀번호가 일치하지 않습니다."),
     INSUFFICIENT_STOCK(HttpStatus.BAD_REQUEST,2207,"재고가 부족합니다."),
 
-
     SEVER_NOT_SUPPORT(HttpStatus.INTERNAL_SERVER_ERROR, 9999, "알 수 없는 예외입니다.");
 
     private final HttpStatus httpStatus;
