@@ -4,7 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import project.shop1.entity.Order;
+import project.shop1.domain.order.entity.Order;
 import project.shop1.domain.order.repository.OrderRepository;
 import static project.shop1.entity.QUserEntity.userEntity;
 import static project.shop1.entity.QOrder.order;

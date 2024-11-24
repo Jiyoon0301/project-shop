@@ -7,6 +7,8 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import project.shop1.domain.order.entity.Delivery;
+import project.shop1.domain.order.enums.DeliveryStatus;
 
 
 /**
@@ -23,7 +25,7 @@ public class QDelivery extends EntityPathBase<Delivery> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final EnumPath<project.shop1.entity.enums.DeliveryStatus> status = createEnum("status", project.shop1.entity.enums.DeliveryStatus.class);
+    public final EnumPath<DeliveryStatus> status = createEnum("status", DeliveryStatus.class);
 
     public QDelivery(String variable) {
         super(Delivery.class, forVariable(variable));

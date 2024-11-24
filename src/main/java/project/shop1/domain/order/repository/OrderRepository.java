@@ -1,6 +1,6 @@
 package project.shop1.domain.order.repository;
 
-import project.shop1.entity.Order;
+import project.shop1.domain.order.entity.Order;
 
 import java.util.List;
 

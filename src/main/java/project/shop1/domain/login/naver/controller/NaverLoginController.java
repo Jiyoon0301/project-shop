@@ -22,7 +22,7 @@ public class NaverLoginController {
      */
     @GetMapping("/login/naver-callback")
     @PreAuthorize("permitAll()")
-    public NaverLoginResponseDto naverLogin(@RequestParam("code") String code){ //return KakaoLoginResponseDto - id, nickname, email, access/refreshToken, expiresIn
+    public NaverLoginResponseDto naverLogin(@RequestParam("code") String code){
         NaverLoginResponseDto result = naverLoginService.naverLogin(code);
 
         return result; // String accessToken, String refreshToken

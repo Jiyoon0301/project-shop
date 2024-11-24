@@ -2,8 +2,8 @@ package project.shop1.domain.order.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import project.shop1.entity.Delivery;
-import project.shop1.entity.enums.OrderStatus;
+import project.shop1.domain.order.entity.Delivery;
+import project.shop1.domain.order.enums.OrderStatus;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

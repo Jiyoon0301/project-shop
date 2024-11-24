@@ -3,12 +3,12 @@ package project.shop1.domain.cart.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.shop1.common.exception.BusinessException;
-import project.shop1.common.exception.ErrorCode;
+import project.shop1.global.exception.BusinessException;
+import project.shop1.global.exception.ErrorCode;
 import project.shop1.domain.user.repository.UserRepository;
-import project.shop1.common.security.SecurityUtil;
-import project.shop1.entity.Book;
-import project.shop1.entity.CartItem;
+import project.shop1.global.security.SecurityUtils;
+import project.shop1.domain.product_refact.entity.Book;
+import project.shop1.domain.cart.entity.CartItem;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.domain.cart.dto.*;
 import project.shop1.domain.cart.repository.CartRepository;
@@ -28,7 +28,7 @@ public class CartServiceImpl implements CartService {
     /* 장바구니 목록 */
     @Override
     public List<CartItem> findAllCartItemsByUser() {
-        String account = SecurityUtil.getCurrentUsername();
+        String account = SecurityUtils.getCurrentUsername();
         Optional<UserEntity> userEntity = userRepository.findByAccount(account);
         List<CartItem> result = cartRepository.findAllCartItemsByUser(userEntity.get());
         return result;
@@ -50,7 +50,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void addCart(AddCartRequestDto addCartRequestDto){
-        String account = SecurityUtil.getCurrentUsername();
+        String account = SecurityUtils.getCurrentUsername();
         Long productNumber = addCartRequestDto.getProductNumber();
         int quantity = addCartRequestDto.getQuantity();
 

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import project.shop1.common.reponse.BooleanResponse;
+import project.shop1.global.util.reponse.BooleanResponse;
 import project.shop1.domain.order.common.AddressPairs;
 import project.shop1.domain.order.dto.*;
 import project.shop1.domain.order.service.OrderService;

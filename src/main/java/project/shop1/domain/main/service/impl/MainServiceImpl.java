@@ -3,7 +3,7 @@ package project.shop1.domain.main.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.shop1.entity.Book;
+import project.shop1.domain.product_refact.entity.Book;
 import project.shop1.domain.main.dto.GetProductsByRankingRequestDto;
 import project.shop1.domain.main.dto.GetProductsByRankingResponseDto;
 import project.shop1.domain.main.repository.MainRepository;

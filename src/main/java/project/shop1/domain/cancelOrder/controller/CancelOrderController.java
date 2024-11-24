@@ -6,7 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import project.shop1.common.reponse.BooleanResponse;
+import project.shop1.global.util.reponse.BooleanResponse;
 import project.shop1.domain.cancelOrder.dto.CancelOrderRequestDto;
 import project.shop1.domain.cancelOrder.service.CancelOrderService;
 

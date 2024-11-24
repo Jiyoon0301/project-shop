@@ -8,8 +8,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import project.shop1.common.reponse.BooleanResponse;
-import project.shop1.common.validation.ValidationSequence;
+import project.shop1.global.util.reponse.BooleanResponse;
+import project.shop1.global.util.validation.ValidationSequence;
 import project.shop1.domain.emailAuth.dto.EmailAuthRequestDto;
 import project.shop1.domain.emailAuth.service.EmailAuthService;
 

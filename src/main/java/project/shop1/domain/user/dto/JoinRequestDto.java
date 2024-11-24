@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import project.shop1.common.validation.NotBlankGroup;
+import project.shop1.global.util.validation.NotBlankGroup;
 
 @Data
 @NoArgsConstructor

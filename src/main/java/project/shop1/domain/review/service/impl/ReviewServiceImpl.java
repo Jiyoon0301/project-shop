@@ -3,13 +3,14 @@ package project.shop1.domain.review.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.shop1.common.exception.BusinessException;
-import project.shop1.common.exception.ErrorCode;
+import project.shop1.domain.product_refact.repository.ProductRepository;
+import project.shop1.global.exception.BusinessException;
+import project.shop1.global.exception.ErrorCode;
 import project.shop1.common.repository.BookRepository;
 import project.shop1.domain.user.repository.UserRepository;
-import project.shop1.common.security.SecurityUtil;
-import project.shop1.entity.Book;
-import project.shop1.entity.Review;
+import project.shop1.global.security.SecurityUtils;
+import project.shop1.domain.product_refact.entity.Book;
+import project.shop1.domain.product_refact.entity.Review;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.domain.review.dto.*;
 import project.shop1.domain.review.repository.ReviewRepository;
@@ -27,17 +28,17 @@ public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
-    private final BookRepository bookRepository;
+    private final ProductRepository productRepository;
 
     /* 리뷰 등록 버튼 */
     @Override
     @Transactional
     public void registerReview(RegisterReviewRequestDto registerReviewRequestDto){
-        String account = SecurityUtil.getCurrentUsername();
+        String account = SecurityUtils.getCurrentUsername();
         UserEntity userEntity = userRepository.findByAccount(account).get();
 
         Long productId = registerReviewRequestDto.getProductId();
-        Book book = bookRepository.findBookByBookId(productId).get();
+        Book book = productRepository.findById(productId).get();
 
         // 회원의 중복 리뷰 확인
         Optional<Review> checkDuplicateReview = reviewRepository.findReviewByProductIdAndUserEntityAccount(productId, account);
@@ -84,7 +85,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public void updateReview(UpdateReviewRequestDto updateReviewRequestDto){
-        String account = SecurityUtil.getCurrentUsername();
+        String account = SecurityUtils.getCurrentUsername();
 
         Long productId = updateReviewRequestDto.getProductId();
         String content = updateReviewRequestDto.getContent();
@@ -94,7 +95,7 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.updateReview(productId, account, content, rating, regDate);
 
         // 수정된 평점을 상품 평점평균에 반영
-        Book book = bookRepository.findBookByBookId(productId).get();
+        Book book = productRepository.findById(productId).get();
         book.calAverageRating();
 
     }
@@ -103,14 +104,14 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public void deleteReview(DeleteReviewRequestDto deleteReviewRequestDto){
-        String account = SecurityUtil.getCurrentUsername();
+        String account = SecurityUtils.getCurrentUsername();
         Long productId = deleteReviewRequestDto.getProductId();
 
         Review review = reviewRepository.findReviewByProductIdAndUserEntityAccount(productId, account).get();
         reviewRepository.deleteReview(review);
 
         // 평점 평균 업데이트
-        Book book = bookRepository.findBookByBookId(productId).get();
+        Book book = productRepository.findById(productId).get();
         book.getReviews().remove(review);
         book.calAverageRating();
     }

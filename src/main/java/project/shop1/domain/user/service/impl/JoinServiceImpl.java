@@ -6,15 +6,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.shop1.common.exception.BusinessException;
-import project.shop1.common.exception.ErrorCode;
+import project.shop1.global.exception.BusinessException;
+import project.shop1.global.exception.ErrorCode;
 import project.shop1.domain.emailAuth.service.EmailAuthService;
 import project.shop1.domain.user.dto.GetUserResponseDto;
 import project.shop1.domain.user.dto.JoinRequestDto;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.domain.user.repository.UserRepository;
 import project.shop1.domain.user.service.UserService;
-import project.shop1.entity.enums.UserRank;
+import project.shop1.domain.user.enums.UserRank;
 
 import java.util.Optional;
 
@@ -26,11 +26,6 @@ public class JoinServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final EmailAuthService emailAuthService;
-
-    @Override
-    public Long getCurrentMember(Authentication authentication) {
-        throw new UnsupportedOperationException("현재 사용자 조회는 UserServiceImpl에서 처리해야 합니다.");
-    }
 
     @Override
     @Transactional

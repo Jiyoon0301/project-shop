@@ -1,6 +1,6 @@
 package project.shop1.domain.productSearch.service;
 
-import project.shop1.entity.Book;
+import project.shop1.domain.product_refact.entity.Book;
 import project.shop1.domain.productSearch.dto.SearchBookByRankingRequestDto;
 import project.shop1.domain.productSearch.dto.findByKeywordAndCategoryRequestDto;
 

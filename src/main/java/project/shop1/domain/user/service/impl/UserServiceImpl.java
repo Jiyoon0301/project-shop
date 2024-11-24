@@ -2,19 +2,16 @@ package project.shop1.domain.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.shop1.common.exception.BusinessException;
-import project.shop1.common.exception.ErrorCode;
+import project.shop1.global.exception.BusinessException;
+import project.shop1.global.exception.ErrorCode;
 import project.shop1.domain.emailAuth.service.EmailAuthService;
 import project.shop1.domain.user.dto.GetUserResponseDto;
 import project.shop1.domain.user.dto.JoinRequestDto;
 import project.shop1.domain.user.repository.UserRepository;
 import project.shop1.domain.user.service.UserService;
 import project.shop1.domain.user.entity.UserEntity;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,13 +21,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final EmailAuthService emailAuthService;
-
-    /* 로그인되어있는 회원 id 반환 */
-    @Override
-    public Long getCurrentMember(Authentication authentication) {
-        UserEntity userEntity = userRepository.findByAccount(authentication.getName()).get();
-        return userEntity.getId();
-    }
 
     @Override
     public void join(JoinRequestDto joinRequestDto) {

@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import project.shop1.entity.CartItem;
-import project.shop1.entity.Order;
-import project.shop1.entity.Review;
-import project.shop1.entity.enums.UserRank;
+import project.shop1.domain.cart.entity.CartItem;
+import project.shop1.domain.order.entity.Order;
+import project.shop1.domain.product_refact.entity.Review;
+import project.shop1.domain.user.enums.UserRank;
 
 import java.util.ArrayList;
 import java.util.Collection;

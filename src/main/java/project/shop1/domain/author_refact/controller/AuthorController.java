@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import project.shop1.common.reponse.BooleanResponse;
+import project.shop1.global.util.reponse.BooleanResponse;
 
 @RestController
 @RequiredArgsConstructor

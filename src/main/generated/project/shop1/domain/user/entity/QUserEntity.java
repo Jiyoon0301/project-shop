@@ -8,6 +8,10 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
+import project.shop1.domain.cart.entity.CartItem;
+import project.shop1.domain.order.entity.Order;
+import project.shop1.domain.product_refact.entity.Review;
+import project.shop1.domain.user.enums.UserRank;
 
 
 /**
@@ -24,7 +28,7 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public final StringPath address = createString("address");
 
-    public final ListPath<project.shop1.entity.CartItem, project.shop1.entity.QCartItem> cartItems = this.<project.shop1.entity.CartItem, project.shop1.entity.QCartItem>createList("cartItems", project.shop1.entity.CartItem.class, project.shop1.entity.QCartItem.class, PathInits.DIRECT2);
+    public final ListPath<CartItem, project.shop1.entity.QCartItem> cartItems = this.<CartItem, project.shop1.entity.QCartItem>createList("cartItems", CartItem.class, project.shop1.entity.QCartItem.class, PathInits.DIRECT2);
 
     public final StringPath email = createString("email");
 
@@ -34,17 +38,17 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public final StringPath name = createString("name");
 
-    public final ListPath<project.shop1.entity.Order, project.shop1.entity.QOrder> orders = this.<project.shop1.entity.Order, project.shop1.entity.QOrder>createList("orders", project.shop1.entity.Order.class, project.shop1.entity.QOrder.class, PathInits.DIRECT2);
+    public final ListPath<Order, project.shop1.entity.QOrder> orders = this.<Order, project.shop1.entity.QOrder>createList("orders", Order.class, project.shop1.entity.QOrder.class, PathInits.DIRECT2);
 
     public final StringPath password = createString("password");
 
     public final StringPath phoneNumber = createString("phoneNumber");
 
-    public final ListPath<project.shop1.entity.Review, project.shop1.entity.QReview> reviews = this.<project.shop1.entity.Review, project.shop1.entity.QReview>createList("reviews", project.shop1.entity.Review.class, project.shop1.entity.QReview.class, PathInits.DIRECT2);
+    public final ListPath<Review, project.shop1.entity.QReview> reviews = this.<Review, project.shop1.entity.QReview>createList("reviews", Review.class, project.shop1.entity.QReview.class, PathInits.DIRECT2);
 
     public final ListPath<String, StringPath> roles = this.<String, StringPath>createList("roles", String.class, StringPath.class, PathInits.DIRECT2);
 
-    public final EnumPath<project.shop1.entity.enums.UserRank> userRank = createEnum("userRank", project.shop1.entity.enums.UserRank.class);
+    public final EnumPath<UserRank> userRank = createEnum("userRank", UserRank.class);
 
     public QUserEntity(String variable) {
         super(UserEntity.class, forVariable(variable));

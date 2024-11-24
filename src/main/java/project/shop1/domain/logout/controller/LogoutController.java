@@ -5,10 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import project.shop1.common.reponse.BooleanResponse;
-import project.shop1.common.security.SecurityUtil;
-import project.shop1.common.security.redis.dto.RefreshToken;
-import project.shop1.common.security.redis.service.RefreshTokenService;
+import project.shop1.global.util.reponse.BooleanResponse;
+import project.shop1.global.security.SecurityUtils;
+import project.shop1.global.security.redis.dto.RefreshToken;
+import project.shop1.global.security.redis.service.RefreshTokenService;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +33,7 @@ public class LogoutController {
     @PostMapping("/logout/delete-token") // "/logout"으로 했을 때 "Method Not Allowed" 에러 해결해야함
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BooleanResponse> logout(){
-        String account = SecurityUtil.getCurrentUsername();
+        String account = SecurityUtils.getCurrentUsername();
         RefreshToken refreshToken = refreshTokenService.findByAccount(account);
         // redis 에서 refreshToken 삭제
         refreshTokenService.removeRefreshToken(refreshToken.getAccessToken());

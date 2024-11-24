@@ -1,8 +1,7 @@
 package project.shop1.domain.login.local.service;
 
 import jakarta.servlet.http.HttpServletRequest;
-import project.shop1.common.security.jwt.dto.JwtToken;
-import project.shop1.domain.login.local.dto.LocalLoginRequestDto;
+import project.shop1.global.security.jwt.dto.JwtToken;
 
 public interface LocalLoginService {
 

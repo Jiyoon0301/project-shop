@@ -4,7 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import project.shop1.entity.enums.OrderStatus;
+import project.shop1.domain.order.enums.OrderStatus;
 import project.shop1.domain.cancelOrder.repository.CancelOrderRepository;
 
 

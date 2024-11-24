@@ -11,15 +11,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import project.shop1.common.exception.BusinessException;
-import project.shop1.common.exception.ErrorCode;
+import project.shop1.global.exception.BusinessException;
+import project.shop1.global.exception.ErrorCode;
 import project.shop1.common.repository.BookRepository;
+import project.shop1.domain.cart.entity.CartItem;
+import project.shop1.domain.order.entity.Delivery;
+import project.shop1.domain.order.entity.Order;
+import project.shop1.domain.order.entity.OrderItem;
+import project.shop1.domain.product_refact.entity.Book;
 import project.shop1.domain.user.repository.UserRepository;
-import project.shop1.common.security.SecurityUtil;
+import project.shop1.global.security.SecurityUtils;
 import project.shop1.domain.user.entity.UserEntity;
-import project.shop1.entity.*;
-import project.shop1.entity.enums.DeliveryStatus;
-import project.shop1.entity.enums.OrderStatus;
+import project.shop1.domain.order.enums.DeliveryStatus;
+import project.shop1.domain.order.enums.OrderStatus;
 import project.shop1.domain.cart.repository.CartRepository;
 import project.shop1.domain.order.common.AddressPairs;
 import project.shop1.domain.order.common.ProductInfoPairs;
@@ -63,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
     /* 주문 페이지 */
     @Override
     public OrderPageResponseDto orderPage(OrderPageRequestDto orderPageRequestDto){
-        String account = SecurityUtil.getCurrentUsername();
+        String account = SecurityUtils.getCurrentUsername();
         UserEntity userEntity = userRepository.findByAccount(account).get();
 
         List<ProductInfoPairs> productInfoPairs = new ArrayList<>();
@@ -102,7 +106,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public SubmitOrderResponseDto submitOrder(SubmitOrderRequestDto submitOrderRequestDto){
         String address = submitOrderRequestDto.getAddress();
-        String account = SecurityUtil.getCurrentUsername();
+        String account = SecurityUtils.getCurrentUsername();
         int totalProductPrice = 0;
 
         UserEntity userEntity = userRepository.findByAccount(account).get();
@@ -235,7 +239,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void saveAddress(SaveAddressRequestDto saveAddressRequestDto) {
-        String account = SecurityUtil.getCurrentUsername();
+        String account = SecurityUtils.getCurrentUsername();
 
         String roadAddress = saveAddressRequestDto.getRoadAddress();
         String detailedAddress = saveAddressRequestDto.getDetailedAddress();

@@ -7,10 +7,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import project.shop1.common.security.SecurityUtil;
-import project.shop1.common.security.jwt.dto.JwtToken;
-import project.shop1.common.validation.ValidationSequence;
-import project.shop1.domain.login.local.dto.LocalLoginRequestDto;
+import project.shop1.global.security.SecurityUtils;
+import project.shop1.global.security.jwt.dto.JwtToken;
+import project.shop1.global.util.validation.ValidationSequence;
 import project.shop1.domain.login.local.service.LocalLoginService;
 
 @RestController
@@ -34,7 +33,7 @@ public class LocalLoginController {
     @PostMapping("/test")
     @PreAuthorize("hasRole('USER')")
     public String test() {
-        return SecurityUtil.getCurrentUsername();
+        return SecurityUtils.getCurrentUsername();
     }
 
 

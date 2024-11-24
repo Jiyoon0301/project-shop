@@ -5,8 +5,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import project.shop1.domain.cart.entity.CartItem;
+import project.shop1.domain.product_refact.entity.Book;
 import project.shop1.domain.user.entity.UserEntity;
-import project.shop1.entity.*;
 import project.shop1.domain.cart.repository.CartRepository;
 
 import static project.shop1.entity.QBook.book;

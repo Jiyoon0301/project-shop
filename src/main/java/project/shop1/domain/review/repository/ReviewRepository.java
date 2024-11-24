@@ -1,6 +1,6 @@
 package project.shop1.domain.review.repository;
 
-import project.shop1.entity.Review;
+import project.shop1.domain.product_refact.entity.Review;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -8,6 +8,8 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
+import project.shop1.domain.product_refact.entity.Book;
+import project.shop1.domain.product_refact.entity.Review;
 
 
 /**

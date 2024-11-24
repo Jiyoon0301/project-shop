@@ -1,6 +1,6 @@
 package project.shop1.domain.order.service;
 
-import project.shop1.entity.OrderItem;
+import project.shop1.domain.order.entity.OrderItem;
 import project.shop1.domain.order.common.AddressPairs;
 import project.shop1.domain.order.dto.*;
 

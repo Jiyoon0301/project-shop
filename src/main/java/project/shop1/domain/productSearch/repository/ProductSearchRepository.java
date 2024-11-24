@@ -1,6 +1,6 @@
 package project.shop1.domain.productSearch.repository;
 
-import project.shop1.entity.Book;
+import project.shop1.domain.product_refact.entity.Book;
 
 import java.util.List;
 import java.util.Optional;

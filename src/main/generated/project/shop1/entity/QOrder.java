@@ -8,6 +8,9 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
+import project.shop1.domain.order.entity.Order;
+import project.shop1.domain.order.entity.OrderItem;
+import project.shop1.domain.order.enums.OrderStatus;
 
 
 /**
@@ -32,7 +35,7 @@ public class QOrder extends EntityPathBase<Order> {
 
     public final ListPath<OrderItem, QOrderItem> orderItems = this.<OrderItem, QOrderItem>createList("orderItems", OrderItem.class, QOrderItem.class, PathInits.DIRECT2);
 
-    public final EnumPath<project.shop1.entity.enums.OrderStatus> orderStatus = createEnum("orderStatus", project.shop1.entity.enums.OrderStatus.class);
+    public final EnumPath<OrderStatus> orderStatus = createEnum("orderStatus", OrderStatus.class);
 
     public final project.shop1.domain.user.entity.QUserEntity userEntity;
 

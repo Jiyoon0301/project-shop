@@ -1,6 +1,6 @@
 package project.shop1.domain.productInfo.service;
 
-import project.shop1.entity.Book;
+import project.shop1.domain.product_refact.entity.Book;
 import project.shop1.domain.productInfo.dto.ProductInfoRequestDto;
 
 import java.util.Optional;

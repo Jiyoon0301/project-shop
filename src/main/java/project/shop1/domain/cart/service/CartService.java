@@ -1,6 +1,6 @@
 package project.shop1.domain.cart.service;
 
-import project.shop1.entity.CartItem;
+import project.shop1.domain.cart.entity.CartItem;
 import project.shop1.domain.cart.dto.*;
 
 import java.util.List;
