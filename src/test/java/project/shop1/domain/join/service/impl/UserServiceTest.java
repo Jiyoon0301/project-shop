@@ -15,7 +15,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class) //Junit5
 public class UserServiceTest {
@@ -52,6 +54,22 @@ public class UserServiceTest {
         assertThatThrownBy(() -> userService.findUserById(id))
                 .isInstanceOf(BusinessException.class)
                 .hasMessage("사용자를 찾을 수 없습니다.");
+    }
+
+    @Test
+    void 존재하는_사용자를_삭제한다() {
+        // given
+        Long id = 1L;
+        UserEntity userEntity = new UserEntity("account", "password", "name", "email", "phone");
+        userEntity.setId(id);  // 수동으로 id 설정 (Mock 객체이므로 @GeneratedValue여도 가능)
+
+        given(userRepository.findById(id)).willReturn(Optional.of(userEntity));
+
+        // when
+        userService.deleteUser(id);
+
+        // then
+        then(userRepository).should(times(1)).delete(userEntity); // userRepository.delete() 메서드가 한 번 호출되었는지 확인
     }
 }
 
