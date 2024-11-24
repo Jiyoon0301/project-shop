@@ -71,5 +71,19 @@ public class UserServiceTest {
         // then
         then(userRepository).should(times(1)).delete(userEntity); // userRepository.delete() 메서드가 한 번 호출되었는지 확인
     }
+
+    @Test
+    void deleteUser_존재하지_않는_사용자를_삭제하려고_하면_예외가_발생한다() {
+        // given
+        Long id = 1L;
+        given(userRepository.findById(id)).willReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> userService.deleteUser(id))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("사용자를 찾을 수 없습니다.");
+
+        then(userRepository).should(never()).delete(any()); // delete()메서드가 호출되지 않았는지 검증
+    }
 }
 
