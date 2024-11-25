@@ -6,9 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.shop1.global.exception.BusinessException;
 import project.shop1.global.exception.ErrorCode;
-import project.shop1.domain.emailAuth.service.EmailAuthService;
+import project.shop1.domain.auth.emailAuth_needRefactor.service.EmailAuthService;
 import project.shop1.domain.user.dto.GetUserResponseDto;
-import project.shop1.domain.user.dto.JoinRequestDto;
 import project.shop1.domain.user.repository.UserRepository;
 import project.shop1.domain.user.service.UserService;
 import project.shop1.domain.user.entity.UserEntity;
@@ -21,11 +20,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final EmailAuthService emailAuthService;
-
-    @Override
-    public void join(JoinRequestDto joinRequestDto) {
-        throw new UnsupportedOperationException("회원가입은 JoinServiceImpl에서 처리해야 합니다.");
-    }
 
     @Override
     public GetUserResponseDto findUserById(Long id) {

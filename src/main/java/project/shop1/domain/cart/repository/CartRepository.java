@@ -1,6 +1,6 @@
 package project.shop1.domain.cart.repository;
 
-import project.shop1.domain.product_refact.entity.Book;
+import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.cart.entity.CartItem;
 import project.shop1.domain.user.entity.UserEntity;
 

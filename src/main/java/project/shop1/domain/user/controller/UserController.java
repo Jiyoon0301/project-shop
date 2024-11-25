@@ -1,37 +1,18 @@
 package project.shop1.domain.user.controller;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import project.shop1.global.util.reponse.BooleanResponse;
-import project.shop1.global.util.validation.ValidationSequence;
 import project.shop1.domain.user.dto.GetUserResponseDto;
-import project.shop1.domain.user.dto.JoinRequestDto;
 import project.shop1.domain.user.service.UserService;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
-    private final UserService joinService;
-
-    public UserController(
-            @Qualifier("userServiceImpl") UserService userService,
-            @Qualifier("joinServiceImpl") UserService joinService) {
-        this.userService = userService;
-        this.joinService = joinService;
-    }
-
-    // 회원가입
-    @PostMapping("/join") // String account, String password, String name, String phoneNumber, String email
-    @PreAuthorize("permitAll()")
-    public ResponseEntity<BooleanResponse> join(@Validated(value = ValidationSequence.class) @RequestBody JoinRequestDto joinRequestDto) {
-        joinService.join(joinRequestDto);
-        return ResponseEntity.ok(BooleanResponse.of(true));
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<GetUserResponseDto> getUserById(@PathVariable Long id) {

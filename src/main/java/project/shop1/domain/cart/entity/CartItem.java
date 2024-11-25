@@ -3,7 +3,7 @@ package project.shop1.domain.cart.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-import project.shop1.domain.product_refact.entity.Book;
+import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.user.entity.UserEntity;
 
 @Entity

@@ -7,9 +7,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
-import project.shop1.domain.author_refact.service.AuthorService;
-import project.shop1.domain.product_refact.dto.RequestDto.AddProductRequestDto;
-import project.shop1.domain.product_refact.repository.ProductRepository;
+import project.shop1.domain.product.author_needRefactor.service.AuthorService;
+import project.shop1.domain.product.dto.RequestDto.AddProductRequestDto;
+import project.shop1.domain.product.repository.ProductRepository;
+import project.shop1.domain.product.service.impl.ProductServiceImpl;
 
 /**
  * 테스트 DB로 H2 쓰기

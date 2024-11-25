@@ -2,18 +2,16 @@ package project.shop1.domain.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.shop1.domain.user.service.JoinService;
 import project.shop1.global.exception.BusinessException;
 import project.shop1.global.exception.ErrorCode;
-import project.shop1.domain.emailAuth.service.EmailAuthService;
-import project.shop1.domain.user.dto.GetUserResponseDto;
+import project.shop1.domain.auth.emailAuth_needRefactor.service.EmailAuthService;
 import project.shop1.domain.user.dto.JoinRequestDto;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.domain.user.repository.UserRepository;
-import project.shop1.domain.user.service.UserService;
 import project.shop1.domain.user.enums.UserRank;
 
 import java.util.Optional;
@@ -22,7 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
-public class JoinServiceImpl implements UserService {
+public class JoinServiceImpl implements JoinService {
 
     private final UserRepository userRepository;
     private final EmailAuthService emailAuthService;
@@ -68,15 +66,5 @@ public class JoinServiceImpl implements UserService {
                 .loginType("internal")
                 .userRank(UserRank.MEMBER)
                 .build();
-    }
-
-    @Override
-    public GetUserResponseDto findUserById(Long id) {
-        throw new UnsupportedOperationException("사용자 조회는 UserServiceImpl에서 처리해야 합니다.");
-    }
-
-    @Override
-    public void deleteUser(Long id) {
-        throw new UnsupportedOperationException("사용자 삭제는 UserServiceImpl에서 처리해야 합니다.");
     }
 }

@@ -18,7 +18,7 @@ import project.shop1.global.security.jwt.JwtTokenProvider;
 import project.shop1.global.security.jwt.handler.CustomAccessDeniedHandler;
 import project.shop1.global.security.jwt.handler.CustomAuthenticationEntryPoint;
 import project.shop1.global.security.redis.repository.RefreshTokenRepository;
-import project.shop1.domain.login.local.common.CustomUserDetailsService;
+import project.shop1.domain.auth.local.common.CustomUserDetailsService;
 
 /* SecurityContext */
 @Configuration
