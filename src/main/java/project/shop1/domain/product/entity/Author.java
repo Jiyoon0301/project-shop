@@ -19,12 +19,10 @@ public class Author {
     @GeneratedValue
     private Long id;
 
-    private Long authorNumber;
-
     // 작가 이름
     private String name;
 
-    // 작가 소속 국가
+    // 작가 국적
     private String nation;
 
     // 작가 소개

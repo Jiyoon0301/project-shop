@@ -8,7 +8,7 @@ import project.shop1.domain.order.enums.OrderStatus;
 import project.shop1.domain.order.cancelOrder_needRefactor.repository.CancelOrderRepository;
 
 
-import static project.shop1.entity.QOrder.order;
+import static project.shop1.domain.order.entity.QOrder.order;
 
 @Repository
 public class CancelOrderRepositoryImpl implements CancelOrderRepository {

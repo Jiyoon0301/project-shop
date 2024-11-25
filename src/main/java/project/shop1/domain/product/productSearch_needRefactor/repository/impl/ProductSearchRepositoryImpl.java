@@ -11,7 +11,7 @@ import project.shop1.domain.product.productSearch_needRefactor.repository.Produc
 import java.util.List;
 import java.util.Optional;
 
-import static project.shop1.entity.QBook.book;
+import static project.shop1.domain.product.entity.QBook.book;
 
 @Repository
 public class ProductSearchRepositoryImpl implements ProductSearchRepository {

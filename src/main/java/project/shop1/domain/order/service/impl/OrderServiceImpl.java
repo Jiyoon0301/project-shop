@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import project.shop1.domain.product.repository.ProductRepository;
 import project.shop1.global.exception.BusinessException;
 import project.shop1.global.exception.ErrorCode;
-import project.shop1.common.repository.BookRepository;
 import project.shop1.domain.cart.entity.CartItem;
 import project.shop1.domain.order.entity.Delivery;
 import project.shop1.domain.order.entity.Order;
@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
-    private final BookRepository bookRepository;
+    private final ProductRepository productRepository;
 
 //    @Transactional
 //    public void addStock(String itemName, int quantity) {
@@ -83,7 +83,7 @@ public class OrderServiceImpl implements OrderService {
         } else {
             Long bookId = orderPageRequestDto.getBookId();
             int count = orderPageRequestDto.getCount();
-            Book bookToBuy = bookRepository.findBookByBookId(bookId).get();
+            Book bookToBuy = productRepository.findById(bookId).get();
             totalPrice = count * bookToBuy.getPrice();
             productInfoPairs.add(new ProductInfoPairs(bookToBuy.getTitle(), count, bookToBuy.getPrice()));
         }
@@ -122,7 +122,7 @@ public class OrderServiceImpl implements OrderService {
         } else{ //단일아이템 구매시
             Long bookId = submitOrderRequestDto.getBookId();
             int count = submitOrderRequestDto.getCount();
-            Book book = bookRepository.findBookByBookId(bookId).get();
+            Book book = productRepository.findById(bookId).get();
             book.removeStock(count);
             OrderItem orderItem = OrderItem.createOrderItem(book, book.getPrice(), count);
             orderItems.add(orderItem);

@@ -1,7 +1,8 @@
-package project.shop1.domain.product.entity;
+package project.shop1.domain.review_needRefactor.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.user.entity.UserEntity;
 
 import java.time.LocalDateTime;

@@ -64,7 +64,7 @@ public class NaverLoginServiceImpl implements LoginService<SocialLoginRequestDto
     }
 
     /* 1. Naver Access Token 요청 */
-    private String requestNaverAccessToken(SocialLoginRequestDto socialLoginRequestDto) {
+    public String requestNaverAccessToken(SocialLoginRequestDto socialLoginRequestDto) {
         String code = socialLoginRequestDto.getCode();
 
         // HTTP Header 생성
@@ -91,8 +91,8 @@ public class NaverLoginServiceImpl implements LoginService<SocialLoginRequestDto
         return response.getBody().getAccess_token();
     }
 
-    /* 2. 액세스 토큰으로 Naver 계정 프로필 정보 요청 */
-    private NaverUserInfoResponseDto requestNaverUserInfo(String accessToken) {
+    /* 2. 액세스 토큰으로 naver 계정 프로필 정보 요청 */
+    public NaverUserInfoResponseDto requestNaverUserInfo(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
         // HTTP 요청에 필요한 헤더 생성
         HttpHeaders headers = new HttpHeaders();

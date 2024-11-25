@@ -3,6 +3,7 @@ package project.shop1.domain.product.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import project.shop1.domain.review_needRefactor.entity.Review;
 import project.shop1.global.exception.BusinessException;
 import project.shop1.global.exception.ErrorCode;
 

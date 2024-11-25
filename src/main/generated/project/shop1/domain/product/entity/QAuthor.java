@@ -1,4 +1,4 @@
-package project.shop1.entity;
+package project.shop1.domain.product.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -8,8 +8,6 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
-import project.shop1.domain.product.entity.Author;
-import project.shop1.domain.product.entity.Book;
 
 
 /**
@@ -18,13 +16,11 @@ import project.shop1.domain.product.entity.Book;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QAuthor extends EntityPathBase<Author> {
 
-    private static final long serialVersionUID = 835268366L;
+    private static final long serialVersionUID = -468147787L;
 
     public static final QAuthor author = new QAuthor("author");
 
     public final StringPath authorIntro = createString("authorIntro");
-
-    public final NumberPath<Long> authorNumber = createNumber("authorNumber", Long.class);
 
     public final ListPath<Book, QBook> book = this.<Book, QBook>createList("book", Book.class, QBook.class, PathInits.DIRECT2);
 

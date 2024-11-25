@@ -33,5 +33,4 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .roles(userEntity.getRoles().toArray(new String[0]))
                 .build();
     }
-
 }

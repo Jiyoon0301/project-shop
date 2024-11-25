@@ -10,8 +10,8 @@ import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.domain.cart.repository.CartRepository;
 
-import static project.shop1.entity.QBook.book;
-import static project.shop1.entity.QCartItem.cartItem;
+import static project.shop1.domain.product.entity.QBook.book;
+import static project.shop1.domain.cart.entity.QCartItem.cartItem;
 
 import java.util.List;
 import java.util.Optional;

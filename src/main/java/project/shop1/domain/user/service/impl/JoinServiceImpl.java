@@ -2,9 +2,11 @@ package project.shop1.domain.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.mapping.Join;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.shop1.domain.user.dto.JoinResponseDto;
 import project.shop1.domain.user.service.JoinService;
 import project.shop1.global.exception.BusinessException;
 import project.shop1.global.exception.ErrorCode;
@@ -27,7 +29,7 @@ public class JoinServiceImpl implements JoinService {
 
     @Override
     @Transactional
-    public void join(JoinRequestDto joinRequestDto) {
+    public JoinResponseDto join(JoinRequestDto joinRequestDto) {
         String account = joinRequestDto.getAccount();
         String password = joinRequestDto.getPassword();
         String name = joinRequestDto.getName();
@@ -53,7 +55,19 @@ public class JoinServiceImpl implements JoinService {
         UserEntity userEntity = buildUserEntity(account, encodedPassword, name, phoneNumber, email);
         userEntity.addRole("USER");
 
-        UserEntity userEntity1 = userRepository.save(userEntity);
+        UserEntity returnedUserEntity = userRepository.save(userEntity);
+        return createJoinResponseDto(returnedUserEntity);
+    }
+
+    private JoinResponseDto createJoinResponseDto(UserEntity returnedUserEntity) {
+         return JoinResponseDto.builder()
+                .id(returnedUserEntity.getId())
+                .account(returnedUserEntity.getAccount())
+                .name(returnedUserEntity.getName())
+                .email(returnedUserEntity.getEmail())
+                .phoneNumber(returnedUserEntity.getPhoneNumber())
+                .roles(returnedUserEntity.getRoles())
+                .build();
     }
 
     private UserEntity buildUserEntity(String account, String password, String name, String phoneNumber, String email) {

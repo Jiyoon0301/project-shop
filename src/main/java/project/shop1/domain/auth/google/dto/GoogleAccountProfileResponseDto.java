@@ -26,5 +26,4 @@ public class GoogleAccountProfileResponseDto {
     private String typ;
 
     private String uid;
-
 }

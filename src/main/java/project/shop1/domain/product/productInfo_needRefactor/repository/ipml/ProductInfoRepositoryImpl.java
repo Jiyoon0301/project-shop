@@ -9,7 +9,7 @@ import project.shop1.domain.product.productInfo_needRefactor.repository.ProductI
 
 import java.util.Optional;
 
-import static project.shop1.entity.QBook.book;
+import static project.shop1.domain.product.entity.QBook.book;
 
 @Repository
 public class ProductInfoRepositoryImpl implements ProductInfoRepository {

@@ -1,4 +1,4 @@
-package project.shop1.entity;
+package project.shop1.domain.order.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -7,8 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import project.shop1.domain.order.entity.Delivery;
-import project.shop1.domain.order.enums.DeliveryStatus;
 
 
 /**
@@ -17,7 +15,7 @@ import project.shop1.domain.order.enums.DeliveryStatus;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QDelivery extends EntityPathBase<Delivery> {
 
-    private static final long serialVersionUID = -1075587913L;
+    private static final long serialVersionUID = 97285501L;
 
     public static final QDelivery delivery = new QDelivery("delivery");
 
@@ -25,7 +23,7 @@ public class QDelivery extends EntityPathBase<Delivery> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final EnumPath<DeliveryStatus> status = createEnum("status", DeliveryStatus.class);
+    public final EnumPath<project.shop1.domain.order.enums.DeliveryStatus> status = createEnum("status", project.shop1.domain.order.enums.DeliveryStatus.class);
 
     public QDelivery(String variable) {
         super(Delivery.class, forVariable(variable));

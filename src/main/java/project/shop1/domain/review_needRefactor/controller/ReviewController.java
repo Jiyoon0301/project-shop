@@ -6,11 +6,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import project.shop1.domain.product.review_needRefactor.dto.*;
 import project.shop1.domain.review_needRefactor.service.ReviewService;
 import project.shop1.domain.review_needRefactor.dto.*;
 import project.shop1.global.util.reponse.BooleanResponse;
-import project.shop1.domain.review.dto.*;
 
 import java.util.List;
 

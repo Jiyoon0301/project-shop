@@ -1,4 +1,4 @@
-package project.shop1.entity;
+package project.shop1.domain.cart.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -8,7 +8,6 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
-import project.shop1.domain.cart.entity.CartItem;
 
 
 /**
@@ -17,13 +16,13 @@ import project.shop1.domain.cart.entity.CartItem;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QCartItem extends EntityPathBase<CartItem> {
 
-    private static final long serialVersionUID = -1892838634L;
+    private static final long serialVersionUID = 1577886514L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QCartItem cartItem = new QCartItem("cartItem");
 
-    public final QBook book;
+    public final project.shop1.domain.product.entity.QBook book;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -49,7 +48,7 @@ public class QCartItem extends EntityPathBase<CartItem> {
 
     public QCartItem(Class<? extends CartItem> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.book = inits.isInitialized("book") ? new QBook(forProperty("book"), inits.get("book")) : null;
+        this.book = inits.isInitialized("book") ? new project.shop1.domain.product.entity.QBook(forProperty("book"), inits.get("book")) : null;
         this.userEntity = inits.isInitialized("userEntity") ? new project.shop1.domain.user.entity.QUserEntity(forProperty("userEntity")) : null;
     }
 

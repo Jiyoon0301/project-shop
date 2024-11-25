@@ -1,4 +1,4 @@
-package project.shop1.entity;
+package project.shop1.domain.product.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -8,8 +8,6 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
-import project.shop1.domain.product.entity.Book;
-import project.shop1.domain.product.entity.Review;
 
 
 /**
@@ -18,7 +16,7 @@ import project.shop1.domain.product.entity.Review;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QBook extends EntityPathBase<Book> {
 
-    private static final long serialVersionUID = -177877716L;
+    private static final long serialVersionUID = -1032864365L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
@@ -38,7 +36,7 @@ public class QBook extends EntityPathBase<Book> {
 
     public final NumberPath<Long> productNumber = createNumber("productNumber", Long.class);
 
-    public final ListPath<Review, QReview> reviews = this.<Review, QReview>createList("reviews", Review.class, QReview.class, PathInits.DIRECT2);
+    public final ListPath<project.shop1.domain.review_needRefactor.entity.Review, project.shop1.domain.review_needRefactor.entity.QReview> reviews = this.<project.shop1.domain.review_needRefactor.entity.Review, project.shop1.domain.review_needRefactor.entity.QReview>createList("reviews", project.shop1.domain.review_needRefactor.entity.Review.class, project.shop1.domain.review_needRefactor.entity.QReview.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> sold = createNumber("sold", Integer.class);
 

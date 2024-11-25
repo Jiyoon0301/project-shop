@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import project.shop1.domain.user.dto.JoinRequestDto;
+import project.shop1.domain.user.dto.JoinResponseDto;
 import project.shop1.domain.user.service.JoinService;
 import project.shop1.global.util.reponse.BooleanResponse;
 import project.shop1.global.util.validation.ValidationSequence;
@@ -22,13 +23,14 @@ public class JoinController {
 
     /**
      * 회원가입
+     *
      * @param joinRequestDto: String account, String password, String name, String phoneNumber, String email
      * @return
      */
     @PostMapping("/join")
     @PreAuthorize("permitAll()")
-    public ResponseEntity<BooleanResponse> join(@Validated(value = ValidationSequence.class) @RequestBody JoinRequestDto joinRequestDto) {
-        joinService.join(joinRequestDto);
-        return ResponseEntity.ok(BooleanResponse.of(true));
+    public ResponseEntity<JoinResponseDto> join(@Validated(value = ValidationSequence.class) @RequestBody JoinRequestDto joinRequestDto) {
+        JoinResponseDto joinResponseDto = joinService.join(joinRequestDto);
+        return ResponseEntity.ok(joinResponseDto);
     }
 }

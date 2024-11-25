@@ -1,7 +1,5 @@
 package project.shop1.domain.review_needRefactor.service;
 
-import project.shop1.domain.product.review_needRefactor.dto.*;
-import project.shop1.domain.review.dto.*;
 import project.shop1.domain.review_needRefactor.dto.*;
 
 import java.util.List;
@@ -19,8 +17,4 @@ public interface ReviewService {
 
     /* 리뷰 삭제 버튼 */
     void deleteReview(DeleteReviewRequestDto deleteReviewRequestDto);
-
-
-
-
-    }
+}

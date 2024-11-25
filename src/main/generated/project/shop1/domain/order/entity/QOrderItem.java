@@ -1,4 +1,4 @@
-package project.shop1.entity;
+package project.shop1.domain.order.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -8,7 +8,6 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
-import project.shop1.domain.order.entity.OrderItem;
 
 
 /**
@@ -17,13 +16,13 @@ import project.shop1.domain.order.entity.OrderItem;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QOrderItem extends EntityPathBase<OrderItem> {
 
-    private static final long serialVersionUID = 866942750L;
+    private static final long serialVersionUID = -1428687080L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QOrderItem orderItem = new QOrderItem("orderItem");
 
-    public final QBook book;
+    public final project.shop1.domain.product.entity.QBook book;
 
     public final NumberPath<Integer> count = createNumber("count", Integer.class);
 
@@ -51,7 +50,7 @@ public class QOrderItem extends EntityPathBase<OrderItem> {
 
     public QOrderItem(Class<? extends OrderItem> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.book = inits.isInitialized("book") ? new QBook(forProperty("book"), inits.get("book")) : null;
+        this.book = inits.isInitialized("book") ? new project.shop1.domain.product.entity.QBook(forProperty("book"), inits.get("book")) : null;
         this.order = inits.isInitialized("order") ? new QOrder(forProperty("order"), inits.get("order")) : null;
     }
 

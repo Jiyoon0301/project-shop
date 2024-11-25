@@ -1,4 +1,4 @@
-package project.shop1.domain.emailAuth.entity;
+package project.shop1.domain.auth.emailAuth_needRefactor.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import project.shop1.domain.auth.emailAuth_needRefactor.entity.EmailAuth;
 
 
 /**
@@ -16,7 +15,7 @@ import project.shop1.domain.auth.emailAuth_needRefactor.entity.EmailAuth;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QEmailAuth extends EntityPathBase<EmailAuth> {
 
-    private static final long serialVersionUID = 751455397L;
+    private static final long serialVersionUID = 84249648L;
 
     public static final QEmailAuth emailAuth = new QEmailAuth("emailAuth");
 
