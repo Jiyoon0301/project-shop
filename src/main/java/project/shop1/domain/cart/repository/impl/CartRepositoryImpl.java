@@ -55,7 +55,7 @@ public class CartRepositoryImpl implements CartRepository {
         return totalPrice;
     }
 
-    /* 장바구니 담기 버튼 */
+    /* 장바구니 담기 */
     public void addCart(CartItem cartItem){
         entityManager.persist(cartItem);
     }

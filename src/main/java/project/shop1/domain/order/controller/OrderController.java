@@ -28,7 +28,7 @@ public class OrderController {
         return orderPageResponseDto;
     }
 
-    /* 주문 페이지에서 구매하기 버튼 */
+    /* 주문 페이지에서 구매하기 */
     @PostMapping("/order/order-submitOrder-{userEntityId}") // SubmitOrderRequestDto : Boolean isFromCartPage, Long CartItemId, String address, Long bookid, int count
     @PreAuthorize("hasRole('USER')")
     public SubmitOrderResponseDto submitOrder (@PathVariable("userEntityId") Long userEntityId, @RequestBody SubmitOrderRequestDto submitOrderRequestDto){

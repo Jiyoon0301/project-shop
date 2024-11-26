@@ -46,6 +46,7 @@ public class ReviewController {
 
     /**
      * 특정 사용자 리뷰 조회
+     * 요청 GET /api/reviews/user/1
      * @param userId
      * @return String content, double rating, LocalDateTime regDate;
      */
@@ -57,6 +58,7 @@ public class ReviewController {
 
     /**
      * 리뷰 수정
+     * Authorization: Bearer <JWT_TOKEN>
      * @param reviewRequestDto: Long productId, Long userId, String content, double rating
      * @return
      */
@@ -69,6 +71,8 @@ public class ReviewController {
 
     /**
      * 리뷰 삭제
+     * 요청 POST /api/reviews/1
+     * Authorization: Bearer <JWT_TOKEN>
      * @param reviewId
      * @return
      */
@@ -80,6 +84,7 @@ public class ReviewController {
     }
 
     /**
+     * 요청 GET /api/reviews/product/1/average
      * 상품 리뷰 평균 별점 조회
      * @param productId
      * @return

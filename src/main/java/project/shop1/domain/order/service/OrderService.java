@@ -11,7 +11,7 @@ public interface OrderService {
     /* 주문 페이지 */
     OrderPageResponseDto orderPage(OrderPageRequestDto orderPageRequestDto);
 
-    /* 주문(구매하기 버튼) */
+    /* 주문(구매하기) */
     SubmitOrderResponseDto submitOrder(SubmitOrderRequestDto submitOrderRequestDto);
 
     /* 카트 목록으로 orderItems 리스트 생성 */

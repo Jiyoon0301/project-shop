@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface CartRepository {
 
-    /* 장바구니 담기 버튼 */
+    /* 장바구니 담기 */
     void addCart(CartItem cartItem);
 
     /* 장바구니 목록 */

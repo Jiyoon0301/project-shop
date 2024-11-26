@@ -101,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
         return orderPageResponseDto;
 
     }
-    /* 주문(구매하기 버튼) */
+    /* 주문(구매하기) */
     @Transactional
     @Override
     public SubmitOrderResponseDto submitOrder(SubmitOrderRequestDto submitOrderRequestDto){

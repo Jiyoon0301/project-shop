@@ -46,7 +46,7 @@ public class CartServiceImpl implements CartService {
         }
     }
 
-    /* 장바구니 담기 버튼 */
+    /* 장바구니 담기 */
     @Override
     @Transactional
     public void addCart(AddCartRequestDto addCartRequestDto){

@@ -77,21 +77,7 @@ public class Book {
         int restStock = this.stockQuantity - quantity;
         if (restStock < 0) {
             throw new BusinessException(ErrorCode.INSUFFICIENT_STOCK, "재고가 부족합니다.");
-//            throw new NotEnoughStockException("need more stock");
         }
         this.stockQuantity = restStock;
-    }
-
-    // 평점 평균 계산
-    public double calculateAverageRating() {
-        if (this.reviews.size() == 0) {
-            return 0.0;
-        } else {
-            double totalRating = 0.0;
-            for (Review review : this.reviews) {
-                totalRating += review.getRating();
-            }
-            return (totalRating / this.reviews.size());
-        }
     }
 }
