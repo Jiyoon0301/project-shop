@@ -1,4 +1,4 @@
-package project.shop1.domain.join.service.impl;
+package project.shop1.domain.user.service.impl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,7 +9,6 @@ import project.shop1.global.exception.BusinessException;
 import project.shop1.domain.user.dto.GetUserResponseDto;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.domain.user.repository.UserRepository;
-import project.shop1.domain.user.service.impl.UserServiceImpl;
 
 import java.util.Optional;
 

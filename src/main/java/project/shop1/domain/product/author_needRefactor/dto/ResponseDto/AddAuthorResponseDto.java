@@ -14,6 +14,4 @@ public class AddAuthorResponseDto {
     private String name;
     private String nation;
     private List<Book> books;
-
-
 }

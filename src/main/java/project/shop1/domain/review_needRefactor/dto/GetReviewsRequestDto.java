@@ -3,7 +3,8 @@ package project.shop1.domain.review_needRefactor.dto;
 import lombok.Data;
 
 @Data
-public class DeleteReviewRequestDto {
+public class GetReviewsRequestDto {
 
-    private Long productId;
+    private int page;
+    private int size;
 }

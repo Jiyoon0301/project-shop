@@ -1,4 +1,4 @@
-package project.shop1.domain.join.service.impl;
+package project.shop1.domain.user.service.impl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,7 +10,6 @@ import project.shop1.domain.auth.emailAuth_needRefactor.service.EmailAuthService
 import project.shop1.domain.user.repository.UserRepository;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.domain.user.dto.JoinRequestDto;
-import project.shop1.domain.user.service.impl.JoinServiceImpl;
 
 import java.util.Optional;
 

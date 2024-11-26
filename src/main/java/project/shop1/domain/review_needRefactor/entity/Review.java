@@ -27,10 +27,10 @@ public class Review {
     @JoinColumn(name = "user_entity_id")
     private UserEntity userEntity;
 
-    /* 리뷰 내용 */
+    // 상품에 대한 리뷰 내용
     private String content;
 
-    /* 상품의 평점 */
+    // 상품의 평점
     private double rating;
 
     private LocalDateTime regDate;

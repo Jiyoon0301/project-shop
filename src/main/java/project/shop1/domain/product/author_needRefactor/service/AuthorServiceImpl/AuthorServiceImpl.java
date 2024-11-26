@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.shop1.domain.product.author_needRefactor.dto.AddAuthorRequestDto;
+import project.shop1.domain.product.author_needRefactor.dto.ResponseDto.AddAuthorResponseDto;
 import project.shop1.domain.product.author_needRefactor.service.AuthorService;
 import project.shop1.domain.product.entity.Author;
 import project.shop1.domain.product.author_needRefactor.dto.RequestDto.FindAuthorByNameRequestDto;
@@ -21,8 +23,9 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
 
     @Override
-    public void addAuthor() {
+    public AddAuthorResponseDto addAuthor(AddAuthorRequestDto addAuthorRequestDto) {
 
+        return null;
     }
 
     /* 작가 검색

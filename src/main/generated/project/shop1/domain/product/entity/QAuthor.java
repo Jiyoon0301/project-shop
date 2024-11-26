@@ -20,8 +20,6 @@ public class QAuthor extends EntityPathBase<Author> {
 
     public static final QAuthor author = new QAuthor("author");
 
-    public final StringPath authorIntro = createString("authorIntro");
-
     public final ListPath<Book, QBook> book = this.<Book, QBook>createList("book", Book.class, QBook.class, PathInits.DIRECT2);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
@@ -29,10 +27,6 @@ public class QAuthor extends EntityPathBase<Author> {
     public final StringPath name = createString("name");
 
     public final StringPath nation = createString("nation");
-
-    public final DatePath<java.time.LocalDate> regDate = createDate("regDate", java.time.LocalDate.class);
-
-    public final DatePath<java.time.LocalDate> updateDate = createDate("updateDate", java.time.LocalDate.class);
 
     public QAuthor(String variable) {
         super(Author.class, forVariable(variable));

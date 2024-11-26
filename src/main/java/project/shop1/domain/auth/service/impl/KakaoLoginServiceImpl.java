@@ -46,9 +46,9 @@ public class KakaoLoginServiceImpl implements LoginService<SocialLoginRequestDto
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    @Value("${kakao.client_id}")
+    @Value("${spring.security.oauth2.client.registration.kakao.client_id}")
     private String clientId;
-    @Value("${kakao.redirect_uri}")
+    @Value("${spring.security.oauth2.client.registration.kakao.redirect_uri}")
     private String redirectUri;
 
     /* 카카오 로그인 전체 서비스 로직 */

@@ -7,11 +7,8 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class GetReviewByProductIdResponseDto {
-
-    private String userEntityName;
+public class GetReviewsResponseDto {
     private String content;
     private double rating;
     private LocalDateTime regDate;
-
 }

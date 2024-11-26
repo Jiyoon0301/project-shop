@@ -50,6 +50,10 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity")
     private List<Review> reviews = new ArrayList<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
+
     public UserEntity(String account, String password, String name, String phoneNumber, String email) {
         this.account = account;
         this.password = password;
@@ -58,11 +62,11 @@ public class UserEntity {
         this.email = email;
     }
 
-    /* 관리자, 일반 계정 구분 */
-    //private int adminCk = 0; // 0 = 일반계정, 1 = 관리자 계정
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
+    public UserEntity(String name, String email, String role) {
+        this.name = name;
+        this.email = email;
+        this.roles.add(role);
+    }
 
     /* 회원이 가지고 있는 권한(authority) 목록을 SimpleGrantedAuthority로 변환하여 반환 */
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -77,5 +81,4 @@ public class UserEntity {
     public void addRole(String role) {
         this.roles.add(role);
     }
-
 }

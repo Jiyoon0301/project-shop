@@ -6,15 +6,21 @@ import java.util.List;
 
 public interface ReviewService {
 
-    /* 리뷰 등록 버튼 */
-    void registerReview(RegisterReviewRequestDto registerReviewRequestDto);
+    // 리뷰 등록
+    void registerReview(ReviewRequestDto reviewRequestDto);
 
-    /* 상품에 대한 리뷰 조회 - productId로 */
-    List<GetReviewByProductIdResponseDto> getReviewByProductId(GetReviewByProductIdRequestDto getReviewByProductIdRequestDto);
+    // 특정 상품에 대한 리뷰 조회
+    List<GetReviewsResponseDto> getReviewsByProduct(Long id, GetReviewsRequestDto getReviewsRequestDto);
 
-    /* 리뷰 수정 */
-    void updateReview(UpdateReviewRequestDto updateReviewRequestDto);
+    // 특정 사용자의 리뷰 조회
+    List<GetReviewsResponseDto> getReviewsByUser(Long userId);
 
-    /* 리뷰 삭제 버튼 */
-    void deleteReview(DeleteReviewRequestDto deleteReviewRequestDto);
+    // 리뷰 수정
+    void updateReview(ReviewRequestDto reviewRequestDto);
+
+    // 리뷰 삭제
+    void deleteReview(Long reviewId);
+
+    // 상품 리뷰 평균 별점 조회
+    double getAverageRating(Long productId);
 }

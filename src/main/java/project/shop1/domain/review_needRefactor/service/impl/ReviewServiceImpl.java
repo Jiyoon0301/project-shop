@@ -29,24 +29,26 @@ public class ReviewServiceImpl implements ReviewService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
-    /* 리뷰 등록 버튼 */
+    /**
+     * 리뷰 등록
+     * @param reviewRequestDto
+     */
     @Override
     @Transactional
-    public void registerReview(RegisterReviewRequestDto registerReviewRequestDto){
-        String account = SecurityUtils.getCurrentUsername();
+    public void registerReview(ReviewRequestDto reviewRequestDto){
         UserEntity userEntity = userRepository.findByAccount(account).get();
 
-        Long productId = registerReviewRequestDto.getProductId();
+        Long productId = reviewRequestDto.getProductId();
         Book book = productRepository.findById(productId).get();
 
         // 회원의 중복 리뷰 확인
-        Optional<Review> checkDuplicateReview = reviewRepository.findReviewByProductIdAndUserEntityAccount(productId, account);
+        Optional<Review> checkDuplicateReview = reviewRepository.findReviewsByProductIdAndUserEntityId(productId, id);
         if (checkDuplicateReview.isPresent()){
             throw new BusinessException(ErrorCode.RESOURCE_CONFLICT, "이미 등록된 리뷰가 존재합니다.");
         }
 
-        String content = registerReviewRequestDto.getContent();
-        double rating = registerReviewRequestDto.getRating();
+        String content = reviewRequestDto.getContent();
+        double rating = reviewRequestDto.getRating();
 
         Review review = Review.builder()
                 .userEntity(userEntity)
@@ -56,7 +58,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .regDate(LocalDateTime.now())
                 .build();
 
-        reviewRepository.saveReview(review);
+        reviewRepository.save(review);
 
         // 평점 평균 업데이트
         book.addReview(review);
@@ -65,19 +67,23 @@ public class ReviewServiceImpl implements ReviewService {
 
     /* 상품에 대한 리뷰 조회 - productId로 */
     @Override
-    public List<GetReviewByProductIdResponseDto> getReviewByProductId(GetReviewByProductIdRequestDto getReviewByProductIdRequestDto){
+    public List<GetReviewsResponseDto> getReviewsByProduct(Long id, GetReviewsRequestDto getReviewsRequestDto){
+        int size = getReviewsRequestDto.getSize()
+        int page = getReviewsRequestDto.getPage();
 
-        Long productId = getReviewByProductIdRequestDto.getProductId();
-        int page = getReviewByProductIdRequestDto.getPage();
-
-        List<Review> reviews = reviewRepository.findReviewByProductId(productId, page);
-        List<GetReviewByProductIdResponseDto> result = new ArrayList<>();
+        List<Review> reviews = reviewRepository.findReviewsByProductId(id, page);
+        List<GetReviewsResponseDto> getReviewsResponseDtos = new ArrayList<>();
 
         for (Review review : reviews){
-            GetReviewByProductIdResponseDto dto = new GetReviewByProductIdResponseDto(review.getUserEntity().getName(),review.getContent(),review.getRating(),review.getRegDate());
-            result.add(dto);
+            GetReviewsResponseDto dto = new GetReviewsResponseDto(review.getContent(), review.getRating(), review.getRegDate());
+            getReviewsResponseDtos.add(dto);
         }
-        return result;
+        return getReviewsResponseDtos.subList((page - 1) * size, page * size); // 수정
+    }
+
+    @Override
+    public List<GetReviewsResponseDto> getReviewsByUser(Long userId) {
+        return null;
     }
 
     /* 리뷰 수정 등록 버튼 */
