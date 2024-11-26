@@ -7,7 +7,7 @@ import java.util.List;
 public interface ReviewService {
 
     // 리뷰 등록
-    void registerReview(ReviewRequestDto reviewRequestDto);
+    void createReview(ReviewRequestDto reviewRequestDto);
 
     // 특정 상품에 대한 리뷰 조회
     List<GetReviewsResponseDto> getReviewsByProduct(Long id, GetReviewsRequestDto getReviewsRequestDto);
@@ -16,7 +16,7 @@ public interface ReviewService {
     List<GetReviewsResponseDto> getReviewsByUser(Long userId);
 
     // 리뷰 수정
-    void updateReview(ReviewRequestDto reviewRequestDto);
+    void updateReview(Long reviewId, ReviewRequestDto reviewRequestDto);
 
     // 리뷰 삭제
     void deleteReview(Long reviewId);

@@ -35,40 +35,28 @@ public class ReviewServiceImpl implements ReviewService {
      */
     @Override
     @Transactional
-    public void registerReview(ReviewRequestDto reviewRequestDto){
-        UserEntity userEntity = userRepository.findByAccount(account).get();
+    public void createReview(ReviewRequestDto reviewRequestDto){
+        Book book = productRepository.findById(reviewRequestDto.getProductId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "유효하지 않은 상품 ID입니다."));
 
-        Long productId = reviewRequestDto.getProductId();
-        Book book = productRepository.findById(productId).get();
-
-        // 회원의 중복 리뷰 확인
-        Optional<Review> checkDuplicateReview = reviewRepository.findReviewsByProductIdAndUserEntityId(productId, id);
-        if (checkDuplicateReview.isPresent()){
-            throw new BusinessException(ErrorCode.RESOURCE_CONFLICT, "이미 등록된 리뷰가 존재합니다.");
-        }
-
-        String content = reviewRequestDto.getContent();
-        double rating = reviewRequestDto.getRating();
+        UserEntity userEntity = userRepository.findById(reviewRequestDto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
 
         Review review = Review.builder()
                 .userEntity(userEntity)
                 .book(book)
-                .content(content)
-                .rating(rating)
+                .content(reviewRequestDto.getContent())
+                .rating(reviewRequestDto.getRating())
                 .regDate(LocalDateTime.now())
                 .build();
 
         reviewRepository.save(review);
-
-        // 평점 평균 업데이트
-        book.addReview(review);
-        book.calAverageRating();
     }
 
-    /* 상품에 대한 리뷰 조회 - productId로 */
+    // 특정 상품에 대한 리뷰 조회
     @Override
     public List<GetReviewsResponseDto> getReviewsByProduct(Long id, GetReviewsRequestDto getReviewsRequestDto){
-        int size = getReviewsRequestDto.getSize()
+        int size = getReviewsRequestDto.getSize();
         int page = getReviewsRequestDto.getPage();
 
         List<Review> reviews = reviewRepository.findReviewsByProductId(id, page);
@@ -86,38 +74,53 @@ public class ReviewServiceImpl implements ReviewService {
         return null;
     }
 
-    /* 리뷰 수정 등록 버튼 */
     @Override
-    @Transactional
-    public void updateReview(UpdateReviewRequestDto updateReviewRequestDto){
-        String account = SecurityUtils.getCurrentUsername();
-
-        Long productId = updateReviewRequestDto.getProductId();
-        String content = updateReviewRequestDto.getContent();
-        double rating = updateReviewRequestDto.getRating();
-        LocalDateTime regDate = LocalDateTime.now();
-
-        reviewRepository.updateReview(productId, account, content, rating, regDate);
-
-        // 수정된 평점을 상품 평점평균에 반영
-        Book book = productRepository.findById(productId).get();
-        book.calAverageRating();
+    public void updateReview(Long reviewId, ReviewRequestDto reviewRequestDto) {
 
     }
 
-    /* 리뷰 삭제 버튼 */
     @Override
-    @Transactional
-    public void deleteReview(DeleteReviewRequestDto deleteReviewRequestDto){
-        String account = SecurityUtils.getCurrentUsername();
-        Long productId = deleteReviewRequestDto.getProductId();
+    public void deleteReview(Long reviewId) {
 
-        Review review = reviewRepository.findReviewByProductIdAndUserEntityAccount(productId, account).get();
-        reviewRepository.deleteReview(review);
-
-        // 평점 평균 업데이트
-        Book book = productRepository.findById(productId).get();
-        book.getReviews().remove(review);
-        book.calAverageRating();
     }
+
+    @Override
+    public double getAverageRating(Long productId) {
+        return 0;
+    }
+
+    /* 리뷰 수정 */
+//    @Override
+//    @Transactional
+//    public void updateReview(UpdateReviewRequestDto updateReviewRequestDto){
+//        String account = SecurityUtils.getCurrentUsername();
+//
+//        Long productId = updateReviewRequestDto.getProductId();
+//        String content = updateReviewRequestDto.getContent();
+//        double rating = updateReviewRequestDto.getRating();
+//        LocalDateTime regDate = LocalDateTime.now();
+//
+//        reviewRepository.updateReview(productId, account, content, rating, regDate);
+//
+//        // 수정된 평점을 상품 평점평균에 반영
+//        Book book = productRepository.findById(productId).get();
+//        book.calAverageRating();
+//
+//    }
+//
+//    /* 리뷰 삭제 */
+//    @Override
+//    @Transactional
+//    public void deleteReview(DeleteReviewRequestDto deleteReviewRequestDto){
+//        String account = SecurityUtils.getCurrentUsername();
+//        Long productId = deleteReviewRequestDto.getProductId();
+//
+//        Review review = reviewRepository.findReviewByProductIdAndUserEntityAccount(productId, account).get();
+//        reviewRepository.deleteReview(review);
+//
+//        // 평점 평균 업데이트
+//        Book book = productRepository.findById(productId).get();
+//        book.getReviews().remove(review);
+//        book.calAverageRating();
+//    }
 }

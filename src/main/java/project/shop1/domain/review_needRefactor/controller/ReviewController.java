@@ -20,13 +20,13 @@ public class ReviewController {
 
     /**
      * 리뷰 작성
-     * @param reviewRequestDto: Long productId, String content, double rating
+     * @param reviewRequestDto: Long productId, Long userId, String content, double rating
      * @return
      */
     @PostMapping("/create")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BooleanResponse> createReview(@Valid @RequestBody ReviewRequestDto reviewRequestDto) {
-        reviewService.registerReview(reviewRequestDto);
+        reviewService.createReview(reviewRequestDto);
         return ResponseEntity.ok(BooleanResponse.of(true));
     }
 
@@ -56,7 +56,7 @@ public class ReviewController {
 
     /**
      * 리뷰 수정
-     * @param reviewRequestDto: Long productId, String content, double rating
+     * @param reviewRequestDto: Long productId, Long userId, String content, double rating
      * @return
      */
     @PutMapping("/update")

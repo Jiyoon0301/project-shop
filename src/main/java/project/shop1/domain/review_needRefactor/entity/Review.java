@@ -31,7 +31,7 @@ public class Review {
     private String content;
 
     // 상품의 평점
-    private double rating;
+    private int rating;
 
     private LocalDateTime regDate;
 }
