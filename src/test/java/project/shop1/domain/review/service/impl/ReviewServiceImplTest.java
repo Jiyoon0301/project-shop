@@ -12,9 +12,11 @@ import project.shop1.domain.review.entity.Review;
 import project.shop1.domain.review.repository.ReviewRepository;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.domain.user.repository.UserRepository;
+import project.shop1.global.exception.BusinessException;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class) //Junit5
@@ -52,5 +54,24 @@ public class ReviewServiceImplTest {
         verify(productRepository, times(1)).findById(productId);
         verify(userRepository, times(1)).findById(userId);
         verify(reviewRepository, times(1)).save(any(Review.class));
+    }
+    
+    @Test
+    void 유효하지_않은_상품_아이디로_리뷰_등록을_시도하면_예외가_발생한다() {
+        // given
+        Long invalidProductId = 999L;
+        Long userId = 2L;
+        ReviewRequestDto requestDto = new ReviewRequestDto(invalidProductId, userId, "Great book!", 5);
+
+        when(productRepository.findById(invalidProductId)).thenReturn(Optional.empty());
+        
+        // when & then
+        assertThatThrownBy(() -> reviewService.createReview(requestDto))
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining("유효하지 않은 상품 ID입니다.");
+
+        verify(productRepository, times(1)).findById(invalidProductId);
+        verify(userRepository, never()).findById(any());
+        verify(reviewRepository, never()).save(any());
     }
 }
