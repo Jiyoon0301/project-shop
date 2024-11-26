@@ -2,6 +2,7 @@ package project.shop1.domain.review_needRefactor.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -33,13 +34,13 @@ public class ReviewController {
     /**
      * 특정 상품에 대한 리뷰 조회
      * @param productId
-     * @param getReviewsRequestDto: int page, int size
-     * @return  String content, double rating, LocalDateTime regDate;
+     * @param getReviewsRequestDto: Integer rating, int page, int size, String sortBy
+     * @return Long id, String content, int rating, String userName, LocalDateTime regDate
      */
     @PostMapping("/product/{productId}")
-    public ResponseEntity<List<GetReviewsResponseDto>> getReviewByProduct(@PathVariable Long productId,
+    public ResponseEntity<Page<GetReviewsResponseDto>> getReviewByProduct(@PathVariable Long productId,
                                                                     @RequestBody GetReviewsRequestDto getReviewsRequestDto) {
-        List<GetReviewsResponseDto> reviews = reviewService.getReviewsByProduct(productId, getReviewsRequestDto);
+        Page<GetReviewsResponseDto> reviews = reviewService.getReviewsByProduct(productId, getReviewsRequestDto);
         return ResponseEntity.ok(reviews);
     }
 

@@ -1,6 +1,10 @@
 package project.shop1.domain.review_needRefactor.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.shop1.domain.product.repository.ProductRepository;
@@ -19,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,18 +60,30 @@ public class ReviewServiceImpl implements ReviewService {
 
     // 특정 상품에 대한 리뷰 조회
     @Override
-    public List<GetReviewsResponseDto> getReviewsByProduct(Long id, GetReviewsRequestDto getReviewsRequestDto){
-        int size = getReviewsRequestDto.getSize();
-        int page = getReviewsRequestDto.getPage();
-
-        List<Review> reviews = reviewRepository.findReviewsByProductId(id, page);
-        List<GetReviewsResponseDto> getReviewsResponseDtos = new ArrayList<>();
-
-        for (Review review : reviews){
-            GetReviewsResponseDto dto = new GetReviewsResponseDto(review.getContent(), review.getRating(), review.getRegDate());
-            getReviewsResponseDtos.add(dto);
+    public Page<GetReviewsResponseDto> getReviewsByProduct(Long productId, GetReviewsRequestDto getReviewsRequestDto){
+        Sort sort = Sort.by("regDate"); // 기본 정렬은 작성 날짜 기준
+        if ("rating".equalsIgnoreCase(getReviewsRequestDto.getSortBy())) {
+            sort = Sort.by("rating");
         }
-        return getReviewsResponseDtos.subList((page - 1) * size, page * size); // 수정
+
+        // 페이지네이션 정보 설정
+        Pageable pageable = PageRequest.of(getReviewsRequestDto.getPage(), 10, sort);
+
+        // JPA 페이지네이션 쿼리 실행
+        Page<Review> reviewsPage = reviewRepository.findByProductIdAndRating(
+                productId,
+                getReviewsRequestDto.getRating(),
+                pageable
+        );
+
+        // 엔티티 -> DTO 변환
+        return reviewsPage.map(review -> GetReviewsResponseDto.builder()
+                .id(review.getId())
+                .content(review.getContent())
+                .rating(review.getRating())
+                .userName(review.getUserEntity().getName())
+                .regDate(review.getRegDate().toString())
+                .build());
     }
 
     @Override

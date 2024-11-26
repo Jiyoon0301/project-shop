@@ -1,5 +1,6 @@
 package project.shop1.domain.review_needRefactor.service;
 
+import org.springframework.data.domain.Page;
 import project.shop1.domain.review_needRefactor.dto.*;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface ReviewService {
     void createReview(ReviewRequestDto reviewRequestDto);
 
     // 특정 상품에 대한 리뷰 조회
-    List<GetReviewsResponseDto> getReviewsByProduct(Long id, GetReviewsRequestDto getReviewsRequestDto);
+    Page<GetReviewsResponseDto> getReviewsByProduct(Long id, GetReviewsRequestDto getReviewsRequestDto);
 
     // 특정 사용자의 리뷰 조회
     List<GetReviewsResponseDto> getReviewsByUser(Long userId);
