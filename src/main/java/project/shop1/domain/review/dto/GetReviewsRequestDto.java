@@ -1,4 +1,4 @@
-package project.shop1.domain.review_needRefactor.dto;
+package project.shop1.domain.review.dto;
 
 import lombok.Data;
 

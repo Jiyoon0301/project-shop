@@ -13,14 +13,12 @@ public class OAuthAttributes {
     private String nameAttributeKey;
     private String name;
     private String email;
-    private String picture;
 
-    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, String picture) {
+    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email) {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
         this.name = name;
         this.email = email;
-        this.picture = picture;
     }
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
@@ -37,7 +35,7 @@ public class OAuthAttributes {
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
         return new OAuthAttributes(attributes, userNameAttributeName,
                 (String) attributes.get("name"),
-                (String) attributes.get("email");
+                (String) attributes.get("email"));
     }
 
     private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
@@ -46,7 +44,7 @@ public class OAuthAttributes {
 
         return new OAuthAttributes(attributes, userNameAttributeName,
                 (String) profile.get("nickname"),
-                (String) kakaoAccount.get("email");
+                (String) kakaoAccount.get("email"));
     }
 
     private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
@@ -54,7 +52,7 @@ public class OAuthAttributes {
 
         return new OAuthAttributes(attributes, userNameAttributeName,
                 (String) response.get("name"),
-                (String) response.get("email");
+                (String) response.get("email"));
     }
 
     public UserEntity toEntity() {

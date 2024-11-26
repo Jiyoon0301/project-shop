@@ -1,7 +1,7 @@
-package project.shop1.domain.review_needRefactor.service;
+package project.shop1.domain.review.service;
 
 import org.springframework.data.domain.Page;
-import project.shop1.domain.review_needRefactor.dto.*;
+import project.shop1.domain.review.dto.*;
 
 import java.util.List;
 

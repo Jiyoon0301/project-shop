@@ -1,10 +1,8 @@
-package project.shop1.domain.review_needRefactor.dto;
+package project.shop1.domain.review.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor

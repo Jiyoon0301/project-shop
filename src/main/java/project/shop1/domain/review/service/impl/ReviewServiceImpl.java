@@ -1,4 +1,4 @@
-package project.shop1.domain.review_needRefactor.service.impl;
+package project.shop1.domain.review.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -8,21 +8,19 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.shop1.domain.product.repository.ProductRepository;
-import project.shop1.domain.review_needRefactor.repository.ReviewRepository;
-import project.shop1.domain.review_needRefactor.service.ReviewService;
-import project.shop1.domain.review_needRefactor.dto.*;
+import project.shop1.domain.review.repository.ReviewRepository;
+import project.shop1.domain.review.service.ReviewService;
+import project.shop1.domain.review.dto.*;
 import project.shop1.global.exception.BusinessException;
 import project.shop1.global.exception.ErrorCode;
 import project.shop1.domain.user.repository.UserRepository;
 import project.shop1.global.security.SecurityUtils;
 import project.shop1.domain.product.entity.Book;
-import project.shop1.domain.review_needRefactor.entity.Review;
+import project.shop1.domain.review.entity.Review;
 import project.shop1.domain.user.entity.UserEntity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,11 +32,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
-    /**
-     * 리뷰 등록
-     *
-     * @param reviewRequestDto
-     */
+    // 리뷰 등록
     @Override
     @Transactional
     public void createReview(ReviewRequestDto reviewRequestDto) {

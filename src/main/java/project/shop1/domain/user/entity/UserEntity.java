@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import project.shop1.domain.cart.entity.CartItem;
 import project.shop1.domain.order.entity.Order;
-import project.shop1.domain.review_needRefactor.entity.Review;
+import project.shop1.domain.review.entity.Review;
 import project.shop1.domain.user.enums.UserRank;
 
 import java.util.ArrayList;

@@ -1,11 +1,13 @@
-package project.shop1.domain.review_needRefactor.dto;
+package project.shop1.domain.review.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class ReviewRequestDto {
 
     private Long productId;

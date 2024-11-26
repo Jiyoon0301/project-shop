@@ -1,4 +1,4 @@
-package project.shop1.domain.review_needRefactor.entity;
+package project.shop1.domain.review.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

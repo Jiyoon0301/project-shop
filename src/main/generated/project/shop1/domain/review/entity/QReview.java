@@ -1,4 +1,4 @@
-package project.shop1.domain.review_needRefactor.entity;
+package project.shop1.domain.review.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QReview extends EntityPathBase<Review> {
 
-    private static final long serialVersionUID = 1739407122L;
+    private static final long serialVersionUID = -1380969041L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
@@ -28,7 +28,7 @@ public class QReview extends EntityPathBase<Review> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Double> rating = createNumber("rating", Double.class);
+    public final NumberPath<Integer> rating = createNumber("rating", Integer.class);
 
     public final DateTimePath<java.time.LocalDateTime> regDate = createDateTime("regDate", java.time.LocalDateTime.class);
 

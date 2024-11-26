@@ -1,9 +1,9 @@
-package project.shop1.domain.review_needRefactor.repository;
+package project.shop1.domain.review.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import project.shop1.domain.review_needRefactor.entity.Review;
+import project.shop1.domain.review.entity.Review;
 import project.shop1.domain.user.entity.UserEntity;
 
 import java.time.LocalDateTime;

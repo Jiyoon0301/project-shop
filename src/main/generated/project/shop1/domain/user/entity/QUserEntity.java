@@ -40,7 +40,7 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public final StringPath phoneNumber = createString("phoneNumber");
 
-    public final ListPath<project.shop1.domain.review_needRefactor.entity.Review, project.shop1.domain.review_needRefactor.entity.QReview> reviews = this.<project.shop1.domain.review_needRefactor.entity.Review, project.shop1.domain.review_needRefactor.entity.QReview>createList("reviews", project.shop1.domain.review_needRefactor.entity.Review.class, project.shop1.domain.review_needRefactor.entity.QReview.class, PathInits.DIRECT2);
+    public final ListPath<project.shop1.domain.review.entity.Review, project.shop1.domain.review.entity.QReview> reviews = this.<project.shop1.domain.review.entity.Review, project.shop1.domain.review.entity.QReview>createList("reviews", project.shop1.domain.review.entity.Review.class, project.shop1.domain.review.entity.QReview.class, PathInits.DIRECT2);
 
     public final ListPath<String, StringPath> roles = this.<String, StringPath>createList("roles", String.class, StringPath.class, PathInits.DIRECT2);
 
