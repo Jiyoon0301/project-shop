@@ -26,7 +26,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewRep
     void deleteReview(Review review);
 
     // 제품 ID로 필터링하고 평점은 옵션으로 추가 (null 가능)
-    Page<Review> findByProductIdAndRating(Long productId, Integer rating, Pageable pageable);
+    Page<Review> findByProductIdAndRating(Long bookId, Integer rating, Pageable pageable);
 
     List<Review> findByUser(UserEntity userEntity);
 }

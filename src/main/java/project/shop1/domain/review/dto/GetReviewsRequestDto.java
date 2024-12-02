@@ -1,8 +1,10 @@
 package project.shop1.domain.review.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class GetReviewsRequestDto {
     private Integer rating; // 특정 평점 필터 (옵션)
     private int page = 0;

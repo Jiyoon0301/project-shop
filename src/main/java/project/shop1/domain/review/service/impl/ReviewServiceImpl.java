@@ -71,6 +71,11 @@ public class ReviewServiceImpl implements ReviewService {
                 pageable
         );
 
+        // reviewsPage가 null인 경우 빈 페이지를 반환
+        if (reviewsPage == null) {
+            reviewsPage = Page.empty(pageable);
+        }
+
         // 엔티티 -> DTO 변환
         return reviewsPage.map(review -> GetReviewsResponseDto.builder()
                 .id(review.getId())

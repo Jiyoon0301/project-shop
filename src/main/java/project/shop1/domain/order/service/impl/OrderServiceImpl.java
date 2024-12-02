@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,8 +35,10 @@ import project.shop1.domain.order.service.OrderService;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,148 +50,149 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
+    private final ModelMapper modelMapper; // Entity-DTO 변환용
 
-//    @Transactional
-//    public void addStock(String itemName, int quantity) {
-//        Item item = orderRepository.findItemByName(itemName);
-//        item.setStockQuantity(item.getStockQuantity() + quantity);
-//    }
-//
-//    public void cancel(Order order) {
-//        if (order.getDelivery().getStatus() == DeliveryStatus.COMPLETE) {
-//            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
-//        }
-//        order.setStatus(OrderStatus.CANCEL);
-//        for (OrderItem orderItem : order.getOrderItems()) {
-//            addStock(orderItem.getItem().getTitle(), orderItem.getCount()); //재고 수량 원상 복구
-//        }
-//    }
-
-    /* 주문 페이지 */
+    // 주문 생성
     @Override
-    public OrderPageResponseDto orderPage(OrderPageRequestDto orderPageRequestDto){
-        String account = SecurityUtils.getCurrentUsername();
-        UserEntity userEntity = userRepository.findByAccount(account).get();
+    @Transactional
+    public OrderResponseDto createOrder(OrderRequestDto orderRequestDto) {
+        // 사용자 조회
+        UserEntity userEntity = userRepository.findById(orderRequestDto.getUserId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "존재하지 않는 사용자입니다."));
 
-        List<ProductInfoPairs> productInfoPairs = new ArrayList<>();
-        int totalPrice = 0;
+        // 주문 상품 검증 및 조회
+        List<OrderItem> orderItems = orderRequestDto.getOrderItems().stream()
+                .map(itemDto -> {
+                    Book product = productRepository.findById(itemDto.getProductId())
+                            .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
-        /* 장바구니 구매인지 확인 */
-        if (orderPageRequestDto.getIsFromCartPage()){
-            List<CartItem> allCartItems = cartRepository.findAllCartItemsByUser(userEntity);
-            for (CartItem cartItem : allCartItems){
-                totalPrice += cartItem.getQuantity() * cartItem.getBook().getPrice();
-                productInfoPairs.add(new ProductInfoPairs(cartItem.getBook().getTitle(),cartItem.getQuantity(),cartItem.getBook().getPrice()));
-            }
-        } else {
-            Long bookId = orderPageRequestDto.getBookId();
-            int count = orderPageRequestDto.getCount();
-            Book bookToBuy = productRepository.findById(bookId).get();
-            totalPrice = count * bookToBuy.getPrice();
-            productInfoPairs.add(new ProductInfoPairs(bookToBuy.getTitle(), count, bookToBuy.getPrice()));
-        }
+                    return OrderItem.builder()
+                            .book(product)
+                            .quantity(itemDto.getQuantity())
+                            .orderPrice(product.getPrice() * itemDto.getQuantity())
+                            .build();
+                })
+                .collect(Collectors.toList());
 
-        OrderPageResponseDto orderPageResponseDto = OrderPageResponseDto.builder()
-                .userEntityname(userEntity.getName())
-                .userEntityPhoneNumber(userEntity.getPhoneNumber())
-                .userEntityAddress(userEntity.getAddress())
-                .productInfoPairs(productInfoPairs)
+        // 주문 총액 계산
+        int totalPrice = orderItems.stream()
+                .mapToInt(OrderItem::getOrderPrice)
+                .sum();
+
+        // 주문 생성
+        Order order = Order.builder()
+                .userEntity(userEntity)
+                .orderItems(orderItems)
                 .totalPrice(totalPrice)
-                .deliveryFee(2500)
-                .amountToPay(totalPrice+2500)
+                .orderStatus(OrderStatus.PENDING) // 기본 상태 설정
+                .orderDate(LocalDateTime.now())
                 .build();
 
-        return orderPageResponseDto;
+        // 저장
+        orderRepository.save(order);
 
-    }
-    /* 주문(구매하기) */
-    @Transactional
-    @Override
-    public SubmitOrderResponseDto submitOrder(SubmitOrderRequestDto submitOrderRequestDto){
-        String address = submitOrderRequestDto.getAddress();
-        String account = SecurityUtils.getCurrentUsername();
-        int totalProductPrice = 0;
-
-        UserEntity userEntity = userRepository.findByAccount(account).get();
-
-        List<OrderItem> orderItems = new ArrayList<>();
-        if (submitOrderRequestDto.getIsFromCartPage()){ //장바구니 페이지에서 넘어온 경우
-            List<Long> cartItemIds = submitOrderRequestDto.getCartItemId();
-            try {
-                orderItems = createOrderItemList(cartItemIds);
-            } catch (BusinessException e){
-                throw e;
-            }
-        } else{ //단일아이템 구매시
-            Long bookId = submitOrderRequestDto.getBookId();
-            int count = submitOrderRequestDto.getCount();
-            Book book = productRepository.findById(bookId).get();
-            book.removeStock(count);
-            OrderItem orderItem = OrderItem.createOrderItem(book, book.getPrice(), count);
-            orderItems.add(orderItem);
-        }
-        Delivery delivery = Delivery.createDelivery(address, DeliveryStatus.READY);
-
-        Order order = Order.createOrder(userEntity, address, delivery, orderItems);
-
-        orderRepository.saveOrder(order);
-
-        List<String> bookNameList = new ArrayList<>();
-        List<Integer> countList = new ArrayList<>();
-        List<Integer> priceList = new ArrayList<>();
-        for (OrderItem orderItem : orderItems){
-            bookNameList.add(orderItem.getBook().getTitle());
-            countList.add(orderItem.getCount());
-            priceList.add(orderItem.getOrderPrice());
-        }
-
-        /* Order 세팅 */
-        userEntity.getOrders().add(order); // userEntity - order
-        for (OrderItem orderItem : orderItems){ // orderItem - order
-            orderItem.setOrder(order);
-        }
-
-        SubmitOrderResponseDto submitOrderResponseDto = SubmitOrderResponseDto.builder()
+        // Response DTO로 변환 및 반환
+        return OrderResponseDto.builder()
                 .orderId(order.getId())
-                .orderDate(LocalDate.now())
-                .bookName(bookNameList)
-                .count(countList)
-                .price(priceList)
-                .userEntityName(userEntity.getName())
-                .userEntityPhoneNumber(userEntity.getPhoneNumber())
-                .address(address)
-                .orderstatus(OrderStatus.ORDER)
-                .delivery(delivery)
-                .totalProductPrice(calTotalPrice(orderItems))
-                .deliveryFee(2500)
-                .totalPrice(totalProductPrice+2500)
+                .userId(userEntity.getId())
+                .totalPrice(order.getTotalPrice())
+                .orderStatus(order.getOrderStatus())
+                .orderItems(orderItems.stream()
+                        .map(item -> new OrderResponseDto.OrderItemDto(
+                                item.getBook().getId(),
+                                item.getBook().getTitle(),
+                                item.getQuantity(),
+                                item.getOrderPrice()))
+                        .collect(Collectors.toList()))
+                .orderDate(order.getOrderDate())
                 .build();
-        return submitOrderResponseDto;
     }
 
-    /* 카트 목록으로 orderItem 리스트 생성 */
+    // 주문 상세 정보 조회
+    @Override
+    public OrderResponseDto getOrderDetails(Long orderId) {
+        // orderId로 주문 조회
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "해당 주문을 찾을 수 없습니다."));
+
+        // Order 엔티티를 OrderResponseDto로 변환 후 반환
+        return modelMapper.map(order, OrderResponseDto.class);
+    }
+
+    // 주문 취소
+    @Override
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        // 주문 조회
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "존재하지 않는 주문입니다."));
+
+        // 주문 상태 확인
+        if (order.getOrderStatus() == OrderStatus.CANCEL) {
+            throw new BusinessException(ErrorCode.RESOURCE_CONFLICT, "처리 중이거나 완료된 주문은 취소할 수 없습니다.");
+        }
+
+        // 주문 상태 변경
+        order.setOrderStatus(OrderStatus.CANCEL);
+
+        // 저장
+        orderRepository.save(order);
+    }
+
+    // 주문 상태 변경
     @Transactional
     @Override
-    public List<OrderItem> createOrderItemList(List<Long> cartItemsId) throws BusinessException{
-        List<OrderItem> orderItemList = new ArrayList<>();
-        for (Long cartItemsid : cartItemsId) {
-            CartItem cartItem = cartRepository.findCartItemById(cartItemsid).get();
-            OrderItem orderItem = OrderItem.createOrderItem(cartItem.getBook(),cartItem.getBook().getPrice(),cartItem.getQuantity());
-            orderItemList.add(orderItem);
+    public OrderResponseDto updateOrderStatus(Long orderId, OrderStatusUpdateRequestDto statusRequestDto) {
+        // 주문 조회
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "존재하지 않는 주문 ID입니다."));
+
+        // 주문 상태 업데이트
+        OrderStatus newStatus = statusRequestDto.getStatus();
+        if (newStatus == null) {
+            throw new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "유효하지 않은 주문 상태입니다.");
         }
-        return orderItemList;
-    }
-    /* 장바구니 목록 전체 가격 */
-    @Override
-    public int calTotalPrice(List<OrderItem> orderItemList){
-        int result = 0;
-        for (OrderItem orderItem : orderItemList){
-            result += orderItem.getTotalPrice();
+
+        // 예외 처리: 이미 완료된 주문은 상태를 변경할 수 없음
+        if (order.getOrderStatus() == OrderStatus.COMPLETED) {
+            throw new BusinessException(ErrorCode.RESOURCE_ACCESS_NOT_ACCEPTABLE, "완료된 주문은 상태를 변경할 수 없습니다.");
         }
-        return result;
+
+        order.setOrderStatus(newStatus);
+
+        // 변경된 주문 정보를 DTO로 변환하여 반환
+        return OrderResponseDto.builder()
+                .orderId(order.getId())
+                .orderStatus(order.getOrderStatus())
+                .userId(order.getUserEntity().getId())
+                .orderItems(order.getOrderItems().stream()
+                        .map(item -> OrderResponseDto.OrderItemDto.builder()
+                                .productId(item.getBook().getId())
+                                .quantity(item.getQuantity())
+                                .price(item.getOrderPrice())
+                                .build())
+                        .toList())
+                .totalPrice(order.getTotalPrice())
+                .orderDate(order.getOrderDate())
+                .build();
     }
 
-    /* 주소 검색 */
+    //특정 사용자의 주문 목록 조회
+    public List<OrderResponseDto> getOrderList(Long userId) {
+        // 사용자 조회
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "해당 사용자를 찾을 수 없습니다."));
+
+        // 사용자에 대한 주문 조회
+        List<Order> orders = orderRepository.findByUserId(userId);
+
+        // Order 엔티티 리스트를 OrderResponseDto 리스트로 변환
+        return orders.stream()
+                .map(order -> modelMapper.map(order, OrderResponseDto.class))
+                .collect(Collectors.toList());
+    }
+
+    // 주소 검색
     @Override
     public List<AddressPairs> searchAddress(SearchAddressRequestDto searchAddressRequestDto) {
         String keyword = searchAddressRequestDto.getKeyword();
@@ -217,25 +221,25 @@ public class OrderServiceImpl implements OrderService {
         ResponseEntity<String> fullAddress = restTemplate.exchange(req, String.class);
 
         try {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(fullAddress.getBody());
-        JsonNode jusoNode = rootNode.path("results").path("juso");
-        List<AddressPairs> addressPairs = new ArrayList<>();
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(fullAddress.getBody());
+            JsonNode jusoNode = rootNode.path("results").path("juso");
+            List<AddressPairs> addressPairs = new ArrayList<>();
 
-        for (JsonNode node : jusoNode) {
-            String roadAddrPart1 = node.path("roadAddrPart1").asText();
-            String jibunAddr = node.path("jibunAddr").asText();
+            for (JsonNode node : jusoNode) {
+                String roadAddrPart1 = node.path("roadAddrPart1").asText();
+                String jibunAddr = node.path("jibunAddr").asText();
 
-            addressPairs.add(new AddressPairs(roadAddrPart1, jibunAddr));
-        }
+                addressPairs.add(new AddressPairs(roadAddrPart1, jibunAddr));
+            }
             return addressPairs;
-        }catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new BusinessException(ErrorCode.RESOURCE_ACCESS_NOT_ACCEPTABLE, "fail");
         }
     }
 
-    /* 주소 저장 */
+    // 주소 저장
     @Override
     @Transactional
     public void saveAddress(SaveAddressRequestDto saveAddressRequestDto) {
@@ -246,6 +250,4 @@ public class OrderServiceImpl implements OrderService {
 
         orderRepository.saveAddress(account, roadAddress, detailedAddress);
     }
-
-
 }

@@ -1,6 +1,5 @@
 package project.shop1.domain.order.service;
 
-import project.shop1.domain.order.entity.OrderItem;
 import project.shop1.domain.order.common.AddressPairs;
 import project.shop1.domain.order.dto.*;
 
@@ -8,27 +7,25 @@ import java.util.List;
 
 public interface OrderService {
 
-    /* 주문 페이지 */
-    OrderPageResponseDto orderPage(OrderPageRequestDto orderPageRequestDto);
+    // 주문 생성
+    OrderResponseDto createOrder(OrderRequestDto orderRequestDto);
 
-    /* 주문(구매하기) */
-    SubmitOrderResponseDto submitOrder(SubmitOrderRequestDto submitOrderRequestDto);
+    // 주문 상세 조회
+    public OrderResponseDto getOrderDetails(Long orderId);
 
-    /* 카트 목록으로 orderItems 리스트 생성 */
-    List<OrderItem> createOrderItemList(List<Long> cartItemsId);
+    // 주문 취소
+    void cancelOrder(Long orderId);
 
-    /* 장바구니 목록 총 가격 */
-    int calTotalPrice(List<OrderItem> orderItemList);
-
-
+    // 주문 상태 변경
+    OrderResponseDto updateOrderStatus(Long orderId, OrderStatusUpdateRequestDto statusRequestDto);
 
 
-        /* 주소 검색 */
+    // 특정 사용자의 주문 목록 조회
+    List<OrderResponseDto> getOrderList(Long userId);
+
+    // 주소 검색
     List<AddressPairs> searchAddress(SearchAddressRequestDto searchAddressRequestDto);
 
-    /* 주소 저장 */
+    // 주소 저장
     void saveAddress(SaveAddressRequestDto saveAddressRequestDto);
-
-
-
-    }
+}

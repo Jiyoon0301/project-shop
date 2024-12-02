@@ -9,8 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Builder
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Review {
