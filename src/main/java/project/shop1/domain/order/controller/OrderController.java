@@ -88,29 +88,29 @@ public class OrderController {
      * @param productRequest
      * @return
      */
-    @PostMapping("/{orderId}/products")
-    @PreAuthorize("hasRole('USER') and #orderId == authentication.principal.id")
-    public ResponseEntity<OrderResponseDto> addProductToOrder(
-            @PathVariable Long orderId,
-            @RequestBody OrderProductRequest productRequest) {
-        OrderResponseDto updatedOrder = orderService.addProductToOrder(orderId, productRequest);
-        return ResponseEntity.ok(updatedOrder);
-    }
-
-    /**
-     * 주문에서 상품 제거
-     * @param orderId
-     * @param productId
-     * @return
-     */
-    @DeleteMapping("/{orderId}/products/{productId}")
-    @PreAuthorize("hasRole('USER') and #orderId == authentication.principal.id")
-    public ResponseEntity<OrderResponseDto> removeProductFromOrder(
-            @PathVariable Long orderId,
-            @PathVariable Long productId) {
-        OrderResponseDto updatedOrderDto= orderService.removeProductFromOrder(orderId, productId);
-        return ResponseEntity.ok(updatedOrder);
-    }
+//    @PostMapping("/{orderId}/products")
+//    @PreAuthorize("hasRole('USER') and #orderId == authentication.principal.id")
+//    public ResponseEntity<OrderResponseDto> addProductToOrder(
+//            @PathVariable Long orderId,
+//            @RequestBody OrderProductRequest productRequest) {
+//        OrderResponseDto updatedOrder = orderService.addProductToOrder(orderId, productRequest);
+//        return ResponseEntity.ok(updatedOrder);
+//    }
+//
+//    /**
+//     * 주문에서 상품 제거
+//     * @param orderId
+//     * @param productId
+//     * @return
+//     */
+//    @DeleteMapping("/{orderId}/products/{productId}")
+//    @PreAuthorize("hasRole('USER') and #orderId == authentication.principal.id")
+//    public ResponseEntity<OrderResponseDto> removeProductFromOrder(
+//            @PathVariable Long orderId,
+//            @PathVariable Long productId) {
+//        OrderResponseDto updatedOrderDto= orderService.removeProductFromOrder(orderId, productId);
+//        return ResponseEntity.ok(updatedOrder);
+//    }
 
     // 결제
 //    @PostMapping("/{orderId}/payment")

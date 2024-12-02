@@ -62,7 +62,12 @@ public class Book {
 //    /* 파일 이름 */
 //    private String fileName;
 
-    /* 연관관계 메서드 */
+
+    public Book(String title, int price) {
+        this.title = title;
+        this.price = price;
+    }
+
     public void addReview(Review review) {
         this.reviews.add(review);
     }
