@@ -15,26 +15,21 @@ import org.springframework.web.util.UriComponentsBuilder;
 import project.shop1.domain.product.repository.ProductRepository;
 import project.shop1.global.exception.BusinessException;
 import project.shop1.global.exception.ErrorCode;
-import project.shop1.domain.cart.entity.CartItem;
-import project.shop1.domain.order.entity.Delivery;
 import project.shop1.domain.order.entity.Order;
 import project.shop1.domain.order.entity.OrderItem;
 import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.user.repository.UserRepository;
 import project.shop1.global.security.SecurityUtils;
 import project.shop1.domain.user.entity.UserEntity;
-import project.shop1.domain.order.enums.DeliveryStatus;
 import project.shop1.domain.order.enums.OrderStatus;
 import project.shop1.domain.cart.repository.CartRepository;
 import project.shop1.domain.order.common.AddressPairs;
-import project.shop1.domain.order.common.ProductInfoPairs;
 import project.shop1.domain.order.dto.*;
 import project.shop1.domain.order.repository.OrderRepository;
 import project.shop1.domain.order.service.OrderService;
 
 import java.net.URI;
 import java.nio.charset.Charset;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -174,6 +169,42 @@ public class OrderServiceImpl implements OrderService {
                         .toList())
                 .totalPrice(order.getTotalPrice())
                 .orderDate(order.getOrderDate())
+                .build();
+    }
+
+    // 주문에 상품 추가
+    @Transactional
+    @Override
+    public OrderResponseDto addProductToOrder(Long orderId, OrderItemRequestDto productRequest) {
+        // 주문 존재 여부 확인
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found with id: " + orderId));
+
+        // 상품 존재 여부 확인
+        Book product = productRepository.findById(productRequest.getProductId())
+                .orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + productRequest.getProductId()));
+
+        // 주문에 상품 추가
+        OrderItem orderItem = new OrderItem();
+        orderItem.setOrder(order);
+        orderItem.setBook(product);
+        orderItem.setQuantity(productRequest.getQuantity());
+
+        order.addOrderItem(orderItem);
+
+        // 주문 저장 (Cascade 설정으로 연관된 OrderProduct도 저장)
+        orderRepository.save(order);
+
+        // 응답 DTO 생성
+        return OrderResponseDto.builder()
+                .orderId(order.getId())
+                .orderItems(order.getOrderItems().stream()
+                        .map(item -> OrderResponseDto.OrderItemDto.builder()
+                                .productId(item.getBook().getId())
+                                .quantity(item.getQuantity())
+                                .price(item.getOrderPrice())
+                                .build())
+                        .toList())
                 .build();
     }
 

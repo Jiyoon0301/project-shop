@@ -1,11 +1,13 @@
 package project.shop1.domain.order.service.impl;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import project.shop1.domain.order.dto.OrderItemRequestDto;
 import project.shop1.domain.order.dto.OrderResponseDto;
 import project.shop1.domain.order.dto.OrderStatusUpdateRequestDto;
 import project.shop1.domain.order.entity.Order;
@@ -13,6 +15,7 @@ import project.shop1.domain.order.entity.OrderItem;
 import project.shop1.domain.order.enums.OrderStatus;
 import project.shop1.domain.order.repository.OrderRepository;
 import project.shop1.domain.product.entity.Book;
+import project.shop1.domain.product.repository.ProductRepository;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.global.exception.BusinessException;
 
@@ -32,6 +35,9 @@ public class OrderServiceImplTest {
 
     @Mock
     private OrderRepository orderRepository;
+
+    @Mock
+    private ProductRepository productRepository;
 
     @Test
     void 주문_상태_업데이트_성공() {

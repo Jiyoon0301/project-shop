@@ -19,6 +19,9 @@ public interface OrderService {
     // 주문 상태 변경
     OrderResponseDto updateOrderStatus(Long orderId, OrderStatusUpdateRequestDto statusRequestDto);
 
+    // 주문에 상품 추가
+    OrderResponseDto addProductToOrder(Long orderId, OrderItemRequestDto productRequest);
+
 
     // 특정 사용자의 주문 목록 조회
     List<OrderResponseDto> getOrderList(Long userId);
