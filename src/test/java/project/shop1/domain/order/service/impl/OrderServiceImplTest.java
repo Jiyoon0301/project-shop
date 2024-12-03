@@ -14,12 +14,14 @@ import project.shop1.domain.order.enums.OrderStatus;
 import project.shop1.domain.order.repository.OrderRepository;
 import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.user.entity.UserEntity;
+import project.shop1.global.exception.BusinessException;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(SpringExtension.class) //Junit5
 public class OrderServiceImplTest {
@@ -63,5 +65,19 @@ public class OrderServiceImplTest {
         assertThat(result).isNotNull();
         assertThat(result.getOrderStatus()).isEqualTo(OrderStatus.DELIVERING);
         Mockito.verify(orderRepository).findById(orderId);
+    }
+
+    @Test
+    void 주문_ID가_유효하지_않으면_예외_발생() {
+        // Given
+        Long orderId = 1L;
+        OrderStatusUpdateRequestDto requestDto = new OrderStatusUpdateRequestDto(OrderStatus.DELIVERING);
+
+        Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
+
+        // When / Then
+        assertThatThrownBy(() -> orderService.updateOrderStatus(orderId, requestDto))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("존재하지 않는 주문 ID입니다.");
     }
 }

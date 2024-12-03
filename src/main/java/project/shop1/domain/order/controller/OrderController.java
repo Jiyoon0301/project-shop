@@ -111,8 +111,8 @@ public class OrderController {
 //        OrderResponseDto updatedOrderDto= orderService.removeProductFromOrder(orderId, productId);
 //        return ResponseEntity.ok(updatedOrder);
 //    }
-
-    // 결제
+//
+//     결제
 //    @PostMapping("/{orderId}/payment")
 //    @PreAuthorize("hasRole('USER')")
 //    public ResponseEntity<PaymentResponse> handlePayment(
