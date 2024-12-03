@@ -17,6 +17,7 @@ import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.global.exception.BusinessException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,5 +80,29 @@ public class OrderServiceImplTest {
         assertThatThrownBy(() -> orderService.updateOrderStatus(orderId, requestDto))
                 .isInstanceOf(BusinessException.class)
                 .hasMessage("존재하지 않는 주문 ID입니다.");
+    }
+
+    @Test
+    void 완료된_주문의_상태를_변경하려고_하면_예외_발생() {
+        // Given
+        Long orderId = 1L;
+        OrderStatusUpdateRequestDto requestDto = new OrderStatusUpdateRequestDto(OrderStatus.CANCEL);
+
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+
+        Order order = Order.builder()
+                .id(orderId)
+                .orderStatus(OrderStatus.COMPLETED)
+                .userEntity(user)
+                .orderItems(new ArrayList<>())
+                .build();
+
+        Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+
+        // When / Then
+        assertThatThrownBy(() -> orderService.updateOrderStatus(orderId, requestDto))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("완료된 주문은 상태를 변경할 수 없습니다.");
     }
 }
