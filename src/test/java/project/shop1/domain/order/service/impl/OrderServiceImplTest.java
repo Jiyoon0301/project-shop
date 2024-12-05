@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 import project.shop1.domain.order.dto.OrderItemRequestDto;
 import project.shop1.domain.order.dto.OrderResponseDto;
 import project.shop1.domain.order.dto.OrderStatusUpdateRequestDto;
@@ -26,6 +27,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class) //Junit5
 public class OrderServiceImplTest {
@@ -41,7 +43,7 @@ public class OrderServiceImplTest {
 
     @Test
     void 주문_상태_업데이트_성공() {
-        // Given
+        // given
         Long orderId = 1L;
         OrderStatusUpdateRequestDto requestDto = new OrderStatusUpdateRequestDto(OrderStatus.DELIVERING);
 
@@ -63,12 +65,12 @@ public class OrderServiceImplTest {
                 .orderDate(LocalDateTime.now())
                 .build();
 
-        Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
 
-        // When
+        // when
         OrderResponseDto result = orderService.updateOrderStatus(orderId, requestDto);
 
-        // Then
+        // then
         assertThat(result).isNotNull();
         assertThat(result.getOrderStatus()).isEqualTo(OrderStatus.DELIVERING);
         Mockito.verify(orderRepository).findById(orderId);
@@ -76,13 +78,13 @@ public class OrderServiceImplTest {
 
     @Test
     void 주문_ID가_유효하지_않으면_예외_발생() {
-        // Given
+        // given
         Long orderId = 1L;
         OrderStatusUpdateRequestDto requestDto = new OrderStatusUpdateRequestDto(OrderStatus.DELIVERING);
 
-        Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
+        when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
 
-        // When / Then
+        // when / then
         assertThatThrownBy(() -> orderService.updateOrderStatus(orderId, requestDto))
                 .isInstanceOf(BusinessException.class)
                 .hasMessage("존재하지 않는 주문 ID입니다.");
@@ -90,7 +92,7 @@ public class OrderServiceImplTest {
 
     @Test
     void 완료된_주문의_상태를_변경하려고_하면_예외_발생() {
-        // Given
+        // given
         Long orderId = 1L;
         OrderStatusUpdateRequestDto requestDto = new OrderStatusUpdateRequestDto(OrderStatus.CANCEL);
 
@@ -104,11 +106,43 @@ public class OrderServiceImplTest {
                 .orderItems(new ArrayList<>())
                 .build();
 
-        Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
 
-        // When / Then
+        // when / then
         assertThatThrownBy(() -> orderService.updateOrderStatus(orderId, requestDto))
                 .isInstanceOf(BusinessException.class)
                 .hasMessage("완료된 주문은 상태를 변경할 수 없습니다.");
+    }
+
+    @Test
+    @DisplayName("addProductToOrder: 주문에 상품 추가 성공 테스트")
+    void 주문에_상품_추가_성공_테스트() {
+        // given
+        Long orderId = 1L;
+        Long productId = 2L;
+
+        Order order = new Order();
+        order.setId(orderId);
+
+        Book product = new Book();
+        product.setId(productId);
+        product.setPrice(1000);
+
+        OrderItemRequestDto request = new OrderItemRequestDto(productId, 3);
+
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+
+        // when
+        OrderResponseDto response = orderService.addProductToOrder(orderId, request);
+
+        // then
+        assertThat(response).isNotNull();
+        assertThat(response.getOrderId()).isEqualTo(orderId);
+        assertThat(response.getOrderItems()).hasSize(1);
+
+        OrderResponseDto.OrderItemDto addedProduct = response.getOrderItems().get(0);
+        assertThat(addedProduct.getProductId()).isEqualTo(productId);
+        assertThat(addedProduct.getQuantity()).isEqualTo(3);
     }
 }

@@ -208,7 +208,7 @@ public class OrderServiceImpl implements OrderService {
                 .build();
     }
 
-    //특정 사용자의 주문 목록 조회
+    // 특정 사용자의 주문 목록 조회
     public List<OrderResponseDto> getOrderList(Long userId) {
         // 사용자 조회
         UserEntity user = userRepository.findById(userId)
