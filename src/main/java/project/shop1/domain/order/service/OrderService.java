@@ -22,6 +22,8 @@ public interface OrderService {
     // 주문에 상품 추가
     OrderResponseDto addProductToOrder(Long orderId, OrderItemRequestDto productRequest);
 
+    // 주문에서 상품 제거
+    OrderResponseDto removeProductFromOrder(Long orderId, Long productId);
 
     // 특정 사용자의 주문 목록 조회
     List<OrderResponseDto> getOrderList(Long userId);

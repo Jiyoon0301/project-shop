@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
 import project.shop1.domain.order.dto.OrderItemRequestDto;
 import project.shop1.domain.order.dto.OrderResponseDto;
 import project.shop1.domain.order.dto.OrderStatusUpdateRequestDto;
@@ -27,6 +26,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class) //Junit5
@@ -42,6 +42,7 @@ public class OrderServiceImplTest {
     private ProductRepository productRepository;
 
     @Test
+    @DisplayName("updateOrderStatus: 주문_상태_업데이트_성공")
     void 주문_상태_업데이트_성공() {
         // given
         Long orderId = 1L;
@@ -73,10 +74,11 @@ public class OrderServiceImplTest {
         // then
         assertThat(result).isNotNull();
         assertThat(result.getOrderStatus()).isEqualTo(OrderStatus.DELIVERING);
-        Mockito.verify(orderRepository).findById(orderId);
+        verify(orderRepository).findById(orderId);
     }
 
     @Test
+    @DisplayName("updateOrderStatus: 주문_ID가_유효하지_않으면_예외_발생")
     void 주문_ID가_유효하지_않으면_예외_발생() {
         // given
         Long orderId = 1L;
@@ -91,6 +93,7 @@ public class OrderServiceImplTest {
     }
 
     @Test
+    @DisplayName("updateOrderStatus: 완료된_주문의_상태를_변경하려고_하면_예외_발생")
     void 완료된_주문의_상태를_변경하려고_하면_예외_발생() {
         // given
         Long orderId = 1L;
@@ -115,7 +118,7 @@ public class OrderServiceImplTest {
     }
 
     @Test
-    @DisplayName("addProductToOrder: 주문에 상품 추가 성공 테스트")
+    @DisplayName("addProductToOrder: 주문에 상품 추가 성공")
     void 주문에_상품_추가_성공_테스트() {
         // given
         Long orderId = 1L;

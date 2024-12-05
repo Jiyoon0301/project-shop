@@ -208,6 +208,38 @@ public class OrderServiceImpl implements OrderService {
                 .build();
     }
 
+    @Override
+    @Transactional
+    public OrderResponseDto removeProductFromOrder(Long orderId, Long productId) {
+        // 주문 조회
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "존재하지 않는 주문입니다."));
+
+        // 주문에서 해당 상품 제거
+        OrderItem orderProductToRemove = order.getOrderItems().stream()
+                .filter(orderProduct -> orderProduct.getBook().getId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "존재하지 않는 상품입니다."));
+
+        order.getOrderItems().remove(orderProductToRemove);
+
+        // 저장 (변경 감지로 영속성 컨텍스트가 업데이트됨)
+        orderRepository.save(order);
+
+        // 응답 DTO 생성
+        List<OrderResponseDto.OrderItemDto> itemDtos = order.getOrderItems().stream()
+                .map(oi -> OrderResponseDto.OrderItemDto.builder()
+                        .productId(oi.getBook().getId())
+                        .quantity(oi.getQuantity())
+                        .build())
+                .collect(Collectors.toList());
+
+        return OrderResponseDto.builder()
+                .orderId(order.getId())
+                .orderItems(itemDtos)
+                .build();
+    }
+
     // 특정 사용자의 주문 목록 조회
     public List<OrderResponseDto> getOrderList(Long userId) {
         // 사용자 조회
