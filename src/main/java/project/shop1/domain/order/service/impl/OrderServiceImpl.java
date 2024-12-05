@@ -208,6 +208,7 @@ public class OrderServiceImpl implements OrderService {
                 .build();
     }
 
+    // 주문에서 상품 제거
     @Override
     @Transactional
     public OrderResponseDto removeProductFromOrder(Long orderId, Long productId) {

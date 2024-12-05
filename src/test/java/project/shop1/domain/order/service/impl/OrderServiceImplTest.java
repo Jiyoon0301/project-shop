@@ -148,4 +148,39 @@ public class OrderServiceImplTest {
         assertThat(addedProduct.getProductId()).isEqualTo(productId);
         assertThat(addedProduct.getQuantity()).isEqualTo(3);
     }
+
+    @Test
+    @DisplayName("removeProductFromOrder: 주문에서 상품 제거 성공")
+    void removeProductFromOrder_SuccessTest() {
+        // given
+        Long orderId = 1L;
+        Long productId = 100L;
+
+        Book product = new Book();
+        product.setId(productId);
+        product.setTitle("Test Book");
+        product.setPrice(1000);
+
+        OrderItem orderItem = new OrderItem();
+        orderItem.setId(1L);
+        orderItem.setBook(product);
+        orderItem.setQuantity(2);
+
+        Order order = new Order();
+        order.setId(orderId);
+        order.setOrderItems(new ArrayList<>(List.of(orderItem)));
+
+        Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+
+        // when
+        OrderResponseDto response = orderService.removeProductFromOrder(orderId, productId);
+
+        // then
+        assertThat(response).isNotNull();
+        assertThat(response.getOrderId()).isEqualTo(orderId);
+        assertThat(response.getOrderItems()).isEmpty();
+
+        verify(orderRepository, Mockito.times(1)).findById(orderId);
+        verify(orderRepository, Mockito.times(1)).save(order);
+    }
 }
