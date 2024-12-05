@@ -201,4 +201,26 @@ public class OrderServiceImplTest {
         Mockito.verify(orderRepository, Mockito.times(1)).findById(orderId);
         Mockito.verify(orderRepository, Mockito.never()).save(Mockito.any());
     }
+
+    @Test
+    @DisplayName("removeProductFromOrder: 존재하지 않는 상품이면 예외 발생")
+    void removeProductFromOrder_ProductNotFound() {
+        // given
+        Long orderId = 1L;
+        Long productId = 100L;
+
+        Order order = new Order();
+        order.setId(orderId);
+        order.setOrderItems(new ArrayList<>());
+
+        Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+
+        // when & then
+        assertThatThrownBy(() -> orderService.removeProductFromOrder(orderId, productId))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("존재하지 않는 상품입니다.");
+
+        Mockito.verify(orderRepository, Mockito.times(1)).findById(orderId);
+        Mockito.verify(orderRepository, Mockito.never()).save(Mockito.any());
+    }
 }
