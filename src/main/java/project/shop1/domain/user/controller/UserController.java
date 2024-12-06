@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import project.shop1.global.util.reponse.BooleanResponse;
-import project.shop1.domain.user.dto.GetUserResponseDto;
+import project.shop1.domain.user.dto.response.GetUserResponseDto;
 import project.shop1.domain.user.service.UserService;
 
 @RestController

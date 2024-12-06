@@ -5,9 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import project.shop1.global.util.reponse.BooleanResponse;
-import project.shop1.domain.order.common.AddressPairs;
-import project.shop1.domain.order.dto.*;
+import project.shop1.domain.order.dto.request.*;
+import project.shop1.domain.order.dto.response.OrderResponseDto;
 import project.shop1.domain.order.service.OrderService;
 
 import java.util.List;
@@ -44,7 +43,7 @@ public class OrderController {
     }
 
     /**
-     * 주문 목록 조회
+     * 사용자의 주문 목록 조회
      * @param userId
      * @return
      */
@@ -70,7 +69,7 @@ public class OrderController {
     /**
      * 주문 상태 변경
      * @param orderId
-     * @param statusRequestDto
+     * @param statusRequestDto: OrderStatus status
      * @return
      */
     @PatchMapping("/{orderId}")
@@ -85,15 +84,15 @@ public class OrderController {
     /**
      * 주문에 상품 추가
      * @param orderId
-     * @param productRequest
+     * @param productRequestDto: Long productId, int quantity
      * @return
      */
     @PostMapping("/{orderId}/products")
     @PreAuthorize("hasRole('USER') and #orderId == authentication.principal.id")
     public ResponseEntity<OrderResponseDto> addProductToOrder(
             @PathVariable Long orderId,
-            @RequestBody OrderItemRequestDto productRequest) {
-        OrderResponseDto updatedOrder = orderService.addProductToOrder(orderId, productRequest);
+            @RequestBody OrderItemRequestDto productRequestDto) {
+        OrderResponseDto updatedOrder = orderService.addProductToOrder(orderId, productRequestDto);
         return ResponseEntity.ok(updatedOrder);
     }
 
@@ -112,7 +111,12 @@ public class OrderController {
         return ResponseEntity.ok(updatedOrderDto);
     }
 
-//     결제
+//    /**
+//     * 결제
+//     * @param orderId
+//     * @param paymentRequest
+//     * @return
+//     */
 //    @PostMapping("/{orderId}/payment")
 //    @PreAuthorize("hasRole('USER')")
 //    public ResponseEntity<PaymentResponse> handlePayment(
@@ -121,30 +125,4 @@ public class OrderController {
 //        PaymentResponse paymentResponse = orderService.handlePayment(orderId, paymentRequest);
 //        return ResponseEntity.ok(paymentResponse);
 //    }
-
-    /**
-     * 주소 조회 ****************
-     * @param searchAddressRequestDto
-     * @return
-     */
-    @PostMapping("/search-address") // String keyword, int pageNumber
-    @PreAuthorize("hasRole('USER')")
-    public List<AddressPairs> searchAddress(@RequestBody SearchAddressRequestDto searchAddressRequestDto) {
-        List<AddressPairs> result = orderService.searchAddress(searchAddressRequestDto);
-        return result;
-    }
-
-    /**
-     * 주소 저장 - 도로명 + 상세주소
-     * @param saveAddressRequestDto
-     * @return
-     */
-    @PostMapping("/save-address") //SaveAddressRequestDto : String roadAddress, String detailedAddress
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<BooleanResponse> saveAddress(@RequestBody SaveAddressRequestDto saveAddressRequestDto) {
-        orderService.saveAddress(saveAddressRequestDto);
-
-        return ResponseEntity.ok(BooleanResponse.of(true));
-    }
-
 }

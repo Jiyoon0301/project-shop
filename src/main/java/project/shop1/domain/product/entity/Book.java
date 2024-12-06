@@ -29,14 +29,6 @@ public class Book {
     /* 상품 번호 */
     private Long productNumber;
 
-    /* 상품 저자 */
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
-    private Author author;
-
-    private String authorName;
-
     /* 상품 가격 */
     private int price;
 
@@ -45,6 +37,9 @@ public class Book {
 
     /* 상품 판매량 */
     private int sold;
+
+    /* 저자 이름 */
+    private String authorName;
 
     /* 상품 카테고리 */
     private String category;
@@ -61,7 +56,6 @@ public class Book {
 //
 //    /* 파일 이름 */
 //    private String fileName;
-
 
     public Book(String title, int price) {
         this.title = title;

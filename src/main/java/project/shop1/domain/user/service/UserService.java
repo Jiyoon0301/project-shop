@@ -1,6 +1,6 @@
 package project.shop1.domain.user.service;
 
-import project.shop1.domain.user.dto.GetUserResponseDto;
+import project.shop1.domain.user.dto.response.GetUserResponseDto;
 
 public interface UserService {
 

@@ -1,7 +1,7 @@
 package project.shop1.domain.user.service;
 
-import project.shop1.domain.user.dto.JoinRequestDto;
-import project.shop1.domain.user.dto.JoinResponseDto;
+import project.shop1.domain.user.dto.request.JoinRequestDto;
+import project.shop1.domain.user.dto.response.JoinResponseDto;
 
 public interface JoinService {
 

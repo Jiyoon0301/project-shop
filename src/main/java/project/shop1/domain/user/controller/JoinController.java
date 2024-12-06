@@ -8,10 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import project.shop1.domain.user.dto.JoinRequestDto;
-import project.shop1.domain.user.dto.JoinResponseDto;
+import project.shop1.domain.user.dto.request.JoinRequestDto;
+import project.shop1.domain.user.dto.response.JoinResponseDto;
 import project.shop1.domain.user.service.JoinService;
-import project.shop1.global.util.reponse.BooleanResponse;
 import project.shop1.global.util.validation.ValidationSequence;
 
 @RestController

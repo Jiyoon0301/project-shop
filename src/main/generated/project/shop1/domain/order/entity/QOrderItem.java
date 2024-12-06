@@ -50,7 +50,7 @@ public class QOrderItem extends EntityPathBase<OrderItem> {
 
     public QOrderItem(Class<? extends OrderItem> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.book = inits.isInitialized("book") ? new project.shop1.domain.product.entity.QBook(forProperty("book"), inits.get("book")) : null;
+        this.book = inits.isInitialized("book") ? new project.shop1.domain.product.entity.QBook(forProperty("book")) : null;
         this.order = inits.isInitialized("order") ? new QOrder(forProperty("order"), inits.get("order")) : null;
     }
 

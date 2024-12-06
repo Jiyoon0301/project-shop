@@ -18,11 +18,7 @@ public class QBook extends EntityPathBase<Book> {
 
     private static final long serialVersionUID = -1032864365L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QBook book = new QBook("book");
-
-    public final QAuthor author;
 
     public final StringPath authorName = createString("authorName");
 
@@ -43,24 +39,15 @@ public class QBook extends EntityPathBase<Book> {
     public final StringPath title = createString("title");
 
     public QBook(String variable) {
-        this(Book.class, forVariable(variable), INITS);
+        super(Book.class, forVariable(variable));
     }
 
     public QBook(Path<? extends Book> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QBook(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QBook(PathMetadata metadata, PathInits inits) {
-        this(Book.class, metadata, inits);
-    }
-
-    public QBook(Class<? extends Book> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.author = inits.isInitialized("author") ? new QAuthor(forProperty("author")) : null;
+        super(Book.class, metadata);
     }
 
 }

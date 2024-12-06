@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
-import project.shop1.domain.product.author_needRefactor.service.AuthorService;
 import project.shop1.domain.product.dto.RequestDto.AddProductRequestDto;
 import project.shop1.domain.product.repository.ProductRepository;
 import project.shop1.domain.product.service.impl.ProductServiceImpl;
@@ -24,8 +23,6 @@ class ProductServiceImplTest {
     private ProductServiceImpl productService;
     @Mock
     private ProductRepository productRepository;
-    @Mock
-    private AuthorService authorService;
 
     private AddProductRequestDto addProductRequestDto;
 

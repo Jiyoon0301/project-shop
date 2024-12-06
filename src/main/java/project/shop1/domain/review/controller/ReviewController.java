@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import project.shop1.domain.review.dto.request.GetReviewsRequestDto;
+import project.shop1.domain.review.dto.request.ReviewRequestDto;
+import project.shop1.domain.review.dto.response.GetReviewsResponseDto;
 import project.shop1.domain.review.service.ReviewService;
-import project.shop1.domain.review.dto.*;
 import project.shop1.global.util.reponse.BooleanResponse;
 
 import java.util.List;
@@ -39,7 +41,7 @@ public class ReviewController {
      */
     @PostMapping("/product/{productId}")
     public ResponseEntity<Page<GetReviewsResponseDto>> getReviewByProduct(@PathVariable Long productId,
-                                                                    @RequestBody GetReviewsRequestDto getReviewsRequestDto) {
+                                                                          @RequestBody GetReviewsRequestDto getReviewsRequestDto) {
         Page<GetReviewsResponseDto> reviews = reviewService.getReviewsByProduct(productId, getReviewsRequestDto);
         return ResponseEntity.ok(reviews);
     }

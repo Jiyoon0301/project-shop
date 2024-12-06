@@ -1,7 +1,7 @@
 package project.shop1.domain.order.service;
 
-import project.shop1.domain.order.common.AddressPairs;
-import project.shop1.domain.order.dto.*;
+import project.shop1.domain.order.dto.request.*;
+import project.shop1.domain.order.dto.response.OrderResponseDto;
 
 import java.util.List;
 
@@ -12,6 +12,9 @@ public interface OrderService {
 
     // 주문 상세 조회
     public OrderResponseDto getOrderDetails(Long orderId);
+
+    // 특정 사용자의 주문 목록 조회
+    List<OrderResponseDto> getOrderList(Long userId);
 
     // 주문 취소
     void cancelOrder(Long orderId);
@@ -24,13 +27,4 @@ public interface OrderService {
 
     // 주문에서 상품 제거
     OrderResponseDto removeProductFromOrder(Long orderId, Long productId);
-
-    // 특정 사용자의 주문 목록 조회
-    List<OrderResponseDto> getOrderList(Long userId);
-
-    // 주소 검색
-    List<AddressPairs> searchAddress(SearchAddressRequestDto searchAddressRequestDto);
-
-    // 주소 저장
-    void saveAddress(SaveAddressRequestDto saveAddressRequestDto);
 }

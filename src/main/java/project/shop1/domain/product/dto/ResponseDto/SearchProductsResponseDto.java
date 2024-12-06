@@ -11,6 +11,4 @@ public class SearchProductsResponseDto {
     private String authorName;
     private int price;
     private int stockQuantity;
-
-
 }

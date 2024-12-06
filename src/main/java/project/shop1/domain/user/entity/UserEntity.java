@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import project.shop1.domain.address.entity.Address;
 import project.shop1.domain.cart.entity.CartItem;
 import project.shop1.domain.order.entity.Order;
 import project.shop1.domain.review.entity.Review;
@@ -16,10 +17,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-//@Table(name = "user_entity")
 @Builder
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_entity", indexes = @Index(name = "idx_account", columnList = "account"))
@@ -33,7 +32,8 @@ public class UserEntity {
     private String account;
     private String password;
     private String name;
-    private String address;
+    @Embedded
+    private Address address;
     private String phoneNumber;
     private String email;
     private String loginType; // internal, kakao ...

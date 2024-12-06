@@ -1,7 +1,9 @@
 package project.shop1.domain.review.service;
 
 import org.springframework.data.domain.Page;
-import project.shop1.domain.review.dto.*;
+import project.shop1.domain.review.dto.request.GetReviewsRequestDto;
+import project.shop1.domain.review.dto.request.ReviewRequestDto;
+import project.shop1.domain.review.dto.response.GetReviewsResponseDto;
 
 import java.util.List;
 

@@ -11,12 +11,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import project.shop1.domain.auth.service.impl.CustomOAuth2UserService;
+import project.shop1.domain.auth.login.service.impl.CustomOAuth2UserService;
 import project.shop1.global.security.jwt.JwtAuthenticationFilter;
 import project.shop1.global.security.jwt.JwtTokenProvider;
 import project.shop1.global.security.jwt.handler.CustomAccessDeniedHandler;
 import project.shop1.global.security.jwt.handler.CustomAuthenticationEntryPoint;
-import project.shop1.domain.auth.local.common.CustomUserDetailsService;
+import project.shop1.domain.auth.login.common.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity //Spring Security 설정 활성화
