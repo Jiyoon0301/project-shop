@@ -256,6 +256,22 @@ class ProductServiceImplTest {
         verify(productRepository).save(existingProduct);
     }
 
+    @Test
+    void 상품_삭제_성공() {
+        // Given
+        Long productId = 1L;
+        Book existingProduct = createBookEntity();
+
+        when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
+
+        // When
+        productService.deleteProduct(productId);
+
+        // Then
+        verify(productRepository, times(1)).findById(productId);
+        verify(productRepository, times(1)).delete(existingProduct);
+    }
+
     private ProductRequestDto createProductRequestDto() {
         return ProductRequestDto.builder()
                 .title("Test Book")
