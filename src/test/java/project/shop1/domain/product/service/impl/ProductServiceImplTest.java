@@ -153,6 +153,23 @@ class ProductServiceImplTest {
         verify(productRepository).findById(productId);
     }
 
+    @Test
+    void id가_유효하지_않은_상품을_조회하려고_하면_예외_발생() {
+        // Given
+        Long productId = 1L;
+
+        // Stub the repository
+        when(productRepository.findById(productId)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThatThrownBy(() -> productService.getProductById(productId))
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining("존재하지 않는 상품입니다.");
+
+        // Verify repository interaction
+        verify(productRepository).findById(productId);
+    }
+
     private ProductRequestDto createProductRequestDto() {
         return ProductRequestDto.builder()
                 .title("Test Book")
