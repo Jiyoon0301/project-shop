@@ -19,7 +19,7 @@ public interface CartRepository {
     int totalPrice(List<Long> cartItemsId);
 
 
-        /* 장바구니에서 삭제 */
+    /* 장바구니에서 삭제 */
     void deleteCart(CartItem cartItem);
 
     /* 장바구니 수량 수정 */
@@ -31,7 +31,7 @@ public interface CartRepository {
 
     /* 장바구니 조회 */
     Optional<CartItem> findCartItemById(Long cartItemId);
-    Optional<Book> findBookByProductNumber(Long productNumber);
+    Optional<Book> findBookByProductId(Long productId);
     Optional<CartItem> findCartItemByProductNumberAndUserAccount(String account, Long productNumber);
 
     /* 장바구니 상품 수량 확인 */

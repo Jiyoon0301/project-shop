@@ -98,21 +98,21 @@ public class CartRepositoryImpl implements CartRepository {
         return Optional.ofNullable(result);
     }
     @Override
-    public Optional<Book> findBookByProductNumber(Long productNumber){
+    public Optional<Book> findBookByProductId(Long productId){
         Book result = jpaQueryFactory
                 .selectFrom(book)
-                .where(book.productNumber.eq(productNumber))
+                .where(book.id.eq(productId))
                 .fetchOne();
 
         return Optional.ofNullable(result);
     }
 
     @Override
-    public Optional<CartItem> findCartItemByProductNumberAndUserAccount(String account, Long productNumber){
+    public Optional<CartItem> findCartItemByProductNumberAndUserAccount(String account, Long productId){
         CartItem result = jpaQueryFactory
                 .selectFrom(cartItem)
                 .where(cartItem.userEntity.account.eq(account))
-                .where(cartItem.book.productNumber.eq(productNumber))
+                .where(cartItem.book.id.eq(productId))
                 .fetchOne();
         return Optional.ofNullable(result);
     }

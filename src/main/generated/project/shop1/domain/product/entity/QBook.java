@@ -28,11 +28,7 @@ public class QBook extends EntityPathBase<Book> {
 
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
-    public final NumberPath<Long> productNumber = createNumber("productNumber", Long.class);
-
     public final ListPath<project.shop1.domain.review.entity.Review, project.shop1.domain.review.entity.QReview> reviews = this.<project.shop1.domain.review.entity.Review, project.shop1.domain.review.entity.QReview>createList("reviews", project.shop1.domain.review.entity.Review.class, project.shop1.domain.review.entity.QReview.class, PathInits.DIRECT2);
-
-    public final NumberPath<Integer> sold = createNumber("sold", Integer.class);
 
     public final NumberPath<Integer> stockQuantity = createNumber("stockQuantity", Integer.class);
 

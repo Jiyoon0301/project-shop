@@ -26,17 +26,11 @@ public class Book {
     /* 상품 이름 */
     private String title;
 
-    /* 상품 번호 */
-    private Long productNumber;
-
     /* 상품 가격 */
     private int price;
 
     /* 상품 재고 */
     private int stockQuantity;
-
-    /* 상품 판매량 */
-    private int sold;
 
     /* 저자 이름 */
     private String authorName;

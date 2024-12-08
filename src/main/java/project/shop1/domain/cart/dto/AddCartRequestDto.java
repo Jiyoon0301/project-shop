@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 public class AddCartRequestDto {
 
-    Long productNumber;
+    private Long productId;
 
     @NotBlank(message = "수량을 입력해주세요.", groups=NotBlank.class)
-    int quantity;
+    private int quantity;
 }
