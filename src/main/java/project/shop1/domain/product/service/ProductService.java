@@ -25,4 +25,7 @@ public interface ProductService {
 
     // 상품 업데이트
     ProductResponseDto updateProduct(Long productId, ProductUpdateRequestDto updateRequestDto);
+
+    // 상품 삭제
+    void deleteProduct(Long productId);
 }

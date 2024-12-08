@@ -9,12 +9,13 @@ import project.shop1.domain.product.dto.RequestDto.ProductUpdateRequestDto;
 import project.shop1.domain.product.dto.ResponseDto.ProductResponseDto;
 import project.shop1.domain.product.dto.RequestDto.ProductRequestDto;
 import project.shop1.domain.product.service.ProductService;
+import project.shop1.global.util.reponse.BooleanResponse;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("products/")
+@RequestMapping("/products")
 public class ProductController {
 
     private final ProductService productService;
@@ -94,5 +95,16 @@ public class ProductController {
             @RequestBody @Valid ProductUpdateRequestDto updateRequestDto) {
         ProductResponseDto updatedProduct = productService.updateProduct(productId, updateRequestDto);
         return ResponseEntity.ok(updatedProduct);
+    }
+
+    /**
+     * 상품 삭제
+     * @param productId
+     * @return
+     */
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<BooleanResponse> deleteProduct(@PathVariable Long productId) {
+        productService.deleteProduct(productId);
+        return ResponseEntity.ok(BooleanResponse.of(true));
     }
 }
