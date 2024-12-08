@@ -15,6 +15,8 @@ import project.shop1.domain.product.dto.ResponseDto.ProductResponseDto;
 import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.product.repository.ProductRepository;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -60,6 +62,30 @@ class ProductServiceImplTest {
 
         // Verify
         verify(productRepository, times(1)).save(any(Book.class));
+    }
+
+    @Test
+    void 상품_재고_추가_성공() {
+        // Given
+        Long productId = 1L;
+        int addQuantity = 5;
+
+        Book existingProduct = createBookEntity();
+
+        // Mocking
+        when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
+        when(productRepository.save(any(Book.class))).thenReturn(existingProduct);
+
+        // When
+        ProductResponseDto updatedProduct = productService.addProduct(productId, addQuantity);
+
+        // Then
+        assertThat(updatedProduct).isNotNull();
+        assertThat(updatedProduct.getId()).isEqualTo(productId);
+        assertThat(updatedProduct.getStockQuantity()).isEqualTo(55); // 기존 10 + 추가 5
+
+        verify(productRepository).findById(productId);
+        verify(productRepository).save(existingProduct);
     }
 
     private ProductRequestDto createProductRequestDto() {

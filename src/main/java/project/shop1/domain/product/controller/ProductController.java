@@ -28,4 +28,18 @@ public class ProductController {
         ProductResponseDto createdProduct = productService.createProduct(productRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
+
+    /**
+     * 존재하는 상품 재고 추가
+     * @param productId
+     * @param quantity
+     * @return
+     */
+    @PutMapping("/{productId}/add")
+    public ResponseEntity<ProductResponseDto> addProduct(
+            @PathVariable Long productId,
+            @RequestParam int quantity) {
+        ProductResponseDto updatedProduct = productService.addProduct(productId, quantity);
+        return ResponseEntity.ok(updatedProduct);
+    }
 }
