@@ -45,6 +45,9 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "존재하지 않는 상품입니다."));
 
         // 재고 추가
+        if (quantity <= 0) {
+            throw new BusinessException(ErrorCode.RESOURCE_CONFLICT, "수량은 0보다 커야합니다.");
+        }
         product.addStock(quantity);
 
         // 저장

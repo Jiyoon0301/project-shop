@@ -91,7 +91,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void 상품_id가_유효하지_않으면_예외_발생() {
+    void id가_유효하지_않은_상품의_재고를_추가하려고_하면_예외_발생() {
         // Given
         Long invalidProductId = -1L;
         int addQuantity = 5;
@@ -105,6 +105,26 @@ class ProductServiceImplTest {
                 .hasMessageContaining("존재하지 않는 상품입니다.");
 
         verify(productRepository).findById(invalidProductId);
+        verify(productRepository, never()).save(any(Book.class));
+    }
+
+    @Test
+    void 잘못된_수량을_재고_추가하면_예외_발생() {
+        // Given
+        Long productId = 1L;
+        int invalidQuantity = -5;
+
+        Book existingProduct = createBookEntity();
+
+        // Mocking
+        when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
+
+        // When & Then
+        assertThatThrownBy(() -> productService.addProduct(productId, invalidQuantity))
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining("수량은 0보다 커야합니다");
+
+        verify(productRepository).findById(productId);
         verify(productRepository, never()).save(any(Book.class));
     }
 
