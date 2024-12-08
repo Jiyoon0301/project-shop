@@ -222,6 +222,40 @@ class ProductServiceImplTest {
         verify(productRepository, times(1)).findByTitleContainingIgnoreCase(keyword);
     }
 
+    @Test
+    void 상품_업데이트_성공() {
+        // given
+        Long productId = 1L;
+        ProductUpdateRequestDto updateRequestDto = new ProductUpdateRequestDto(
+                "Updated Title", 200, 50, "Updated Author", "Updated Category");
+
+        Book existingProduct = new Book("Original Title", 100, 20, "Original Author", "Original Category");
+        Book updatedProduct = new Book("Updated Title", 200, 50, "Updated Author", "Updated Category");
+
+        ProductResponseDto updatedProductResponseDto = new ProductResponseDto(
+                1L, "Updated Title", 200, 50, "Updated Author", "Updated Category");
+
+        when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
+        when(productRepository.save(existingProduct)).thenReturn(updatedProduct);
+
+        ProductResponseDto responseDto = modelMapper.map(updatedProduct, ProductResponseDto.class);
+
+        // when
+        ProductResponseDto result = productService.updateProduct(productId, updateRequestDto);
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.getTitle()).isEqualTo("Updated Title");
+        assertThat(result.getPrice()).isEqualTo(200);
+        assertThat(result.getStockQuantity()).isEqualTo(50);
+        assertThat(result.getAuthorName()).isEqualTo("Updated Author");
+        assertThat(result.getCategory()).isEqualTo("Updated Category");
+
+        // Verify Repository 호출 확인
+        verify(productRepository).findById(productId);
+        verify(productRepository).save(existingProduct);
+    }
+
     private ProductRequestDto createProductRequestDto() {
         return ProductRequestDto.builder()
                 .title("Test Book")
