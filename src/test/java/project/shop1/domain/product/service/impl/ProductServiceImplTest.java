@@ -128,6 +128,31 @@ class ProductServiceImplTest {
         verify(productRepository, never()).save(any(Book.class));
     }
 
+    @Test
+    void id로_상품_조회_성공() {
+        // Given
+        Long productId = 1L;
+        Book mockBook = createBookEntity();
+
+        // Stub the repository
+        when(productRepository.findById(productId)).thenReturn(Optional.of(mockBook));
+
+        // When
+        ProductResponseDto result = productService.getProductById(productId);
+
+        // Then
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(mockBook.getId());
+        assertThat(result.getTitle()).isEqualTo(mockBook.getTitle());
+        assertThat(result.getPrice()).isEqualTo(mockBook.getPrice());
+        assertThat(result.getStockQuantity()).isEqualTo(mockBook.getStockQuantity());
+        assertThat(result.getAuthorName()).isEqualTo(mockBook.getAuthorName());
+        assertThat(result.getCategory()).isEqualTo(mockBook.getCategory());
+
+        // Verify repository interaction
+        verify(productRepository).findById(productId);
+    }
+
     private ProductRequestDto createProductRequestDto() {
         return ProductRequestDto.builder()
                 .title("Test Book")
