@@ -14,10 +14,12 @@ import project.shop1.domain.product.dto.RequestDto.ProductRequestDto;
 import project.shop1.domain.product.dto.ResponseDto.ProductResponseDto;
 import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.product.repository.ProductRepository;
+import project.shop1.global.exception.BusinessException;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ActiveProfiles("test")
@@ -86,6 +88,24 @@ class ProductServiceImplTest {
 
         verify(productRepository).findById(productId);
         verify(productRepository).save(existingProduct);
+    }
+
+    @Test
+    void 상품_id가_유효하지_않으면_예외_발생() {
+        // Given
+        Long invalidProductId = -1L;
+        int addQuantity = 5;
+
+        // Mocking
+        when(productRepository.findById(invalidProductId)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThatThrownBy(() -> productService.addProduct(invalidProductId, addQuantity))
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining("존재하지 않는 상품입니다.");
+
+        verify(productRepository).findById(invalidProductId);
+        verify(productRepository, never()).save(any(Book.class));
     }
 
     private ProductRequestDto createProductRequestDto() {

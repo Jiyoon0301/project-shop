@@ -52,15 +52,5 @@ public class ProductServiceImpl implements ProductService {
 
         // Entity를 DTO로 변환
         return modelMapper.map(updatedProduct, ProductResponseDto.class);
-//        return ProductResponseDto.builder()
-//                .id(updatedProduct.getId())
-//                .title(updatedProduct.getTitle())
-//                .price(updatedProduct.getPrice())
-//                .stockQuantity(updatedProduct.getStockQuantity())
-//                .authorName(updatedProduct.getAuthorName())
-//                .category(updatedProduct.getCategory())
-//                .build();
     }
-
-
 }
