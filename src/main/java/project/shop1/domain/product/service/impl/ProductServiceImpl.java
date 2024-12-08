@@ -13,6 +13,9 @@ import project.shop1.domain.product.repository.ProductRepository;
 import project.shop1.global.exception.BusinessException;
 import project.shop1.global.exception.ErrorCode;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -65,5 +68,17 @@ public class ProductServiceImpl implements ProductService {
 
         // Entity를 DTO로 변환하여 반환
         return modelMapper.map(product, ProductResponseDto.class);
+    }
+
+    // 모든 상품 조회
+    @Override
+    public List<ProductResponseDto> getAllProducts() {
+        // 데이터베이스에서 모든 제품 조회
+        List<Book> products = productRepository.findAll();
+
+        // Entity -> DTO 변환
+        return products.stream()
+                .map(product -> modelMapper.map(product, ProductResponseDto.class))
+                .collect(Collectors.toList());
     }
 }

@@ -16,6 +16,7 @@ import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.product.repository.ProductRepository;
 import project.shop1.global.exception.BusinessException;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;

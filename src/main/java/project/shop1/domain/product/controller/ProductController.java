@@ -53,4 +53,16 @@ public class ProductController {
         ProductResponseDto product = productService.getProductById(productId);
         return ResponseEntity.ok(product);
     }
+
+    // 4. Get all products
+
+    /**
+     * 모든 상품 조회
+     * @return
+     */
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDto>> getAllProducts() {
+        List<ProductResponseDto> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
+    }
 }
