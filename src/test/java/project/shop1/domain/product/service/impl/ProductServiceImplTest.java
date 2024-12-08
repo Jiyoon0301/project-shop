@@ -258,18 +258,34 @@ class ProductServiceImplTest {
 
     @Test
     void 상품_삭제_성공() {
-        // Given
+        // given
         Long productId = 1L;
         Book existingProduct = createBookEntity();
 
         when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
 
-        // When
+        // when
         productService.deleteProduct(productId);
 
-        // Then
+        // then
         verify(productRepository, times(1)).findById(productId);
         verify(productRepository, times(1)).delete(existingProduct);
+    }
+
+    @Test
+    void 존재하지_않는_상품_삭제_시도시_예외_발생() {
+        // given
+        Long productId = 1L;
+
+        when(productRepository.findById(productId)).thenReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> productService.deleteProduct(productId))
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining("존재하지 않는 상품입니다.");
+
+        verify(productRepository, times(1)).findById(productId);
+        verify(productRepository, never()).delete(any(Book.class));
     }
 
     private ProductRequestDto createProductRequestDto() {
