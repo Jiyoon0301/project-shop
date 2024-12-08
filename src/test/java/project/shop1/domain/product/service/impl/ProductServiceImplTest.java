@@ -196,6 +196,31 @@ class ProductServiceImplTest {
         verify(productRepository, times(1)).findAll();
     }
 
+    @Test
+    void 키워드로_상품_검색_성공() {
+        // Given
+        String keyword = "Book";
+        List<Book> mockBooks = List.of(
+                Book.builder().id(1L).title("Book 1").price(1000).build(),
+                Book.builder().id(2L).title("Another Book").price(1500).build()
+        );
+
+        // Repository Mock 설정
+        when(productRepository.findByTitleContainingIgnoreCase(keyword)).thenReturn(mockBooks);
+
+        // When
+        List<ProductResponseDto> result = productService.searchProducts(keyword);
+
+        // Then
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getTitle()).isEqualTo("Book 1");
+        assertThat(result.get(1).getTitle()).isEqualTo("Another Book");
+
+        // Verify Repository 호출 확인
+        verify(productRepository, times(1)).findByTitleContainingIgnoreCase(keyword);
+    }
+
     private ProductRequestDto createProductRequestDto() {
         return ProductRequestDto.builder()
                 .title("Test Book")
