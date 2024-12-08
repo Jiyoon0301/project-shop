@@ -35,4 +35,62 @@ class ProductServiceImplTest {
         modelMapper = new ModelMapper();
         ReflectionTestUtils.setField(productService, "modelMapper", modelMapper);
     }
+
+    @Test
+    void 상품_등록_성공() {
+        // Given
+        ProductRequestDto requestDto = createProductRequestDto();
+        Book productEntity = createBookEntity();
+        ProductResponseDto responseDto = createProductResponseDto();
+
+        // Mocking
+        when(productRepository.save(any(Book.class))).thenReturn(productEntity);
+
+        // When
+        ProductResponseDto result = productService.createProduct(requestDto);
+
+        // Then
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(1L);
+        assertThat(result.getTitle()).isEqualTo(requestDto.getTitle());
+        assertThat(result.getPrice()).isEqualTo(requestDto.getPrice());
+        assertThat(result.getStockQuantity()).isEqualTo(requestDto.getStockQuantity());
+        assertThat(result.getAuthorName()).isEqualTo(requestDto.getAuthorName());
+        assertThat(result.getCategory()).isEqualTo(requestDto.getCategory());
+
+        // Verify
+        verify(productRepository, times(1)).save(any(Book.class));
+    }
+
+    private ProductRequestDto createProductRequestDto() {
+        return ProductRequestDto.builder()
+                .title("Test Book")
+                .price(1000)
+                .stockQuantity(50)
+                .authorName("Test Author")
+                .category("Fiction")
+                .build();
+    }
+
+    private Book createBookEntity() {
+        return Book.builder()
+                .id(1L)
+                .title("Test Book")
+                .price(1000)
+                .stockQuantity(50)
+                .authorName("Test Author")
+                .category("Fiction")
+                .build();
+    }
+
+    private ProductResponseDto createProductResponseDto() {
+        return ProductResponseDto.builder()
+                .id(1L)
+                .title("Test Book")
+                .price(1000)
+                .stockQuantity(50)
+                .authorName("Test Author")
+                .category("Fiction")
+                .build();
+    }
 }
