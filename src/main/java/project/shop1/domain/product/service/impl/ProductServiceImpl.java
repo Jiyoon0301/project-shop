@@ -138,4 +138,24 @@ public class ProductServiceImpl implements ProductService {
         // 해당 상품 삭제
         productRepository.delete(existingProduct);
     }
+
+    // 상품 재고 업데이트
+    @Override
+    @Transactional
+    public ProductResponseDto updateStock(Long productId, int quantity) {
+        // 상품 존재 여부 확인
+        Book existingProduct = productRepository.findById(productId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "존재하지 않는 상품입니다."));
+
+        // 재고 수량 업데이트
+        int updatedStock = existingProduct.getStockQuantity() + quantity;
+        if (updatedStock < 0) {
+            throw new BusinessException(ErrorCode.INVALID_REQUEST, "재고 수량은 음수가 될 수 없습니다.");
+        }
+        existingProduct.setStockQuantity(updatedStock);
+
+        // 저장 및 반환
+        Book updatedProduct = productRepository.save(existingProduct);
+        return modelMapper.map(updatedProduct, ProductResponseDto.class);
+    }
 }

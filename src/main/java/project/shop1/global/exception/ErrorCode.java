@@ -16,6 +16,7 @@ public enum ErrorCode {
     AUTHENTICATION_FAIL(HttpStatus.UNAUTHORIZED, 2205, "인증에 실패했습니다."),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, 2206, "비밀번호가 일치하지 않습니다."),
     INSUFFICIENT_STOCK(HttpStatus.BAD_REQUEST,2207,"재고가 부족합니다."),
+    INVALID_REQUEST(HttpStatus.BAD_REQUEST,2208,"올바르지 않은 요청입니다." ),
 
     SEVER_NOT_SUPPORT(HttpStatus.INTERNAL_SERVER_ERROR, 9999, "알 수 없는 예외입니다.");
 

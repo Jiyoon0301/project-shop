@@ -99,6 +99,7 @@ public class ProductController {
 
     /**
      * 상품 삭제
+     *
      * @param productId
      * @return
      */
@@ -106,5 +107,20 @@ public class ProductController {
     public ResponseEntity<BooleanResponse> deleteProduct(@PathVariable Long productId) {
         productService.deleteProduct(productId);
         return ResponseEntity.ok(BooleanResponse.of(true));
+    }
+
+    /**
+     * 상품 재고 업데이트
+     *
+     * @param productId
+     * @param quantity
+     * @return
+     */
+    @PutMapping("/{productId}/stock")
+    public ResponseEntity<ProductResponseDto> updateStock(
+            @PathVariable Long productId,
+            @RequestParam int quantity) {
+        ProductResponseDto updatedProduct = productService.updateStock(productId, quantity);
+        return ResponseEntity.ok(updatedProduct);
     }
 }
