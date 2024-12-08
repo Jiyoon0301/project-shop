@@ -345,6 +345,24 @@ class ProductServiceImplTest {
         verify(productRepository, never()).save(any());
     }
 
+    @Test
+    void 존재하지_않는_상품의_재고_수량을_업데이트_시도하면_예외_발생() {
+        // Given
+        Long productId = 999L;
+        int quantity = 10;
+
+        when(productRepository.findById(productId)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThatThrownBy(() -> productService.updateStock(productId, quantity))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("존재하지 않는 상품입니다.");
+
+        verify(productRepository).findById(productId);
+        verify(productRepository, never()).save(any());
+    }
+
+
     private ProductRequestDto createProductRequestDto() {
         return ProductRequestDto.builder()
                 .title("Test Book")
