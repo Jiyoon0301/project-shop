@@ -288,6 +288,44 @@ class ProductServiceImplTest {
         verify(productRepository, never()).delete(any(Book.class));
     }
 
+    @Test
+    void 재고_수량_업데이트_성공() {
+        // given
+        Long productId = 1L;
+        int quantityToAdd = 5;
+
+        Book existingProduct = createBookEntity();
+
+        Book updatedProduct = Book.builder()
+                .id(productId)
+                .title("Test Book")
+                .price(1000)
+                .stockQuantity(55) // 50 + 5
+                .build();
+
+        ProductResponseDto expectedResponse = ProductResponseDto.builder()
+                .id(productId)
+                .title("Test Book")
+                .price(1000)
+                .stockQuantity(55)
+                .build();
+
+        when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
+        when(productRepository.save(existingProduct)).thenReturn(updatedProduct);
+
+        // when
+        ProductResponseDto result = productService.updateStock(productId, quantityToAdd);
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(productId);
+        assertThat(result.getStockQuantity()).isEqualTo(55);
+        assertThat(result.getTitle()).isEqualTo("Test Book");
+
+        verify(productRepository).findById(productId);
+        verify(productRepository).save(existingProduct);
+    }
+
     private ProductRequestDto createProductRequestDto() {
         return ProductRequestDto.builder()
                 .title("Test Book")
