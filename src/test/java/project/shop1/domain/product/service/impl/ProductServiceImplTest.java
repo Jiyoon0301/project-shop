@@ -171,6 +171,31 @@ class ProductServiceImplTest {
         verify(productRepository).findById(productId);
     }
 
+    @Test
+    void 모든_상품_조회_성공() {
+        // Given
+        List<Book> mockProducts = List.of(
+                Book.builder().id(1L).title("Book 1").price(1000).stockQuantity(10).build(),
+                Book.builder().id(2L).title("Book 2").price(2000).stockQuantity(5).build()
+        );
+
+        when(productRepository.findAll()).thenReturn(mockProducts);
+
+        // When
+        List<ProductResponseDto> result = productService.getAllProducts();
+
+        // Then
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getId()).isEqualTo(1L);
+        assertThat(result.get(0).getTitle()).isEqualTo("Book 1");
+        assertThat(result.get(0).getPrice()).isEqualTo(1000);
+        assertThat(result.get(1).getId()).isEqualTo(2L);
+        assertThat(result.get(1).getTitle()).isEqualTo("Book 2");
+        assertThat(result.get(1).getPrice()).isEqualTo(2000);
+
+        verify(productRepository, times(1)).findAll();
+    }
+
     private ProductRequestDto createProductRequestDto() {
         return ProductRequestDto.builder()
                 .title("Test Book")
