@@ -81,4 +81,16 @@ public class ProductServiceImpl implements ProductService {
                 .map(product -> modelMapper.map(product, ProductResponseDto.class))
                 .collect(Collectors.toList());
     }
+
+    // 키워드로 상품 검색
+    @Override
+    public List<ProductResponseDto> searchProducts(String keyword) {
+        // 데이터베이스에서 제목 또는 기타 필드에 키워드가 포함된 제품 검색
+        List<Book> products = productRepository.findByTitleContainingIgnoreCase(keyword);
+
+        // Entity -> DTO 변환
+        return products.stream()
+                .map(product -> modelMapper.map(product, ProductResponseDto.class))
+                .collect(Collectors.toList());
+    }
 }

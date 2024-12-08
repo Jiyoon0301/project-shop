@@ -18,4 +18,7 @@ public interface ProductService {
 
     // 모든 상품 조회
     List<ProductResponseDto> getAllProducts();
+
+    // 상품 검색
+    List<ProductResponseDto> searchProducts(String keyword);
 }

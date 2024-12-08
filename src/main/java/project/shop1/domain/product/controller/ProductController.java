@@ -20,6 +20,7 @@ public class ProductController {
 
     /**
      * 새로운 상품 생성
+     *
      * @param productRequest
      * @return
      */
@@ -31,6 +32,7 @@ public class ProductController {
 
     /**
      * 존재하는 상품 재고 추가
+     *
      * @param productId
      * @param quantity
      * @return
@@ -45,6 +47,7 @@ public class ProductController {
 
     /**
      * productId로 상품 조회
+     *
      * @param productId
      * @return
      */
@@ -54,15 +57,25 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
-    // 4. Get all products
-
     /**
      * 모든 상품 조회
+     *
      * @return
      */
     @GetMapping
     public ResponseEntity<List<ProductResponseDto>> getAllProducts() {
         List<ProductResponseDto> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
+    }
+
+    /**
+     * 상품 검색
+     * @param keyword
+     * @return
+     */
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductResponseDto>> searchProducts(@RequestParam String keyword) {
+        List<ProductResponseDto> products = productService.searchProducts(keyword);
         return ResponseEntity.ok(products);
     }
 }
