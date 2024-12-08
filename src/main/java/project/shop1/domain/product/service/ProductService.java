@@ -10,4 +10,7 @@ public interface ProductService {
 
     // 상품 재고 추가
     ProductResponseDto addProduct(Long productId, int quantity);
+
+    // id로 상품 조회
+    ProductResponseDto getProductById(Long productId);
 }

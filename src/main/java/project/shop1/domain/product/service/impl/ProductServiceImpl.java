@@ -56,4 +56,14 @@ public class ProductServiceImpl implements ProductService {
         // Entity를 DTO로 변환
         return modelMapper.map(updatedProduct, ProductResponseDto.class);
     }
+
+    @Override
+    public ProductResponseDto getProductById(Long productId) {
+        // productId에 해당하는 상품을 조회
+        Book product = productRepository.findById(productId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "존재하지 않는 상품입니다."));
+
+        // Entity를 DTO로 변환하여 반환
+        return modelMapper.map(product, ProductResponseDto.class);
+    }
 }

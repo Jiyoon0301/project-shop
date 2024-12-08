@@ -42,4 +42,15 @@ public class ProductController {
         ProductResponseDto updatedProduct = productService.addProduct(productId, quantity);
         return ResponseEntity.ok(updatedProduct);
     }
+
+    /**
+     * productId로 상품 조회
+     * @param productId
+     * @return
+     */
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long productId) {
+        ProductResponseDto product = productService.getProductById(productId);
+        return ResponseEntity.ok(product);
+    }
 }
