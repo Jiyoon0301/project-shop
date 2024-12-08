@@ -362,6 +362,23 @@ class ProductServiceImplTest {
         verify(productRepository, never()).save(any());
     }
 
+    @Test
+    void 재고_조회_성공() {
+        // given
+        Long productId = 1L;
+        Book existingProduct = createBookEntity();
+
+        when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
+
+        // when
+        int stockLevel = productService.getStockLevel(productId);
+
+        // then
+        assertThat(stockLevel).isEqualTo(50);
+
+        verify(productRepository).findById(productId);
+    }
+
     private ProductRequestDto createProductRequestDto() {
         return ProductRequestDto.builder()
                 .title("Test Book")
