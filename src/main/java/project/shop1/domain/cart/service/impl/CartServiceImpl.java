@@ -1,106 +1,67 @@
-//package project.shop1.domain.cart.service.impl;
-//
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.stereotype.Service;
-//import org.springframework.transaction.annotation.Transactional;
-//import project.shop1.global.exception.BusinessException;
-//import project.shop1.global.exception.ErrorCode;
-//import project.shop1.domain.user.repository.UserRepository;
-//import project.shop1.global.security.SecurityUtils;
-//import project.shop1.domain.product.entity.Book;
-//import project.shop1.domain.cart.entity.CartItem;
-//import project.shop1.domain.user.entity.UserEntity;
-//import project.shop1.domain.cart.dto.*;
-//import project.shop1.domain.cart.repository.CartRepository;
-//import project.shop1.domain.cart.service.CartService;
-//
-//import java.util.List;
-//import java.util.Optional;
-//
-//@Service
-//@RequiredArgsConstructor
-//@Transactional(readOnly = true)
-//public class CartServiceImpl implements CartService {
-//
-//    private final CartRepository cartRepository;
-//    private final UserRepository userRepository;
-//
-//    /* 장바구니 목록 */
-//    @Override
-//    public List<CartItem> findAllCartItemsByUser() {
-//        String account = SecurityUtils.getCurrentUsername();
-//        Optional<UserEntity> userEntity = userRepository.findByAccount(account);
-//        List<CartItem> result = cartRepository.findAllCartItemsByUser(userEntity.get());
-//        return result;
-//    }
-//
-//    /* 장바구니에서 체크된 상품 총 가격 */
-//    @Override
-//    public int totalPrice(TotalPriceRequestDto totalPriceRequestDto) {
-//        List<Long> cartItemsId= totalPriceRequestDto.getCartItemsId();
-//        /* 입력 초과 방지 */
-//        if (cartItemsId.size()==0){
-//            return 0;
-//        } else {
-//            return cartRepository.totalPrice(cartItemsId);
-//        }
-//    }
-//
-//    /* 장바구니 담기 */
-//    @Override
-//    @Transactional
-//    public void addCart(AddCartRequestDto addCartRequestDto){
-//        String account = SecurityUtils.getCurrentUsername();
-//        int quantity = addCartRequestDto.getQuantity();
-//
-//        /* 중복 상품 방지 */
-//        Optional<CartItem> findCartItem = cartRepository.findCartItemByProductNumberAndUserAccount(account, productNumber);
-//
-//        if (findCartItem.isPresent()){
-//            throw new BusinessException(ErrorCode.RESOURCE_CONFLICT,"장바구니에 이미 존재하는 상품입니다.");
-//        }
-//
-//        Optional<UserEntity> userEntity = userRepository.findByAccount(account);
-//
-//        Optional<Book> book = cartRepository.findBookByProductId(addCartRequestDto.getProductId());
-//
-//        CartItem cartItem = CartItem.builder()
-//                .userEntity(userEntity.get())
-//                .book(book.get())
-//                .quantity(quantity)
-//                .build();
-//        cartRepository.addCart(cartItem);
-//    }
-//
-//    /* 장바구니에서 삭제 */
-//    @Override
-//    @Transactional
-//    public void deleteCart(DeleteCartRequestDto deleteCartRequestDto) {
-//        Long cartItemId = deleteCartRequestDto.getCartItemId();
-//        Optional<CartItem> cartItem = cartRepository.findCartItemById(cartItemId);
-//        if (cartItem.isEmpty()){
-//            throw new BusinessException(ErrorCode.RESOURCE_NOT_FOUND,"상품이 존재하지 않습니다.");
-//        }
-//        cartRepository.deleteCart(cartItem.get());
-//    }
-//
-//    /* 장바구니 수량 수정 */
-//    @Override
-//    @Transactional
-//    public void updateProductQuantity(UpdateQuantityByOneRequestDto updateQuantityByOneRequestDto) {
-//        Long cartItemId = updateQuantityByOneRequestDto.getCartItemId();
-//        String type = updateQuantityByOneRequestDto.getType();
-//
-//        if (type.equals("down")){
-//            if (cartRepository.checkQuantity(cartItemId)==1){
-//                throw new BusinessException(ErrorCode.RESOURCE_CONFLICT,"장바구니에는 1개 이상 담을 수 있습니다.");
-//            }
-//            cartRepository.decreaseQuantity(cartItemId);
-//        }else {
-//            cartRepository.increaseQuantity(cartItemId);
-//        }
-//    }
-//
-//
-//
-//}
+package project.shop1.domain.cart.service.impl;
+
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import project.shop1.domain.cart.dto.request.CartItemRequestDto;
+import project.shop1.domain.cart.dto.response.CartItemResponseDto;
+import project.shop1.domain.cart.entity.Cart;
+import project.shop1.domain.cart.entity.CartItem;
+import project.shop1.domain.cart.repository.CartItemRepository;
+import project.shop1.domain.product.entity.Book;
+import project.shop1.domain.product.repository.ProductRepository;
+import project.shop1.global.exception.BusinessException;
+import project.shop1.global.exception.ErrorCode;
+import project.shop1.domain.cart.repository.CartRepository;
+import project.shop1.domain.cart.service.CartService;
+
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class CartServiceImpl implements CartService {
+
+    private final CartRepository cartRepository;
+    private final ProductRepository productRepository;
+    private final CartItemRepository cartItemRepository;
+    private final ModelMapper modelMapper;
+
+    @Override
+    @Transactional
+    public CartItemResponseDto addItemToCart(Long cartId, CartItemRequestDto request) {
+        // 장바구니 존재 여부 확인
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "장바구니를 찾을 수 없습니다."));
+
+        // 상품 존재 여부 확인
+        Book product = productRepository.findById(request.getProductId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "상품을 찾을 수 없습니다."));
+
+        // 장바구니에 동일 상품이 있는지 확인
+        Optional<CartItem> existingCartItem = cart.getItems().stream()
+                .filter(item -> item.getBook().getId().equals(product.getId()))
+                .findFirst();
+
+        CartItem cartItem;
+        if (existingCartItem.isPresent()) {
+            cartItem = existingCartItem.get();
+            cartItem.setQuantity(cartItem.getQuantity() + request.getQuantity());
+        } else {
+            cartItem = new CartItem(cart, product, request.getQuantity(), product.getPrice());
+            cart.addItem(cartItem);
+        }
+
+        cartRepository.save(cart);
+
+        return CartItemResponseDto.builder()
+                .itemId(cartItem.getId())
+                .productId(product.getId())
+                .title(cartItem.getBook().getTitle())
+                .quantity(cartItem.getQuantity())
+                .price(cartItem.getPrice())
+                .totalPrice(cartItem.getPrice() * cartItem.getQuantity())
+                .build();
+    }
+}

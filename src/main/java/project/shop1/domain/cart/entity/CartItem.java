@@ -8,23 +8,35 @@ import project.shop1.domain.user.entity.UserEntity;
 
 @Entity
 @Data
-@Table(name = "cart")
+@Table(name = "cart_items")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class CartItem {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_entity_id")
-    private UserEntity userEntity;
+    @ManyToOne
+    @JoinColumn(name = "cart_id", nullable = false)
+    private Cart cart;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // 해도되냐?
+    @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
     private int quantity;
+
+    private int price;
+
+    public CartItem(Cart cart, Book book, int quantity, int price) {
+        this.cart = cart;
+        this.book = book;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
+    public int calculateItemTotal() {
+        return price * quantity;
+    }
 }
