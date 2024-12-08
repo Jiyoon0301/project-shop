@@ -56,6 +56,14 @@ public class Book {
         this.price = price;
     }
 
+    public Book(String title, int price, int stockQuantity, String authorName, String category) {
+        this.title = title;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.authorName = authorName;
+        this.category = category;
+    }
+
     public void addReview(Review review) {
         this.reviews.add(review);
     }

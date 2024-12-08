@@ -1,5 +1,6 @@
 package project.shop1.domain.product.service;
 
+import project.shop1.domain.product.dto.RequestDto.ProductUpdateRequestDto;
 import project.shop1.domain.product.dto.ResponseDto.ProductResponseDto;
 import project.shop1.domain.product.dto.RequestDto.ProductRequestDto;
 
@@ -21,4 +22,7 @@ public interface ProductService {
 
     // 상품 검색
     List<ProductResponseDto> searchProducts(String keyword);
+
+    // 상품 업데이트
+    ProductResponseDto updateProduct(Long productId, ProductUpdateRequestDto updateRequestDto);
 }

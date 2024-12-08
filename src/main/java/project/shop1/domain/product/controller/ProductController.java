@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import project.shop1.domain.product.dto.RequestDto.ProductUpdateRequestDto;
 import project.shop1.domain.product.dto.ResponseDto.ProductResponseDto;
 import project.shop1.domain.product.dto.RequestDto.ProductRequestDto;
 import project.shop1.domain.product.service.ProductService;
@@ -70,6 +71,7 @@ public class ProductController {
 
     /**
      * 상품 검색
+     *
      * @param keyword
      * @return
      */
@@ -77,5 +79,20 @@ public class ProductController {
     public ResponseEntity<List<ProductResponseDto>> searchProducts(@RequestParam String keyword) {
         List<ProductResponseDto> products = productService.searchProducts(keyword);
         return ResponseEntity.ok(products);
+    }
+
+    /**
+     * 상품 업데이트
+     *
+     * @param productId
+     * @param updateRequestDto
+     * @return
+     */
+    @PutMapping("/{productId}")
+    public ResponseEntity<ProductResponseDto> updateProduct(
+            @PathVariable Long productId,
+            @RequestBody @Valid ProductUpdateRequestDto updateRequestDto) {
+        ProductResponseDto updatedProduct = productService.updateProduct(productId, updateRequestDto);
+        return ResponseEntity.ok(updatedProduct);
     }
 }

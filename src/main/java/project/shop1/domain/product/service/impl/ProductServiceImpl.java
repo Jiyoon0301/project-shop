@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.shop1.domain.product.dto.RequestDto.ProductUpdateRequestDto;
 import project.shop1.domain.product.dto.ResponseDto.ProductResponseDto;
 import project.shop1.domain.product.dto.RequestDto.ProductRequestDto;
 import project.shop1.domain.product.entity.Book;
@@ -92,5 +93,37 @@ public class ProductServiceImpl implements ProductService {
         return products.stream()
                 .map(product -> modelMapper.map(product, ProductResponseDto.class))
                 .collect(Collectors.toList());
+    }
+
+    // 상품 업데이트
+    @Override
+    @Transactional
+    public ProductResponseDto updateProduct(Long productId, ProductUpdateRequestDto updateRequestDto) {
+        // Product ID로 데이터베이스에서 제품 조회
+        Book existingProduct = productRepository.findById(productId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "존재하지 않는 상품입니다."));
+
+        // Update 요청 내용을 기존 엔티티에 반영
+        if (updateRequestDto.getTitle() != null) {
+            existingProduct.setTitle(updateRequestDto.getTitle());
+        }
+        if (updateRequestDto.getPrice() != null) {
+            existingProduct.setPrice(updateRequestDto.getPrice());
+        }
+        if (updateRequestDto.getStockQuantity() != null) {
+            existingProduct.setStockQuantity(updateRequestDto.getStockQuantity());
+        }
+        if (updateRequestDto.getAuthorName() != null) {
+            existingProduct.setAuthorName(updateRequestDto.getAuthorName());
+        }
+        if (updateRequestDto.getCategory() != null) {
+            existingProduct.setCategory(updateRequestDto.getCategory());
+        }
+
+        // 데이터베이스에 저장 (변경 감지)
+        Book updatedProduct = productRepository.save(existingProduct);
+
+        // Entity를 Response DTO로 변환하여 반환
+        return modelMapper.map(updatedProduct, ProductResponseDto.class);
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.util.ReflectionTestUtils;
 import project.shop1.domain.product.dto.RequestDto.AddProductRequestDto;
 import project.shop1.domain.product.dto.RequestDto.ProductRequestDto;
+import project.shop1.domain.product.dto.RequestDto.ProductUpdateRequestDto;
 import project.shop1.domain.product.dto.ResponseDto.ProductResponseDto;
 import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.product.repository.ProductRepository;
@@ -201,8 +202,8 @@ class ProductServiceImplTest {
         // Given
         String keyword = "Book";
         List<Book> mockBooks = List.of(
-                Book.builder().id(1L).title("Book 1").price(1000).build(),
-                Book.builder().id(2L).title("Another Book").price(1500).build()
+                Book.builder().id(1L).title("Book1").price(1000).build(),
+                Book.builder().id(2L).title("Book2").price(1500).build()
         );
 
         // Repository Mock 설정
@@ -214,8 +215,8 @@ class ProductServiceImplTest {
         // Then
         assertThat(result).isNotNull();
         assertThat(result).hasSize(2);
-        assertThat(result.get(0).getTitle()).isEqualTo("Book 1");
-        assertThat(result.get(1).getTitle()).isEqualTo("Another Book");
+        assertThat(result.get(0).getTitle()).isEqualTo("Book1");
+        assertThat(result.get(1).getTitle()).isEqualTo("Book2");
 
         // Verify Repository 호출 확인
         verify(productRepository, times(1)).findByTitleContainingIgnoreCase(keyword);
