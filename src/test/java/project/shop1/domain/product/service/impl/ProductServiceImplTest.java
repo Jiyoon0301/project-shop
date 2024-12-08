@@ -326,6 +326,25 @@ class ProductServiceImplTest {
         verify(productRepository).save(existingProduct);
     }
 
+    @Test
+    void 재고가_음수이면_예외_발생() {
+        // given
+        Long productId = 1L;
+        int quantityToSubtract = -60;
+
+        Book existingProduct = createBookEntity();
+
+        when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
+
+        // when & then
+        assertThatThrownBy(() -> productService.updateStock(productId, quantityToSubtract))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("재고 수량은 음수가 될 수 없습니다.");
+
+        verify(productRepository).findById(productId);
+        verify(productRepository, never()).save(any());
+    }
+
     private ProductRequestDto createProductRequestDto() {
         return ProductRequestDto.builder()
                 .title("Test Book")
