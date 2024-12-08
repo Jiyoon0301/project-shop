@@ -158,4 +158,13 @@ public class ProductServiceImpl implements ProductService {
         Book updatedProduct = productRepository.save(existingProduct);
         return modelMapper.map(updatedProduct, ProductResponseDto.class);
     }
+
+    // 재고 수량 조회
+    @Override
+    public int getStockLevel(Long productId) {
+        // 상품 존재 여부 확인 및 재고 수량 조회
+        Book existingProduct = productRepository.findById(productId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "존재하지 않는 상품입니다."));
+        return existingProduct.getStockQuantity();
+    }
 }

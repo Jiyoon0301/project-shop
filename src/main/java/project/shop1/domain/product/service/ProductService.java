@@ -31,4 +31,7 @@ public interface ProductService {
 
     // 상품 재고 업데이트
     ProductResponseDto updateStock(Long productId, int quantity);
+
+    // 재고 수량 조회
+    int getStockLevel(Long productId);
 }

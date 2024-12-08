@@ -362,7 +362,6 @@ class ProductServiceImplTest {
         verify(productRepository, never()).save(any());
     }
 
-
     private ProductRequestDto createProductRequestDto() {
         return ProductRequestDto.builder()
                 .title("Test Book")

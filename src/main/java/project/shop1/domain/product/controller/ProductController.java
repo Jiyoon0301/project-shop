@@ -123,4 +123,15 @@ public class ProductController {
         ProductResponseDto updatedProduct = productService.updateStock(productId, quantity);
         return ResponseEntity.ok(updatedProduct);
     }
+
+    /**
+     * 재고 수량 조회
+     * @param productId
+     * @return
+     */
+    @GetMapping("/{productId}/stock")
+    public ResponseEntity<Integer> getStockLevel(@PathVariable Long productId) {
+        int stockLevel = productService.getStockLevel(productId);
+        return ResponseEntity.ok(stockLevel);
+    }
 }
