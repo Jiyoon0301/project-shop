@@ -8,14 +8,17 @@ import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import project.shop1.domain.cart.dto.request.AddProductRequestDto;
 import project.shop1.domain.cart.dto.request.CartItemRequestDto;
 import project.shop1.domain.cart.dto.response.CartItemResponseDto;
+import project.shop1.domain.cart.dto.response.CartResponseDto;
 import project.shop1.domain.cart.entity.Cart;
 import project.shop1.domain.cart.entity.CartItem;
 import project.shop1.domain.cart.repository.CartRepository;
 import project.shop1.domain.cart.service.CartService;
 import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.product.repository.ProductRepository;
+import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.global.exception.BusinessException;
 
 import java.util.ArrayList;
@@ -103,5 +106,55 @@ public class CartServiceImplTest {
         assertThatThrownBy(() -> cartService.addItemToCart(cart.getId(), requestDto))
                 .isInstanceOf(BusinessException.class) // 예외가 발생하는지 확인
                 .hasMessage("상품을 찾을 수 없습니다.");
+    }
+
+    @Test
+    void 장바구니에_새로운_상품_추가_성공() {
+        // given
+        Long userId = 1L;
+        AddProductRequestDto requestDto = new AddProductRequestDto();
+        requestDto.setProductId(1L);
+        requestDto.setQuantity(2);
+
+        UserEntity user = new UserEntity();
+        user.setId(userId);
+
+        Cart cart = new Cart();
+        cart.setId(1L);
+        cart.setUserEntity(user);
+        cart.setItems(new ArrayList<>());
+
+        Book product = new Book();
+        product.setId(1L);
+        product.setTitle("Test Book");
+        product.setPrice(100);
+
+        when(cartRepository.findByUserEntity_Id(userId)).thenReturn(Optional.of(cart));
+        when(productRepository.findById(requestDto.getProductId())).thenReturn(Optional.of(product));
+
+        CartItemResponseDto mockResponseDto = new CartItemResponseDto();
+        mockResponseDto.setItemId(1L);
+        mockResponseDto.setProductId(product.getId());
+        mockResponseDto.setQuantity(requestDto.getQuantity());
+        mockResponseDto.setTotalPrice(product.getPrice() * requestDto.getQuantity());
+
+        // when
+        CartResponseDto responseDto = cartService.addProductToCart(userId, requestDto);
+
+        // then
+        assertThat(responseDto).isNotNull();
+        assertThat(responseDto.getId()).isEqualTo(cart.getId());
+        assertThat(responseDto.getUserId()).isEqualTo(userId); // userEntity의 id 확인
+        assertThat(responseDto.getItems()).hasSize(1);
+
+        CartItemResponseDto cartItemResponseDto = responseDto.getItems().get(0);
+        assertThat(cartItemResponseDto.getProductId()).isEqualTo(product.getId());
+        assertThat(cartItemResponseDto.getQuantity()).isEqualTo(requestDto.getQuantity());
+        assertThat(cartItemResponseDto.getTotalPrice()).isEqualTo(product.getPrice() * requestDto.getQuantity());
+
+        // Verify interactions
+        verify(cartRepository, times(1)).findByUserEntity_Id(userId);
+        verify(productRepository, times(1)).findById(requestDto.getProductId());
+        verify(cartRepository, times(1)).save(cart);
     }
 }
