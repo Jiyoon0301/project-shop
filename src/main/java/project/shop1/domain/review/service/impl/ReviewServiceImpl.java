@@ -67,7 +67,7 @@ public class ReviewServiceImpl implements ReviewService {
         Pageable pageable = PageRequest.of(getReviewsRequestDto.getPage(), 10, sort);
 
         // JPA 페이지네이션 쿼리 실행
-        Page<Review> reviewsPage = reviewRepository.findByProductIdAndRating(
+        Page<Review> reviewsPage = reviewRepository.findByBook_IdAndRating(
                 productId,
                 getReviewsRequestDto.getRating(),
                 pageable
@@ -95,9 +95,9 @@ public class ReviewServiceImpl implements ReviewService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "존재하지 않는 사용자입니다."));
 
         // 리뷰 조회
-        List<Review> reviews = reviewRepository.findByUser(userEntity);
+        List<Review> reviews = reviewRepository.findByUserEntity(userEntity);
 
-        // 3. 엔티티를 DTO로 변환
+        // 엔티티를 DTO로 변환
         return reviews.stream()
                 .map(review -> GetReviewsResponseDto.builder()
                         .id(review.getId())

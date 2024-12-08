@@ -2,6 +2,7 @@ package project.shop1.domain.review.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.user.entity.UserEntity;
 
@@ -26,11 +27,13 @@ public class Review {
     @JoinColumn(name = "user_entity_id")
     private UserEntity userEntity;
 
-    // 상품에 대한 리뷰 내용
+    // 리뷰 내용
     private String content;
 
-    // 상품의 평점
+    // 평점
     private int rating;
 
-    private LocalDateTime regDate;
+    // 등록일
+    @CreationTimestamp
+    private LocalDateTime regDate; // @CreationTimestamp로 자동 저장
 }

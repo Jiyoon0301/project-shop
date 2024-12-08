@@ -108,7 +108,7 @@ public class ReviewServiceImplTest {
 //        List<Review> reviewList = Arrays.asList(review1, review2);
 //        Page<Review> reviewPage = new PageImpl<>(reviewList, pageable, reviewList.size());
 //
-//        when(reviewRepository.findByProductIdAndRating(productId, 5, pageable)).thenReturn(reviewPage);
+//        when(reviewRepository.findByBook_IdAndRating(productId, 5, pageable)).thenReturn(reviewPage);
 //        // when
 //        Page<GetReviewsResponseDto> responseDtos = reviewService.getReviewsByProduct(productId, requestDto);
 //
@@ -126,6 +126,6 @@ public class ReviewServiceImplTest {
 //        assertThat(dto2.getRating()).isEqualTo(4);
 //        assertThat(dto2.getUserName()).isEqualTo("name2");
 //
-//        verify(reviewRepository, times(1)).findByProductIdAndRating(productId, 5, pageable);
+//        verify(reviewRepository, times(1)).findByBook_IdAndRating(productId, 5, pageable);
 //    }
 }

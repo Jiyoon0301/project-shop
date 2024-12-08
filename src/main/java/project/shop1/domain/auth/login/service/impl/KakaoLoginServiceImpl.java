@@ -121,7 +121,7 @@ public class KakaoLoginServiceImpl implements LoginService<SocialLoginRequestDto
         HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> response = rt.exchange(
-                "https://kapi.kakao.com/v2/user/me", //*****************
+                "https://kapi.kakao.com/v2/user/me",
                 HttpMethod.POST,
                 kakaoUserInfoRequest,
                 String.class
@@ -140,7 +140,7 @@ public class KakaoLoginServiceImpl implements LoginService<SocialLoginRequestDto
         String email = jsonNode.get("kakao_account").get("email").asText();
         String nickname = jsonNode.get("properties").get("nickname").asText();
 
-        userInfo.put("id", id); // 모름
+        userInfo.put("id", id);
         userInfo.put("email", email); // 카카오 로그인 이메일
         userInfo.put("nickname", nickname); // 카카오에서 사용하는 이름
 

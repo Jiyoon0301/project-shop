@@ -31,24 +31,24 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private final RefreshTokenRepository refreshTokenRepository;
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        // 1. 기본 서비스 호출
+        // 기본 서비스 호출
         OAuth2User oauth2User = new DefaultOAuth2UserService().loadUser(userRequest);
 
-        // 2. 클라이언트 이름(Google, Kakao, Naver) 확인
+        // 클라이언트 이름(Google, Kakao, Naver) 확인
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String userNameAttributeName = userRequest.getClientRegistration()
                 .getProviderDetails()
                 .getUserInfoEndpoint()
                 .getUserNameAttributeName();
 
-        // 3. 사용자 정보 추출
+        // 사용자 정보 추출
         Map<String, Object> attributes = oauth2User.getAttributes();
         OAuthAttributes extractedAttributes = OAuthAttributes.of(registrationId, userNameAttributeName, attributes);
 
-        // 4. 데이터베이스 저장 또는 업데이트
+        // 데이터베이스 저장 또는 업데이트
         UserEntity userEntity = saveOrUpdate(extractedAttributes);
 
-        // 5. 사용자 정보 반환
+        // 사용자 정보 반환
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("USER")),
                 attributes,

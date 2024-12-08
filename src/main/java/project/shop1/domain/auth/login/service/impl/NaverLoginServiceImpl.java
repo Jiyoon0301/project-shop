@@ -47,6 +47,8 @@ public class NaverLoginServiceImpl implements LoginService<SocialLoginRequestDto
     private String clientId;
     @Value("${spring.security.oauth2.client.registration.naver.client-secret}")
     private String clientSecret;
+    @Value("${spring.security.oauth2.client.provider.naver.token-uri}")
+    private String tokenUri;
 
     @Transactional
     @Override
@@ -85,8 +87,8 @@ public class NaverLoginServiceImpl implements LoginService<SocialLoginRequestDto
         HttpEntity<MultiValueMap<String, String>> naverTokenRequest = new HttpEntity<>(body, headers);
         RestTemplate rt = new RestTemplate();
         ResponseEntity<NaverAccessTokenResponseDto> response = rt.exchange(
-                "https://nid.naver.com/oauth2.0/token",
-                HttpMethod.POST,
+                tokenUri,
+        HttpMethod.POST,
                 naverTokenRequest,
                 NaverAccessTokenResponseDto.class
         );

@@ -18,11 +18,13 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     private static final long serialVersionUID = -374783848L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QUserEntity userEntity = new QUserEntity("userEntity");
 
     public final StringPath account = createString("account");
 
-    public final StringPath address = createString("address");
+    public final project.shop1.domain.address.entity.QAddress address;
 
     public final ListPath<project.shop1.domain.cart.entity.CartItem, project.shop1.domain.cart.entity.QCartItem> cartItems = this.<project.shop1.domain.cart.entity.CartItem, project.shop1.domain.cart.entity.QCartItem>createList("cartItems", project.shop1.domain.cart.entity.CartItem.class, project.shop1.domain.cart.entity.QCartItem.class, PathInits.DIRECT2);
 
@@ -47,15 +49,24 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
     public final EnumPath<project.shop1.domain.user.enums.UserRank> userRank = createEnum("userRank", project.shop1.domain.user.enums.UserRank.class);
 
     public QUserEntity(String variable) {
-        super(UserEntity.class, forVariable(variable));
+        this(UserEntity.class, forVariable(variable), INITS);
     }
 
     public QUserEntity(Path<? extends UserEntity> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QUserEntity(PathMetadata metadata) {
-        super(UserEntity.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QUserEntity(PathMetadata metadata, PathInits inits) {
+        this(UserEntity.class, metadata, inits);
+    }
+
+    public QUserEntity(Class<? extends UserEntity> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.address = inits.isInitialized("address") ? new project.shop1.domain.address.entity.QAddress(forProperty("address")) : null;
     }
 
 }

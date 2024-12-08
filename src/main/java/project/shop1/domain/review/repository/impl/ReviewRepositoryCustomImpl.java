@@ -21,4 +21,6 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 .where(review.book.id.eq(productId))
                 .fetchOne();
     }
+
+//    List<Review> findByBook_Id(Long productId, int page);
 }
