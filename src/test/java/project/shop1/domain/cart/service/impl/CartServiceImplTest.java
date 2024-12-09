@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 import project.shop1.domain.cart.dto.request.AddProductRequestDto;
 import project.shop1.domain.cart.dto.request.CartItemRequestDto;
 import project.shop1.domain.cart.dto.response.CartItemResponseDto;
@@ -15,13 +14,14 @@ import project.shop1.domain.cart.dto.response.CartResponseDto;
 import project.shop1.domain.cart.entity.Cart;
 import project.shop1.domain.cart.entity.CartItem;
 import project.shop1.domain.cart.repository.CartRepository;
-import project.shop1.domain.cart.service.CartService;
 import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.product.repository.ProductRepository;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.global.exception.BusinessException;
+import project.shop1.global.exception.ErrorCode;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -156,5 +156,59 @@ public class CartServiceImplTest {
         verify(cartRepository, times(1)).findByUserEntity_Id(userId);
         verify(productRepository, times(1)).findById(requestDto.getProductId());
         verify(cartRepository, times(1)).save(cart);
+    }
+
+    @Test
+    void 장바구니_조회_성공() {
+        // given
+        Long cartId = 1L;
+
+        Book book = new Book();
+        book.setId(101L);
+        book.setTitle("Test Book");
+        int price = 100;
+
+        CartItem cartItem = new CartItem();
+        cartItem.setId(1L);
+        cartItem.setBook(book);
+        cartItem.setQuantity(2);
+        cartItem.setPrice(price);
+
+        Cart cart = new Cart();
+        cart.setId(cartId);
+        cart.setItems(new ArrayList<>(List.of(cartItem)));
+
+        when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
+
+        // when
+        List<CartItemResponseDto> responseDtos = cartService.getCartItems(cartId);
+
+        // then
+        assertThat(responseDtos).hasSize(1); // 반환된 항목 개수 확인
+        CartItemResponseDto dto = responseDtos.get(0);
+        assertThat(dto.getItemId()).isEqualTo(cartItem.getId());
+        assertThat(dto.getProductId()).isEqualTo(book.getId());
+        assertThat(dto.getTitle()).isEqualTo(book.getTitle());
+        assertThat(dto.getQuantity()).isEqualTo(cartItem.getQuantity());
+        assertThat(dto.getPrice()).isEqualTo(cartItem.getPrice());
+        assertThat(dto.getTotalPrice()).isEqualTo(cartItem.getPrice() * cartItem.getQuantity());
+
+        // verify
+        verify(cartRepository, times(1)).findById(cartId);
+    }
+
+    @Test
+    void 존재하지_않는_장바구니_조회_시도하면_예외발생() {
+        // given
+        Long cartId = 1L;
+        when(cartRepository.findById(cartId)).thenReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> cartService.getCartItems(cartId))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("장바구니를 찾을 수 없습니다.");
+
+        // verify
+        verify(cartRepository, times(1)).findById(cartId);
     }
 }

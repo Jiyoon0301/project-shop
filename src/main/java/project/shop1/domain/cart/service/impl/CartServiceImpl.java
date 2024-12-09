@@ -20,6 +20,8 @@ import project.shop1.global.exception.ErrorCode;
 import project.shop1.domain.cart.repository.CartRepository;
 import project.shop1.domain.cart.service.CartService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -106,5 +108,28 @@ public class CartServiceImpl implements CartService {
         cartRepository.save(newCart);
 
         return newCart;
+    }
+
+    // 장바구니 상품 조회
+    @Override
+    public List<CartItemResponseDto> getCartItems(Long cartId) {
+        // 장바구니 가져오기
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "장바구니를 찾을 수 없습니다."));
+
+        // 장바구니 항목 가져오기 및 DTO 변환
+        List<CartItemResponseDto> responseDtos = new ArrayList<>();
+        for (CartItem cartItem : cart.getItems()) {
+            CartItemResponseDto dto = new CartItemResponseDto();
+            dto.setItemId(cartItem.getId());
+            dto.setProductId(cartItem.getBook().getId());
+            dto.setTitle(cartItem.getBook().getTitle()); // 상품 이름이 `title`이라고 가정
+            dto.setQuantity(cartItem.getQuantity());
+            dto.setPrice(cartItem.getPrice());
+            dto.setTotalPrice(cartItem.getPrice() * cartItem.getQuantity()); // 총 가격 계산
+            responseDtos.add(dto);
+        }
+
+        return responseDtos;
     }
 }

@@ -44,4 +44,15 @@ public class CartController {
         CartResponseDto response = cartService.addProductToCart(userId, request);
         return ResponseEntity.ok(response);
     }
+
+    /**
+     * 장바구니 상품 조회
+     * @param cartId
+     * @return
+     */
+    @GetMapping("/{cartId}/items")
+    public ResponseEntity<List<CartItemResponseDto>> getCartItems(@PathVariable Long cartId) {
+        List<CartItemResponseDto> response = cartService.getCartItems(cartId);
+        return ResponseEntity.ok(response);
+    }
 }
