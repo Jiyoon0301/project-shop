@@ -453,4 +453,33 @@ public class CartServiceImplTest {
         verify(cartRepository).findById(cartId);
         verify(cartRepository, never()).save(any());
     }
+
+    @Test
+    void 장바구니_초기화_성공() {
+        // given
+        Long cartId = 1L;
+        when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
+
+        // when
+        cartService.clearCart(cartId);
+
+        // then
+        assertThat(cart.getItems()).isEmpty(); // 장바구니가 비워졌는지 확인
+        verify(cartRepository).findById(cartId); // findById 호출 확인
+        verify(cartRepository).save(cart); // save 호출 확인
+    }
+
+    @Test
+    void 존재하지_않는_장바구니_초기화_시도하면_예외발생() {
+        // given
+        Long cartId = 1L;
+        when(cartRepository.findById(cartId)).thenReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> cartService.clearCart(cartId))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("장바구니를 찾을 수 없습니다.");
+        verify(cartRepository).findById(cartId); // findById 호출 확인
+        verify(cartRepository, never()).save(any()); // save는 호출되지 않아야 함
+    }
 }

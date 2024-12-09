@@ -111,4 +111,15 @@ public class CartController {
         cartService.removeItemFromCart(cartId, itemId);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * 장바구니 초기화
+     * @param cartId
+     * @return
+     */
+    @DeleteMapping("/{cartId}/clear")
+    public ResponseEntity<Void> clearCart(@PathVariable Long cartId) {
+        cartService.clearCart(cartId);
+        return ResponseEntity.noContent().build();
+    }
 }

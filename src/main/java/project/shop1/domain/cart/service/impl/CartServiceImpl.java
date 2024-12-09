@@ -241,4 +241,18 @@ public class CartServiceImpl implements CartService {
         // 장바구니 저장
         cartRepository.save(cart);
     }
+
+    // 장바구니 초기화
+    @Override
+    public void clearCart(Long cartId) {
+        // 장바구니 확인
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "장바구니를 찾을 수 없습니다."));
+
+        // 장바구니 비우기
+        cart.getItems().clear();
+
+        // 장바구니 저장
+        cartRepository.save(cart);
+    }
 }

@@ -30,4 +30,7 @@ public interface CartService {
 
     // 장바구니에서 상품 삭제
     void removeItemFromCart(Long cartId, Long itemId);
+
+    // 장바구니 초기화
+    void clearCart(Long cartId);
 }
