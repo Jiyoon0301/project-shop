@@ -55,4 +55,15 @@ public class CartController {
         List<CartItemResponseDto> response = cartService.getCartItems(cartId);
         return ResponseEntity.ok(response);
     }
+
+    /**
+     * 사용자 장바구니 조회
+     * @param userId
+     * @return
+     */
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<CartResponseDto> getCartByUserId(@PathVariable Long userId) {
+        CartResponseDto response = cartService.getCartByUserId(userId);
+        return ResponseEntity.ok(response);
+    }
 }

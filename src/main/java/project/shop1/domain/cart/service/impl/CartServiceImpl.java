@@ -132,4 +132,31 @@ public class CartServiceImpl implements CartService {
 
         return responseDtos;
     }
+
+    @Override
+    public CartResponseDto getCartByUserId(Long userId) {
+        // 사용자 ID로 장바구니 조회
+        Cart cart = cartRepository.findByUserEntity_Id(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "해당 사용자의 장바구니를 찾을 수 없습니다."));
+
+        // 장바구니 항목 변환
+        List<CartItemResponseDto> items = cart.getItems().stream()
+                .map(cartItem -> CartItemResponseDto.builder()
+                        .itemId(cartItem.getId())
+                        .productId(cartItem.getBook().getId())
+                        .title(cartItem.getBook().getTitle())
+                        .quantity(cartItem.getQuantity())
+                        .price(cartItem.getPrice())
+                        .totalPrice(cartItem.getPrice() * cartItem.getQuantity())
+                        .build()
+                )
+                .toList();
+
+        // 장바구니 데이터 변환
+        return CartResponseDto.builder()
+                .id(cart.getId())
+                .userId(cart.getUserEntity().getId())
+                .items(items)
+                .build();
+    }
 }

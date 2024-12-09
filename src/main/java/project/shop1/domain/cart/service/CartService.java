@@ -17,4 +17,7 @@ public interface CartService {
 
     // 장바구니 상품 조회
     List<CartItemResponseDto> getCartItems(Long cartId);
+
+    // 사용자 장바구니 조회
+    CartResponseDto getCartByUserId(Long userId);
 }

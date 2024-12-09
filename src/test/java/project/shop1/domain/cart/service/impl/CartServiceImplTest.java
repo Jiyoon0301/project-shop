@@ -211,4 +211,57 @@ public class CartServiceImplTest {
         // verify
         verify(cartRepository, times(1)).findById(cartId);
     }
+
+    @Test
+    void 사용자_장바구니_조회_성공() {
+        // given
+        Long userId = 1L;
+
+        CartItem cartItem = CartItem.builder()
+                .id(1L)
+                .book(Book.builder().id(101L).title("Test Book").build())
+                .quantity(2)
+                .price(5000)
+                .build();
+
+        Cart mockCart = Cart.builder()
+                .id(10L)
+                .userEntity(UserEntity.builder().id(userId).build())
+                .items(List.of(cartItem))
+                .build();
+
+        when(cartRepository.findByUserEntity_Id(userId)).thenReturn(Optional.of(mockCart));
+
+        // when
+        CartResponseDto response = cartService.getCartByUserId(userId);
+
+        // then
+        assertThat(response).isNotNull();
+        assertThat(response.getId()).isEqualTo(mockCart.getId());
+        assertThat(response.getUserId()).isEqualTo(mockCart.getUserEntity().getId());
+        assertThat(response.getItems()).hasSize(1);
+        assertThat(response.getItems().get(0).getItemId()).isEqualTo(cartItem.getId());
+        assertThat(response.getItems().get(0).getProductId()).isEqualTo(cartItem.getBook().getId());
+        assertThat(response.getItems().get(0).getTitle()).isEqualTo(cartItem.getBook().getTitle());
+        assertThat(response.getItems().get(0).getQuantity()).isEqualTo(cartItem.getQuantity());
+        assertThat(response.getItems().get(0).getPrice()).isEqualTo(cartItem.getPrice());
+        assertThat(response.getItems().get(0).getTotalPrice()).isEqualTo(cartItem.getPrice() * cartItem.getQuantity());
+
+        verify(cartRepository, times(1)).findByUserEntity_Id(userId);
+    }
+
+    @Test
+    void getCartByUserId_shouldThrowException_whenCartDoesNotExist() {
+        // given
+        Long userId = 1L;
+        when(cartRepository.findByUserEntity_Id(userId)).thenReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> cartService.getCartByUserId(userId))
+                .isInstanceOf(BusinessException.class)
+                .hasFieldOrPropertyWithValue("errorCode", ErrorCode.RESOURCE_NOT_FOUND)
+                .hasMessage("해당 사용자의 장바구니를 찾을 수 없습니다.");
+
+        verify(cartRepository, times(1)).findByUserEntity_Id(userId);
+    }
 }
