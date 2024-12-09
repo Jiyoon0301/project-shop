@@ -9,9 +9,14 @@ import project.shop1.domain.cart.dto.request.CartItemRequestDto;
 import project.shop1.domain.cart.dto.request.CartItemUpdateRequestDto;
 import project.shop1.domain.cart.dto.response.CartItemResponseDto;
 import project.shop1.domain.cart.dto.response.CartResponseDto;
+import project.shop1.domain.cart.dto.response.OrderItemResponseDto;
+import project.shop1.domain.cart.dto.response.OrderResponseDto;
 import project.shop1.domain.cart.entity.Cart;
 import project.shop1.domain.cart.entity.CartItem;
 import project.shop1.domain.cart.repository.CartItemRepository;
+import project.shop1.domain.order.entity.Order;
+import project.shop1.domain.order.entity.OrderItem;
+import project.shop1.domain.order.repository.OrderRepository;
 import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.product.repository.ProductRepository;
 import project.shop1.domain.user.entity.UserEntity;
@@ -21,9 +26,11 @@ import project.shop1.global.exception.ErrorCode;
 import project.shop1.domain.cart.repository.CartRepository;
 import project.shop1.domain.cart.service.CartService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +40,7 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
     private final ModelMapper modelMapper;
 
@@ -254,5 +262,63 @@ public class CartServiceImpl implements CartService {
 
         // 장바구니 저장
         cartRepository.save(cart);
+    }
+
+    // 장바구니 내용을 주문으로 변환
+    @Override
+    @Transactional
+    public OrderResponseDto convertCartToOrder(Long cartId) {
+        // 장바구니 확인
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "장바구니를 찾을 수 없습니다."));
+
+        // 장바구니가 비어있는지 확인
+        if (cart.getItems().isEmpty()) {
+            throw new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "장바구니가 비어있습니다.");
+        }
+
+        // 주문 생성
+        Order order = createOrder(cart);
+
+        // 주문 저장
+        orderRepository.save(order);
+
+        // 장바구니 비우기
+        cart.getItems().clear();
+        cartRepository.save(cart);
+
+        // 응답 DTO 변환
+        return OrderResponseDto.builder()
+                .orderId(order.getId())
+                .userId(order.getUserEntity().getId())
+                .orderDate(order.getOrderDate())
+                .totalPrice(order.getTotalPrice())
+                .items(order.getOrderItems().stream()
+                        .map(orderItem -> OrderItemResponseDto.builder()
+                                .productId(orderItem.getBook().getId())
+                                .title(orderItem.getBook().getTitle())
+                                .quantity(orderItem.getQuantity())
+                                .price(orderItem.getOrderPrice())
+                                .totalPrice(orderItem.getOrderPrice() * orderItem.getQuantity())
+                                .build())
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
+    private Order createOrder(Cart cart) {
+        return Order.builder()
+                .userEntity(cart.getUserEntity()) // 장바구니의 사용자 정보
+                .orderDate(LocalDateTime.now()) // 현재 시간
+                .totalPrice(cart.getItems().stream()
+                        .mapToInt(item -> item.getPrice() * item.getQuantity())
+                        .sum()) // 총 가격 계산
+                .orderItems(cart.getItems().stream()
+                        .map(cartItem -> OrderItem.builder()
+                                .book(cartItem.getBook())
+                                .quantity(cartItem.getQuantity())
+                                .orderPrice(cartItem.getPrice())
+                                .build())
+                        .collect(Collectors.toList())) // 장바구니 항목을 주문 항목으로 변환
+                .build();
     }
 }

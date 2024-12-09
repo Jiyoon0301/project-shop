@@ -9,6 +9,7 @@ import project.shop1.domain.cart.dto.request.CartItemRequestDto;
 import project.shop1.domain.cart.dto.request.CartItemUpdateRequestDto;
 import project.shop1.domain.cart.dto.response.CartItemResponseDto;
 import project.shop1.domain.cart.dto.response.CartResponseDto;
+import project.shop1.domain.cart.dto.response.OrderResponseDto;
 import project.shop1.domain.cart.service.CartService;
 
 import java.util.List;
@@ -121,5 +122,16 @@ public class CartController {
     public ResponseEntity<Void> clearCart(@PathVariable Long cartId) {
         cartService.clearCart(cartId);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 장바구니 내용을 주문으로 변환
+     * @param cartId
+     * @return
+     */
+    @PostMapping("/{cartId}/convert-to-order")
+    public ResponseEntity<OrderResponseDto> convertCartToOrder(@PathVariable Long cartId) {
+        OrderResponseDto response = cartService.convertCartToOrder(cartId);
+        return ResponseEntity.ok(response);
     }
 }

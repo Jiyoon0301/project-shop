@@ -12,7 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderResponseDto {
     private Long orderId;
-    private List<CartItemResponseDto> items;
-    private int totalAmount;
+    private Long userId;
     private LocalDateTime orderDate;
+    private int totalPrice;
+    private List<OrderItemResponseDto> items;
 }

@@ -5,6 +5,7 @@ import project.shop1.domain.cart.dto.request.CartItemRequestDto;
 import project.shop1.domain.cart.dto.request.CartItemUpdateRequestDto;
 import project.shop1.domain.cart.dto.response.CartItemResponseDto;
 import project.shop1.domain.cart.dto.response.CartResponseDto;
+import project.shop1.domain.cart.dto.response.OrderResponseDto;
 
 import java.util.List;
 
@@ -33,4 +34,7 @@ public interface CartService {
 
     // 장바구니 초기화
     void clearCart(Long cartId);
+
+    // 장바구니 내용을 주문으로 변환
+    OrderResponseDto convertCartToOrder(Long cartId);
 }

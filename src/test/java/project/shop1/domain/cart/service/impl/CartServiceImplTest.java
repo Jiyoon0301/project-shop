@@ -12,15 +12,19 @@ import project.shop1.domain.cart.dto.request.CartItemRequestDto;
 import project.shop1.domain.cart.dto.request.CartItemUpdateRequestDto;
 import project.shop1.domain.cart.dto.response.CartItemResponseDto;
 import project.shop1.domain.cart.dto.response.CartResponseDto;
+import project.shop1.domain.cart.dto.response.OrderResponseDto;
 import project.shop1.domain.cart.entity.Cart;
 import project.shop1.domain.cart.entity.CartItem;
 import project.shop1.domain.cart.repository.CartRepository;
+import project.shop1.domain.order.entity.Order;
+import project.shop1.domain.order.repository.OrderRepository;
 import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.product.repository.ProductRepository;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.global.exception.BusinessException;
 import project.shop1.global.exception.ErrorCode;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +46,9 @@ public class CartServiceImplTest {
     private ProductRepository productRepository;
 
     @Mock
+    private OrderRepository orderRepository;
+
+    @Mock
     private ModelMapper modelMapper;
 
     // Mock 데이터
@@ -49,9 +56,16 @@ public class CartServiceImplTest {
     private Cart cart;
     private Book product;
     private CartItem cartItem;
+    private UserEntity userEntity;
+    private Order order;
 
     @BeforeEach
     void setUp() {
+        userEntity = UserEntity.builder()
+                .id(1L)
+                .name("Test User")
+                .build();
+
         requestDto = CartItemRequestDto.builder()
                 .productId(1L) // 상품 Id 설정
                 .quantity(2) // 상품 수량 설정
@@ -73,7 +87,16 @@ public class CartServiceImplTest {
 
         cart = Cart.builder()
                 .id(1L)
+                .userEntity(userEntity)
                 .items(new ArrayList<>(List.of(cartItem)))
+                .build();
+
+        order = Order.builder()
+                .id(1L)
+                .userEntity(cart.getUserEntity())
+                .orderDate(LocalDateTime.now())
+                .totalPrice(200)
+                .orderItems(new ArrayList<>())
                 .build();
     }
 
@@ -481,5 +504,32 @@ public class CartServiceImplTest {
                 .hasMessage("장바구니를 찾을 수 없습니다.");
         verify(cartRepository).findById(cartId); // findById 호출 확인
         verify(cartRepository, never()).save(any()); // save는 호출되지 않아야 함
+    }
+
+    @Test
+    void 장바구니_아이템_주문_변환_성공() {
+        // given
+        Long cartId = 1L;
+        when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart)); // 장바구니 반환 설정
+
+        // createOrder 메서드를 모킹하여 원하는 값으로 반환 -> 실제 객체의 메서드 모킹할 수 없음
+//        when(cartService.createOrder(cart)).thenReturn(order); // 원하는 주문 객체 반환
+
+        when(orderRepository.save(any(Order.class))).thenReturn(order); // 주문 저장 설정
+
+        // when
+        OrderResponseDto response = cartService.convertCartToOrder(cartId); // 서비스 메서드 호출
+
+        // then
+        assertThat(response).isNotNull();
+//        assertThat(response.getOrderId()).isNotNull(); // 주문 ID가 null이 아니어야 함
+        assertThat(response.getUserId()).isEqualTo(userEntity.getId()); // 사용자 ID 확인
+        assertThat(response.getOrderDate()).isNotNull(); // 주문 날짜 확인
+        assertThat(response.getTotalPrice()).isEqualTo(200); // 가격 검증 (100 * 2)
+        assertThat(response.getItems()).hasSize(1); // 아이템이 하나인 경우
+        assertThat(response.getItems().get(0).getProductId()).isEqualTo(product.getId()); // 상품 ID 확인
+        assertThat(response.getItems().get(0).getTitle()).isEqualTo("Test Book"); // 상품 제목 확인
+        assertThat(response.getItems().get(0).getQuantity()).isEqualTo(2); // 수량 확인
+        assertThat(response.getItems().get(0).getTotalPrice()).isEqualTo(200); // 총 가격 검증 (100 * 2)
     }
 }
