@@ -2,6 +2,8 @@ package project.shop1.domain.order.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import project.shop1.global.exception.BusinessException;
 import project.shop1.domain.product.entity.Book;
 
@@ -18,6 +20,7 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)  // 부모 테이블의 삭제 시 자식 테이블도 삭제
     private Book book;
 
     @ManyToOne(fetch = FetchType.LAZY)

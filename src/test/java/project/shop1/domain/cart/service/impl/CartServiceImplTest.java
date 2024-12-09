@@ -82,7 +82,6 @@ public class CartServiceImplTest {
                 .quantity(2)
                 .price(100)
                 .book(product)
-                .quantity(2)
                 .build();
 
         cart = Cart.builder()
@@ -107,8 +106,19 @@ public class CartServiceImplTest {
         when(productRepository.findById(requestDto.getProductId())).thenReturn(Optional.of(product)); // 상품 존재 확인
         when(cartRepository.save(any(Cart.class))).thenReturn(cart); // 장바구니 저장
 
-        CartItem cartItem = new CartItem(cart, product, requestDto.getQuantity(), product.getPrice());
-        when(modelMapper.map(any(CartItem.class), eq(CartItemResponseDto.class))).thenReturn(new CartItemResponseDto()); // modelMapper Mocking
+        CartItem cartItem = cart.getItems().get(0);
+        cartItem.setQuantity(cartItem.getQuantity() + requestDto.getQuantity());
+
+        CartItemResponseDto expectedResponseDto = CartItemResponseDto.builder()
+                .itemId(cartItem.getId())
+                .productId(product.getId())
+                .title(cartItem.getBook().getTitle())
+                .quantity(cartItem.getQuantity())
+                .price(cartItem.getPrice())
+                .totalPrice(cartItem.getPrice() * cartItem.getQuantity())
+                .build();
+
+        when(modelMapper.map(any(CartItem.class), eq(CartItemResponseDto.class))).thenReturn(expectedResponseDto);
 
         // when
         CartItemResponseDto responseDto = cartService.addItemToCart(cart.getId(), requestDto);
@@ -116,10 +126,9 @@ public class CartServiceImplTest {
         // then
         assertThat(responseDto).isNotNull();
         assertThat(responseDto.getProductId()).isEqualTo(product.getId()); // 상품 ID 확인
-        assertThat(responseDto.getQuantity()).isEqualTo(requestDto.getQuantity()); // 수량 확인
-        assertThat(responseDto.getTotalPrice()).isEqualTo(product.getPrice() * requestDto.getQuantity()); // 총 가격 확인
+        assertThat(responseDto.getQuantity()).isEqualTo(cartItem.getQuantity()); // 수량 확인
+        assertThat(responseDto.getTotalPrice()).isEqualTo(cartItem.getPrice() * cartItem.getQuantity()); // 총 가격 확인
 
-        // verify
         verify(cartRepository, times(1)).save(any(Cart.class)); // cartRepository.save()가 1번 호출되었는지 확인
     }
 

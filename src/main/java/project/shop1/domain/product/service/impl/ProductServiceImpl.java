@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.shop1.domain.order.entity.OrderItem;
+import project.shop1.domain.order.repository.OrderItemRepository;
 import project.shop1.domain.product.dto.RequestDto.ProductUpdateRequestDto;
 import project.shop1.domain.product.dto.ResponseDto.ProductResponseDto;
 import project.shop1.domain.product.dto.RequestDto.ProductRequestDto;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final OrderItemRepository orderItemRepository;
     private final ModelMapper modelMapper;
 
     // 상품 생성
