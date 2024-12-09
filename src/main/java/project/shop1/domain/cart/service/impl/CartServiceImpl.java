@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.shop1.domain.cart.dto.request.AddProductRequestDto;
 import project.shop1.domain.cart.dto.request.CartItemRequestDto;
+import project.shop1.domain.cart.dto.request.CartItemUpdateRequestDto;
 import project.shop1.domain.cart.dto.response.CartItemResponseDto;
 import project.shop1.domain.cart.dto.response.CartResponseDto;
 import project.shop1.domain.cart.entity.Cart;
@@ -157,6 +158,37 @@ public class CartServiceImpl implements CartService {
                 .id(cart.getId())
                 .userId(cart.getUserEntity().getId())
                 .items(items)
+                .build();
+    }
+
+    // 장바구니 상품 업데이트
+    @Override
+    public CartItemResponseDto updateCartItem(Long cartId, Long itemId, CartItemUpdateRequestDto request) {
+        // 장바구니 확인
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "장바구니를 찾을 수 없습니다."));
+
+        // 장바구니 아이템 확인
+        CartItem cartItem = cart.getItems().stream()
+                .filter(item -> item.getId().equals(itemId))
+                .findFirst()
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "장바구니 아이템을 찾을 수 없습니다."));
+
+        // 장바구니 아이템 업데이트
+        cartItem.setQuantity(request.getQuantity());
+        cartItem.setPrice(request.getPrice()); // 가격 업데이트가 필요하다고 가정
+
+        // 장바구니 저장
+        cartRepository.save(cart);
+
+        // 응답 DTO 변환
+        return CartItemResponseDto.builder()
+                .itemId(cartItem.getId())
+                .productId(cartItem.getBook().getId())
+                .title(cartItem.getBook().getTitle())
+                .quantity(cartItem.getQuantity())
+                .price(cartItem.getPrice())
+                .totalPrice(cartItem.getPrice() * cartItem.getQuantity())
                 .build();
     }
 }

@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import project.shop1.domain.cart.dto.request.AddProductRequestDto;
 import project.shop1.domain.cart.dto.request.CartItemRequestDto;
+import project.shop1.domain.cart.dto.request.CartItemUpdateRequestDto;
 import project.shop1.domain.cart.dto.response.CartItemResponseDto;
 import project.shop1.domain.cart.dto.response.CartResponseDto;
 import project.shop1.domain.cart.entity.Cart;
@@ -47,19 +48,32 @@ public class CartServiceImplTest {
     private CartItemRequestDto requestDto;
     private Cart cart;
     private Book product;
+    private CartItem cartItem;
 
     @BeforeEach
     void setUp() {
-        requestDto = new CartItemRequestDto();
-        requestDto.setProductId(1L); // 상품 ID 설정
-        requestDto.setQuantity(2);   // 수량 설정
+        requestDto = CartItemRequestDto.builder()
+                .productId(1L) // 상품 Id 설정
+                .quantity(2) // 상품 수량 설정
+                .build();
 
-        product = new Book();
-        product.setId(1L);           // 상품 ID 설정
-        product.setPrice(100);       // 상품 가격 설정
+        product = Book.builder()
+                .id(1L) // 상품 id 설정
+                .title("Test Book") // 상품 제목 설정
+                .price(100) // 상품 가격 설정
+                .build();
 
-        cart = new Cart();
-        cart.setId(1L);              // 장바구니 ID 설정
+        cartItem = CartItem.builder()
+                .id(1L)
+                .quantity(2)
+                .price(100)
+                .book(product)
+                .build();
+
+        cart = Cart.builder()
+                .id(1L)
+                .items(List.of(cartItem))
+                .build();
     }
 
     @Test
@@ -251,7 +265,7 @@ public class CartServiceImplTest {
     }
 
     @Test
-    void getCartByUserId_shouldThrowException_whenCartDoesNotExist() {
+    void 사용자의_존재하지_않는_장바구니를_조회하려고_하면_예외발생() {
         // given
         Long userId = 1L;
         when(cartRepository.findByUserEntity_Id(userId)).thenReturn(Optional.empty());
@@ -263,5 +277,72 @@ public class CartServiceImplTest {
                 .hasMessage("해당 사용자의 장바구니를 찾을 수 없습니다.");
 
         verify(cartRepository, times(1)).findByUserEntity_Id(userId);
+    }
+
+    @Test
+    void 존재하지_않는_장바구니의_상품을_업데이트_시도하면_예외발생() {
+        // given
+        Long cartId = 1L;
+        Long itemId = 1L;
+        CartItemUpdateRequestDto request = new CartItemUpdateRequestDto(3, 200);
+
+        when(cartRepository.findById(cartId)).thenReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> cartService.updateCartItem(cartId, itemId, request))
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining("장바구니를 찾을 수 없습니다.");
+    }
+
+    @Test
+    void 존재하지_않는_장바구니_상품을_업데이트_시도하면_예외발생() {
+        // given
+        Long cartId = 1L;
+        Long itemId = 1L;
+        CartItemUpdateRequestDto request = new CartItemUpdateRequestDto(3, 200);
+
+        when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
+        when(cartRepository.save(any(Cart.class))).thenReturn(cart);
+
+        // when & then
+        assertThatThrownBy(() -> cartService.updateCartItem(cartId, 999L, request)) // 존재하지 않는 아이템 ID
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining("장바구니 아이템을 찾을 수 없습니다.");
+    }
+
+    @Test
+    void 장바구니_상품_업데이트_성공() {
+        // given
+        Long cartId = 1L;
+        Long itemId = 1L;
+        CartItemUpdateRequestDto request = new CartItemUpdateRequestDto(3, 200);
+
+        when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
+        when(cartRepository.save(any(Cart.class))).thenReturn(cart);
+
+        // when
+        CartItemResponseDto response = cartService.updateCartItem(cartId, itemId, request);
+
+        // then
+        assertThat(response.getQuantity()).isEqualTo(3);
+        assertThat(response.getPrice()).isEqualTo(200);
+        assertThat(response.getTotalPrice()).isEqualTo(600); // 3 * 200 = 600
+    }
+
+    @Test
+    void 장바구니_상품_업데이트_저장_성공() {
+        // given
+        Long cartId = 1L;
+        Long itemId = 1L;
+        CartItemUpdateRequestDto request = new CartItemUpdateRequestDto(3, 200);
+
+        when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
+        when(cartRepository.save(any(Cart.class))).thenReturn(cart);
+
+        // when
+        cartService.updateCartItem(cartId, itemId, request);
+
+        // then
+        verify(cartRepository, times(1)).save(any(Cart.class));
     }
 }

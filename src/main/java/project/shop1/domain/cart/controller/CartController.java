@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import project.shop1.domain.cart.dto.request.AddProductRequestDto;
 import project.shop1.domain.cart.dto.request.CartItemRequestDto;
+import project.shop1.domain.cart.dto.request.CartItemUpdateRequestDto;
 import project.shop1.domain.cart.dto.response.CartItemResponseDto;
 import project.shop1.domain.cart.dto.response.CartResponseDto;
 import project.shop1.domain.cart.service.CartService;
@@ -64,6 +65,22 @@ public class CartController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<CartResponseDto> getCartByUserId(@PathVariable Long userId) {
         CartResponseDto response = cartService.getCartByUserId(userId);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 장바구니 상품 업데이트
+     * @param cartId
+     * @param itemId
+     * @param request
+     * @return
+     */
+    @PutMapping("/{cartId}/items/{itemId}")
+    public ResponseEntity<CartItemResponseDto> updateCartItem(
+            @PathVariable Long cartId,
+            @PathVariable Long itemId,
+            @RequestBody CartItemUpdateRequestDto request) {
+        CartItemResponseDto response = cartService.updateCartItem(cartId, itemId, request);
         return ResponseEntity.ok(response);
     }
 }

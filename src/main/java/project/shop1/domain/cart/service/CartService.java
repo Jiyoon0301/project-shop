@@ -2,6 +2,7 @@ package project.shop1.domain.cart.service;
 
 import project.shop1.domain.cart.dto.request.AddProductRequestDto;
 import project.shop1.domain.cart.dto.request.CartItemRequestDto;
+import project.shop1.domain.cart.dto.request.CartItemUpdateRequestDto;
 import project.shop1.domain.cart.dto.response.CartItemResponseDto;
 import project.shop1.domain.cart.dto.response.CartResponseDto;
 
@@ -20,4 +21,7 @@ public interface CartService {
 
     // 사용자 장바구니 조회
     CartResponseDto getCartByUserId(Long userId);
+
+    // 장바구니 상품 업데이트
+    CartItemResponseDto updateCartItem(Long cartId, Long itemId, CartItemUpdateRequestDto request);
 }
