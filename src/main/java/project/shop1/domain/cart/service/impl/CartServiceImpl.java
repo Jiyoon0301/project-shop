@@ -221,4 +221,24 @@ public class CartServiceImpl implements CartService {
                 .totalPrice(cartItem.getPrice() * cartItem.getQuantity())
                 .build();
     }
+
+    // 장바구니에서 상품 삭제
+    @Override
+    public void removeItemFromCart(Long cartId, Long itemId) {
+        // 장바구니 확인
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "장바구니를 찾을 수 없습니다."));
+
+        // 장바구니 아이템 확인
+        CartItem cartItem = cart.getItems().stream()
+                .filter(item -> item.getId().equals(itemId))
+                .findFirst()
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "장바구니 아이템을 찾을 수 없습니다."));
+
+        // 장바구니에서 아이템 제거
+        cart.getItems().remove(cartItem);
+
+        // 장바구니 저장
+        cartRepository.save(cart);
+    }
 }

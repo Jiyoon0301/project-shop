@@ -73,7 +73,7 @@ public class CartServiceImplTest {
 
         cart = Cart.builder()
                 .id(1L)
-                .items(List.of(cartItem))
+                .items(new ArrayList<>(List.of(cartItem)))
                 .build();
     }
 
@@ -401,5 +401,56 @@ public class CartServiceImplTest {
         assertThatThrownBy(() -> cartService.updateQuantity(cartId, itemId, quantity))
                 .isInstanceOf(BusinessException.class)
                 .hasMessageContaining("장바구니 아이템을 찾을 수 없습니다.");
+    }
+
+    @Test
+    void 장바구니_아이템_제거_성공() {
+        // given
+        Long cartId = 1L;
+        Long itemId = 1L;
+
+        when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
+
+        // when
+        cartService.removeItemFromCart(cartId, itemId);
+
+        // then
+        assertThat(cart.getItems()).isEmpty();
+        verify(cartRepository).findById(cartId);
+        verify(cartRepository).save(cart);
+    }
+
+    @Test
+    void 장바구니가_없을_경우_예외발생() {
+        // given
+        Long cartId = 99L;
+        Long itemId = 1L;
+
+        when(cartRepository.findById(cartId)).thenReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> cartService.removeItemFromCart(cartId, itemId))
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining("장바구니를 찾을 수 없습니다.");
+
+        verify(cartRepository).findById(cartId);
+        verify(cartRepository, never()).save(any());
+    }
+
+    @Test
+    void 장바구니_아이템이_없을_경우_예외발생() {
+        // given
+        Long cartId = 1L;
+        Long itemId = 99L; // 존재하지 않는 itemId
+
+        when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
+
+        // when & then
+        assertThatThrownBy(() -> cartService.removeItemFromCart(cartId, itemId))
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining("장바구니 아이템을 찾을 수 없습니다.");
+
+        verify(cartRepository).findById(cartId);
+        verify(cartRepository, never()).save(any());
     }
 }

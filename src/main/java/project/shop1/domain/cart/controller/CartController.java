@@ -99,4 +99,16 @@ public class CartController {
         CartItemResponseDto response = cartService.updateQuantity(cartId, itemId, quantity);
         return ResponseEntity.ok(response);
     }
+
+    /**
+     * 장바구니에서 상품 삭제
+     * @param cartId
+     * @param itemId
+     * @return
+     */
+    @DeleteMapping("/{cartId}/items/{itemId}")
+    public ResponseEntity<Void> removeItemFromCart(@PathVariable Long cartId, @PathVariable Long itemId) {
+        cartService.removeItemFromCart(cartId, itemId);
+        return ResponseEntity.noContent().build();
+    }
 }

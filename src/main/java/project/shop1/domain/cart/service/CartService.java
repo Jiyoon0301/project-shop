@@ -27,4 +27,7 @@ public interface CartService {
 
     // 장바구니 상품 수량 업데이트
     CartItemResponseDto updateQuantity(Long cartId, Long itemId, int quantity);
+
+    // 장바구니에서 상품 삭제
+    void removeItemFromCart(Long cartId, Long itemId);
 }
