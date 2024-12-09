@@ -24,4 +24,7 @@ public interface CartService {
 
     // 장바구니 상품 업데이트
     CartItemResponseDto updateCartItem(Long cartId, Long itemId, CartItemUpdateRequestDto request);
+
+    // 장바구니 상품 수량 업데이트
+    CartItemResponseDto updateQuantity(Long cartId, Long itemId, int quantity);
 }

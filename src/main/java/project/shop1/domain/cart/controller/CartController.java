@@ -83,4 +83,20 @@ public class CartController {
         CartItemResponseDto response = cartService.updateCartItem(cartId, itemId, request);
         return ResponseEntity.ok(response);
     }
+
+    /**
+     * 장바구니 상품 수량 업데이트
+     * @param cartId
+     * @param itemId
+     * @param quantity
+     * @return
+     */
+    @PatchMapping("/{cartId}/items/{itemId}/quantity")
+    public ResponseEntity<CartItemResponseDto> updateQuantity(
+            @PathVariable Long cartId,
+            @PathVariable Long itemId,
+            @RequestParam int quantity) {
+        CartItemResponseDto response = cartService.updateQuantity(cartId, itemId, quantity);
+        return ResponseEntity.ok(response);
+    }
 }

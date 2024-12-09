@@ -68,6 +68,7 @@ public class CartServiceImplTest {
                 .quantity(2)
                 .price(100)
                 .book(product)
+                .quantity(2)
                 .build();
 
         cart = Cart.builder()
@@ -344,5 +345,61 @@ public class CartServiceImplTest {
 
         // then
         verify(cartRepository, times(1)).save(any(Cart.class));
+    }
+
+    @Test
+    void 장바구니_항목_수량_업데이트_성공() {
+        // given
+        Long cartId = 1L;
+        Long itemId = 1L;
+        int quantity = 5;
+
+        when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
+        when(cartRepository.save(any(Cart.class))).thenReturn(cart);
+
+        // when
+        CartItemResponseDto response = cartService.updateQuantity(cartId, itemId, quantity);
+
+        // then
+        assertThat(response).isNotNull();
+        assertThat(response.getItemId()).isEqualTo(itemId);
+        assertThat(response.getProductId()).isEqualTo(product.getId());
+        assertThat(response.getQuantity()).isEqualTo(quantity);
+        assertThat(response.getTotalPrice()).isEqualTo(cartItem.getPrice() * quantity);
+    }
+
+    @Test
+    void 장바구니_없음_예외() {
+        // given
+        Long cartId = 1L;
+        Long itemId = 1L;
+        int quantity = 5;
+
+        when(cartRepository.findById(cartId)).thenReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> cartService.updateQuantity(cartId, itemId, quantity))
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining("장바구니를 찾을 수 없습니다.");
+    }
+
+    @Test
+    void 장바구니_항목_없음_예외() {
+        // given
+        Long cartId = 1L;
+        Long itemId = 1L;
+        int quantity = 5;
+
+        Cart cart = Cart.builder()
+                .id(cartId)
+                .items(new ArrayList<>()) // 빈 아이템 리스트
+                .build();
+
+        when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
+
+        // when & then
+        assertThatThrownBy(() -> cartService.updateQuantity(cartId, itemId, quantity))
+                .isInstanceOf(BusinessException.class)
+                .hasMessageContaining("장바구니 아이템을 찾을 수 없습니다.");
     }
 }

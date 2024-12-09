@@ -191,4 +191,34 @@ public class CartServiceImpl implements CartService {
                 .totalPrice(cartItem.getPrice() * cartItem.getQuantity())
                 .build();
     }
+
+    // 장바구니 상품 수량 업데이트
+    @Override
+    public CartItemResponseDto updateQuantity(Long cartId, Long itemId, int quantity) {
+        // 장바구니 확인
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "장바구니를 찾을 수 없습니다."));
+
+        // 장바구니 아이템 확인
+        CartItem cartItem = cart.getItems().stream()
+                .filter(item -> item.getId().equals(itemId))
+                .findFirst()
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "장바구니 아이템을 찾을 수 없습니다."));
+
+        // 수량 업데이트
+        cartItem.setQuantity(quantity);
+
+        // 저장
+        cartRepository.save(cart);
+
+        // 응답 DTO 변환
+        return CartItemResponseDto.builder()
+                .itemId(cartItem.getId())
+                .productId(cartItem.getBook().getId())
+                .title(cartItem.getBook().getTitle())
+                .quantity(cartItem.getQuantity())
+                .price(cartItem.getPrice())
+                .totalPrice(cartItem.getPrice() * cartItem.getQuantity())
+                .build();
+    }
 }
