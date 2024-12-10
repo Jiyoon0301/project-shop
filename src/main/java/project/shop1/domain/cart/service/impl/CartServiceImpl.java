@@ -1,7 +1,8 @@
 package project.shop1.domain.cart.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.shop1.domain.cart.dto.request.AddProductRequestDto;
@@ -13,7 +14,6 @@ import project.shop1.domain.cart.dto.response.OrderItemResponseDto;
 import project.shop1.domain.cart.dto.response.OrderResponseDto;
 import project.shop1.domain.cart.entity.Cart;
 import project.shop1.domain.cart.entity.CartItem;
-import project.shop1.domain.cart.repository.CartItemRepository;
 import project.shop1.domain.order.entity.Order;
 import project.shop1.domain.order.entity.OrderItem;
 import project.shop1.domain.order.repository.OrderRepository;
@@ -41,8 +41,10 @@ public class CartServiceImpl implements CartService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
-    private final CartItemRepository cartItemRepository;
-    private final ModelMapper modelMapper;
+
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    private static final String CART_KEY = "cart:";
 
     // 장바구니에 상품 추가
     @Override
@@ -122,13 +124,25 @@ public class CartServiceImpl implements CartService {
     // 장바구니 상품 조회
     @Override
     public List<CartItemResponseDto> getCartItems(Long cartId) {
-        // 장바구니 가져오기
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "장바구니를 찾을 수 없습니다."));
+        String redisKey = CART_KEY + cartId;
+
+        // 먼저 Redis에서 장바구니 조회
+        Cart cachedCart = (Cart) redisTemplate.opsForValue().get(redisKey);
+
+        if (cachedCart == null) {
+            // Redis에 장바구니가 없으면 DB에서 조회
+            Cart cart = cartRepository.findById(cartId)
+                    .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "장바구니를 찾을 수 없습니다."));
+
+            // 장바구니를 Redis에 캐시
+            redisTemplate.opsForValue().set(redisKey, cart);
+
+            cachedCart = cart;
+        }
 
         // 장바구니 항목 가져오기 및 DTO 변환
         List<CartItemResponseDto> responseDtos = new ArrayList<>();
-        for (CartItem cartItem : cart.getItems()) {
+        for (CartItem cartItem : cachedCart.getItems()) {
             CartItemResponseDto dto = new CartItemResponseDto();
             dto.setItemId(cartItem.getId());
             dto.setProductId(cartItem.getBook().getId());

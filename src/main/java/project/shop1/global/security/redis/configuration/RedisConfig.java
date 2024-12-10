@@ -23,13 +23,13 @@ public class RedisConfig {
     @Value("${spring.data.redis.port}")
     private int port;
 
-    /* Redis 연결 팩토리 설정 */
+    // Redis 연결 팩토리 설정
     @Bean
     public RedisConnectionFactory redisConnectionFactory(){
         return new LettuceConnectionFactory(host, port);
     }
 
-    /* Redis 캐싱을 사용하기 위한 캐시 매니저 설정 */
+    // Redis 캐싱을 사용하기 위한 캐시 매니저 설정
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
@@ -39,7 +39,7 @@ public class RedisConfig {
         return template;
     }
 
-    /* JWT Refresh Token 생성 메서드 */
+    // JWT Refresh Token 생성 메서드
     public static String createRefreshToken(String key){
         Claims claims = Jwts.claims();
 
@@ -51,6 +51,4 @@ public class RedisConfig {
                 .signWith(SignatureAlgorithm.HS256, key) //HS256 알고리즘으로 key를 암호화
                 .compact();
     }
-
-
 }

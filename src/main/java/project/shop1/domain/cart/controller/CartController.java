@@ -56,6 +56,7 @@ public class CartController {
      * @return
      */
     @GetMapping("/{cartId}/items")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<CartItemResponseDto>> getCartItems(@PathVariable Long cartId) {
         List<CartItemResponseDto> response = cartService.getCartItems(cartId);
         return ResponseEntity.ok(response);
@@ -68,6 +69,7 @@ public class CartController {
      * @return
      */
     @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<CartResponseDto> getCartByUserId(@PathVariable Long userId) {
         CartResponseDto response = cartService.getCartByUserId(userId);
         return ResponseEntity.ok(response);
@@ -82,6 +84,7 @@ public class CartController {
      * @return
      */
     @PutMapping("/{cartId}/items/{itemId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<CartItemResponseDto> updateCartItem(
             @PathVariable Long cartId,
             @PathVariable Long itemId,
@@ -99,6 +102,7 @@ public class CartController {
      * @return
      */
     @PatchMapping("/{cartId}/items/{itemId}/quantity")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<CartItemResponseDto> updateQuantity(
             @PathVariable Long cartId,
             @PathVariable Long itemId,
@@ -115,6 +119,7 @@ public class CartController {
      * @return
      */
     @DeleteMapping("/{cartId}/items/{itemId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> removeItemFromCart(@PathVariable Long cartId, @PathVariable Long itemId) {
         cartService.removeItemFromCart(cartId, itemId);
         return ResponseEntity.noContent().build();
@@ -127,6 +132,7 @@ public class CartController {
      * @return
      */
     @DeleteMapping("/{cartId}/clear")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> clearCart(@PathVariable Long cartId) {
         cartService.clearCart(cartId);
         return ResponseEntity.noContent().build();
@@ -139,6 +145,7 @@ public class CartController {
      * @return
      */
     @PostMapping("/{cartId}/convert-to-order")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<OrderResponseDto> convertCartToOrder(@PathVariable Long cartId) {
         OrderResponseDto response = cartService.convertCartToOrder(cartId);
         return ResponseEntity.ok(response);

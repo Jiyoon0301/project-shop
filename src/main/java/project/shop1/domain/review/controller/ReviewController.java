@@ -53,6 +53,7 @@ public class ReviewController {
      * @return String content, double rating, LocalDateTime regDate;
      */
     @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<GetReviewsResponseDto>> getReviewsByUser(@PathVariable Long userId) {
         List<GetReviewsResponseDto> reviews = reviewService.getReviewsByUser(userId);
         return ResponseEntity.ok(reviews);

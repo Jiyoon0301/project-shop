@@ -6,6 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import project.shop1.domain.cart.dto.request.AddProductRequestDto;
 import project.shop1.domain.cart.dto.request.CartItemRequestDto;
@@ -50,6 +53,10 @@ public class CartServiceImplTest {
 
     @Mock
     private ModelMapper modelMapper;
+
+    @Mock
+    private RedisTemplate<String, Object> redisTemplate;
+
 
     // Mock 데이터
     private CartItemRequestDto requestDto;
@@ -226,6 +233,10 @@ public class CartServiceImplTest {
         cart.setItems(new ArrayList<>(List.of(cartItem)));
 
         when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
+
+        ValueOperations<String, Object> valueOps = mock(ValueOperations.class);
+        when(redisTemplate.opsForValue()).thenReturn(valueOps);
+        when(valueOps.get("cart_" + cartId)).thenReturn(cart);
 
         // when
         List<CartItemResponseDto> responseDtos = cartService.getCartItems(cartId);
