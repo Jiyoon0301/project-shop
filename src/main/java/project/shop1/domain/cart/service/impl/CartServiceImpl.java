@@ -186,6 +186,8 @@ public class CartServiceImpl implements CartService {
     // 장바구니 상품 업데이트
     @Override
     public CartItemResponseDto updateCartItem(Long cartId, Long itemId, CartItemUpdateRequestDto request) {
+        String redisKey = CART_KEY + cartId;
+
         // 장바구니 확인
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "장바구니를 찾을 수 없습니다."));
@@ -202,6 +204,9 @@ public class CartServiceImpl implements CartService {
 
         // 장바구니 저장
         cartRepository.save(cart);
+
+        // Redis 캐시 업데이트
+        redisTemplate.opsForValue().set(redisKey, cart);
 
         // 응답 DTO 변환
         return CartItemResponseDto.builder()
