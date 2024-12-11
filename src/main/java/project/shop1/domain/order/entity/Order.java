@@ -2,6 +2,8 @@ package project.shop1.domain.order.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import project.shop1.domain.user.entity.UserEntity;
 import project.shop1.domain.order.enums.OrderStatus;
 
@@ -23,19 +25,20 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_entity_id", nullable = false)
-    private UserEntity userEntity; //주문자
+    private UserEntity userEntity; // 주문자
 
-    private String address; //주문한 사람이 배송받을 주소
+    private String address; // 주문한 사람이 배송받을 주소
 
     @Enumerated(value = EnumType.STRING)
-    private OrderStatus orderStatus; //주문처리상태 [PENDING, ORDER, CANCEL]
+    private OrderStatus orderStatus; // 주문처리상태 [PENDING, ORDER, CANCEL]
 
-    private LocalDateTime orderDate; //주문일자
+    private LocalDateTime orderDate; // 주문일자
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL) //Order persist 될 때마다 OrderItem도 persist됨
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true) //Order persist 될 때마다 OrderItem도 persist됨
     private List<OrderItem> orderItems = new ArrayList<>(); //주문상품
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) //Order persist 될 때마다 Delivery도 persist됨
+    // TODO: Cannot drop table 'delivery' referenced by a foreign key constraint 'FK7k5g81aklxrspa4fenlg60ti3' on table 'orders'. 에러 해결
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true) //Order persist 될 때마다 Delivery도 persist됨
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
@@ -49,11 +52,7 @@ public class Order {
 
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
-//        orderItem.setOrder(this);
-    }
-
-    public void setDelivery(Delivery delivery) {
-        this.delivery = delivery;
+        orderItem.setOrder(this);
     }
 
     //==생성 메서드==// Order는 연관관계가 복잡하기 때문에 생성메서드를 만들어 두면 편리
@@ -66,7 +65,7 @@ public class Order {
         for (OrderItem orderItem : orderItems) {
             order.addOrderItem(orderItem);
         }
-        order.setDelivery(delivery);
+//        order.setDelivery(delivery);
         return order;
     }
 
@@ -78,7 +77,7 @@ public class Order {
     public int getTotalPrice() {
         int totalPrice = 0;
         for (OrderItem orderItem : orderItems) {
-            totalPrice += orderItem.getTotalPrice();
+            totalPrice += orderItem.getOrderPrice();
         }
         return totalPrice;
     }

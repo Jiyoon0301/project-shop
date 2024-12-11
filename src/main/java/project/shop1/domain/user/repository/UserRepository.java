@@ -6,7 +6,6 @@ import project.shop1.domain.user.entity.UserEntity;
 
 import java.util.Optional;
 
-@Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByAccount(String account);

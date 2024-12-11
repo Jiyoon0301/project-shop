@@ -171,6 +171,12 @@ public class CartServiceImplTest {
                 .quantity(2)
                 .build();
 
+        Cart cart = Cart.builder()
+                .id(1L)
+                .userEntity(userEntity)
+                .items(new ArrayList<>())
+                .build();
+
         when(cartRepository.findByUserEntity_Id(userId)).thenReturn(Optional.of(cart));
         when(productRepository.findById(requestDto.getProductId())).thenReturn(Optional.of(product));
 

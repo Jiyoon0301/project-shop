@@ -39,7 +39,7 @@ public class Book {
     private String category;
 
     /* 상품의 리뷰 */
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
 //    /* 이미지 경로 */

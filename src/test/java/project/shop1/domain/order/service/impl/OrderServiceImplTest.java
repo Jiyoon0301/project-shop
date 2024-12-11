@@ -1,5 +1,6 @@
 package project.shop1.domain.order.service.impl;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -7,7 +8,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import project.shop1.domain.cart.dto.request.CartItemRequestDto;
+import project.shop1.domain.cart.entity.Cart;
+import project.shop1.domain.cart.entity.CartItem;
 import project.shop1.domain.order.dto.request.OrderItemRequestDto;
+import project.shop1.domain.order.dto.request.OrderRequestDto;
 import project.shop1.domain.order.dto.response.OrderResponseDto;
 import project.shop1.domain.order.dto.request.OrderStatusUpdateRequestDto;
 import project.shop1.domain.order.entity.Order;
@@ -17,6 +22,7 @@ import project.shop1.domain.order.repository.OrderRepository;
 import project.shop1.domain.product.entity.Book;
 import project.shop1.domain.product.repository.ProductRepository;
 import project.shop1.domain.user.entity.UserEntity;
+import project.shop1.domain.user.repository.UserRepository;
 import project.shop1.global.exception.BusinessException;
 
 import java.time.LocalDateTime;
@@ -26,8 +32,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class) //Junit5
 public class OrderServiceImplTest {
@@ -41,30 +48,101 @@ public class OrderServiceImplTest {
     @Mock
     private ProductRepository productRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
+    private OrderItem orderItem;
+    private UserEntity user;
+    private Book product;
+    private Order order;
+
+    @BeforeEach
+    void setUp() {
+        user = UserEntity.builder()
+                .id(1L)
+                .name("Test User")
+                .build();
+
+        product = Book.builder()
+                .id(1L)
+                .title("Test Book")
+                .price(100)
+                .build();
+
+        orderItem = OrderItem.builder()
+                .book(product)
+                .quantity(2)
+                .orderPrice(200)
+                .build();
+
+        order = Order.builder()
+                .id(1L)
+                .orderStatus(OrderStatus.PENDING)
+                .userEntity(user)
+                .orderItems(List.of(orderItem))
+                .totalPrice(100)
+                .orderDate(LocalDateTime.now())
+                .build();
+    }
+
+    @Test
+    @DisplayName("createOrder: 주문_생성_성공")
+    void 주문_생성_성공() {
+        // given
+        Long userId = 1L;
+        Long productId = 1L;
+
+        OrderRequestDto orderRequestDto = OrderRequestDto.builder()
+                .userId(userId)
+                .orderItems(List.of(
+                        OrderRequestDto.OrderItemRequestDto.builder()
+                                .productId(productId)
+                                .quantity(2)
+                                .build()
+                ))
+                .build();
+
+        OrderResponseDto.OrderItemDto expectedItemDto = new OrderResponseDto.OrderItemDto(
+                productId, "Test Book", 2, 200
+        );
+
+        Order mockOrder = Order.builder()
+                .id(1L)
+                .userEntity(user)
+                .orderItems(List.of(orderItem))
+                .totalPrice(200)
+                .orderStatus(OrderStatus.PENDING)
+                .orderDate(LocalDateTime.now())
+                .build();
+
+        given(userRepository.findById(userId)).willReturn(Optional.of(user));
+        given(productRepository.findById(productId)).willReturn(Optional.of(product));
+        given(orderRepository.save(any(Order.class))).willReturn(mockOrder);
+
+        // when
+        OrderResponseDto result = orderService.createOrder(orderRequestDto);
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.getUserId()).isEqualTo(user.getId());
+        assertThat(result.getTotalPrice()).isEqualTo(mockOrder.getTotalPrice());
+        assertThat(result.getOrderStatus()).isEqualTo(OrderStatus.PENDING);
+        assertThat(result.getOrderItems()).hasSize(1);
+        assertThat(result.getOrderItems().get(0))
+                .usingRecursiveComparison()
+                .isEqualTo(expectedItemDto);
+
+        verify(userRepository, times(1)).findById(userId);
+        verify(productRepository, times(1)).findById(productId);
+        verify(orderRepository, times(1)).save(any(Order.class));
+    }
+
     @Test
     @DisplayName("updateOrderStatus: 주문_상태_업데이트_성공")
     void 주문_상태_업데이트_성공() {
         // given
         Long orderId = 1L;
         OrderStatusUpdateRequestDto requestDto = new OrderStatusUpdateRequestDto(OrderStatus.DELIVERING);
-
-        UserEntity user = new UserEntity();
-        user.setId(1L);
-
-        Order order = Order.builder()
-                .id(orderId)
-                .orderStatus(OrderStatus.PENDING)
-                .userEntity(user)
-                .orderItems(List.of(
-                        OrderItem.builder()
-                                .book(new Book("Test Product", 100))
-                                .quantity(2)
-                                .orderPrice(200)
-                                .build()
-                ))
-                .totalPrice(200)
-                .orderDate(LocalDateTime.now())
-                .build();
 
         when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
 
@@ -154,12 +232,7 @@ public class OrderServiceImplTest {
     void removeProductFromOrder_SuccessTest() {
         // given
         Long orderId = 1L;
-        Long productId = 100L;
-
-        Book product = new Book();
-        product.setId(productId);
-        product.setTitle("Test Book");
-        product.setPrice(1000);
+        Long productId = 1L;
 
         OrderItem orderItem = new OrderItem();
         orderItem.setId(1L);
@@ -180,8 +253,8 @@ public class OrderServiceImplTest {
         assertThat(response.getOrderId()).isEqualTo(orderId);
         assertThat(response.getOrderItems()).isEmpty();
 
-        verify(orderRepository, Mockito.times(1)).findById(orderId);
-        verify(orderRepository, Mockito.times(1)).save(order);
+        verify(orderRepository, times(1)).findById(orderId);
+        verify(orderRepository, times(1)).save(order);
     }
 
     @Test
@@ -198,8 +271,8 @@ public class OrderServiceImplTest {
                 .isInstanceOf(BusinessException.class)
                 .hasMessage("존재하지 않는 주문입니다.");
 
-        Mockito.verify(orderRepository, Mockito.times(1)).findById(orderId);
-        Mockito.verify(orderRepository, Mockito.never()).save(Mockito.any());
+        Mockito.verify(orderRepository, times(1)).findById(orderId);
+        Mockito.verify(orderRepository, Mockito.never()).save(any());
     }
 
     @Test
@@ -220,7 +293,7 @@ public class OrderServiceImplTest {
                 .isInstanceOf(BusinessException.class)
                 .hasMessage("존재하지 않는 상품입니다.");
 
-        Mockito.verify(orderRepository, Mockito.times(1)).findById(orderId);
-        Mockito.verify(orderRepository, Mockito.never()).save(Mockito.any());
+        Mockito.verify(orderRepository, times(1)).findById(orderId);
+        Mockito.verify(orderRepository, Mockito.never()).save(any());
     }
 }

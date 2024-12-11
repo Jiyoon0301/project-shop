@@ -42,13 +42,13 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDto createOrder(OrderRequestDto orderRequestDto) {
         // 사용자 조회
         UserEntity userEntity = userRepository.findById(orderRequestDto.getUserId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "존재하지 않는 사용자입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "사용자를 찾을 수 없습니다."));
 
         // 주문 상품 검증 및 조회
         List<OrderItem> orderItems = orderRequestDto.getOrderItems().stream()
                 .map(itemDto -> {
                     Book product = productRepository.findById(itemDto.getProductId())
-                            .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+                            .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "상품을 찾을 수 없습니다."));
 
                     return OrderItem.builder()
                             .book(product)

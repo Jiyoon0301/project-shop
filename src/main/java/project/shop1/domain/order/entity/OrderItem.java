@@ -27,8 +27,8 @@ public class OrderItem {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    private int orderPrice; //주문 가격
-    private int quantity; //주문 수량
+    private int orderPrice; // 주문 가격 = 주문 수량 * 상품 가격
+    private int quantity; // 주문 수량
 
     public static OrderItem createOrderItem(Book book, int orderPrice, int quantity) throws BusinessException {
         OrderItem orderItem = new OrderItem();
@@ -42,9 +42,5 @@ public class OrderItem {
 
     public void setOrder(Order order) { //order, orderItem
         this.order = order;
-    }
-
-    public int getTotalPrice() {
-        return getOrderPrice() * getQuantity();
     }
 }

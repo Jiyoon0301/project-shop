@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import project.shop1.domain.address.entity.Address;
+import project.shop1.domain.cart.entity.Cart;
 import project.shop1.domain.cart.entity.CartItem;
 import project.shop1.domain.order.entity.Order;
 import project.shop1.domain.review.entity.Review;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user_entity", indexes = @Index(name = "idx_account", columnList = "account"))
+@Table(name = "user_entity") // indexes = @Index(name = "idx_account", columnList = "account"))
 public class UserEntity {
 
     @Id
@@ -36,18 +37,17 @@ public class UserEntity {
     private Address address;
     private String phoneNumber;
     private String email;
-    private String loginType; // internal, kakao ...
+    private String loginType; // internal, google ...
     @Enumerated(value = EnumType.STRING)
     private UserRank userRank;
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>(); // cartItems로 바꾸기
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)

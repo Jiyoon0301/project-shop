@@ -18,10 +18,6 @@ public class Delivery {
     @Column(name = "delivery_id")
     private Long id;
 
-//    @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY) // 필요시 활성화
-//    private Order order;
-
-//    @Embedded
     private String address;
 
     @Enumerated(EnumType.STRING)
