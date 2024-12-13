@@ -12,5 +12,5 @@ public interface AddressService {
     List<SearchAddressResponseDto> searchAddress(SearchAddressRequestDto searchAddressRequestDto);
 
     // 주소 저장
-    void saveAddress(SaveAddressRequestDto saveAddressRequestDto);
+    void saveAddress(Long orderId, SaveAddressRequestDto saveAddressRequestDto);
 }

@@ -20,7 +20,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create # update
+      ddl-auto: update # update
     properties:
       hibernate:
         format_sql: true

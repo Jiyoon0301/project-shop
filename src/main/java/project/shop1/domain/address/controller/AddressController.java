@@ -4,10 +4,7 @@ package project.shop1.domain.address.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import project.shop1.domain.address.dto.request.SaveAddressRequestDto;
 import project.shop1.domain.address.dto.request.SearchAddressRequestDto;
 import project.shop1.domain.address.dto.response.SearchAddressResponseDto;
@@ -24,11 +21,11 @@ public class AddressController {
     private final AddressService addressService;
 
     /**
-     * 주소 조회 ****************
-     * @param searchAddressRequestDto
+     * 주소 조회
+     * @param searchAddressRequestDto: String keyword, int pageNumber
      * @return
      */
-    @PostMapping("/search") // String keyword, int pageNumber
+    @PostMapping("/search")
     @PreAuthorize("hasRole('USER')")
     public List<SearchAddressResponseDto> searchAddress(@RequestBody SearchAddressRequestDto searchAddressRequestDto) {
         List<SearchAddressResponseDto> result = addressService.searchAddress(searchAddressRequestDto);
@@ -37,13 +34,13 @@ public class AddressController {
 
     /**
      * 주소 저장 - 도로명 + 상세주소
-     * @param saveAddressRequestDto
+     * @param saveAddressRequestDto: String roadAddress, String detailedAddress
      * @return
      */
-    @PostMapping("/save") //SaveAddressRequestDto : String roadAddress, String detailedAddress
+    @PostMapping("/save")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<BooleanResponse> saveAddress(@RequestBody SaveAddressRequestDto saveAddressRequestDto) {
-        addressService.saveAddress(saveAddressRequestDto);
+    public ResponseEntity<BooleanResponse> saveAddress( @RequestParam Long orderId, @RequestBody SaveAddressRequestDto saveAddressRequestDto) {
+        addressService.saveAddress(orderId, saveAddressRequestDto);
         return ResponseEntity.ok(BooleanResponse.of(true));
     }
 }

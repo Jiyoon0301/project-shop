@@ -87,7 +87,7 @@ public class CartServiceImplTest {
         cartItem = CartItem.builder()
                 .id(1L)
                 .quantity(2)
-                .price(100)
+                .price(200)
                 .book(product)
                 .build();
 
@@ -533,7 +533,6 @@ public class CartServiceImplTest {
 
         // then
         assertThat(response).isNotNull();
-//        assertThat(response.getOrderId()).isNotNull(); // 주문 ID가 null이 아니어야 함
         assertThat(response.getUserId()).isEqualTo(userEntity.getId()); // 사용자 ID 확인
         assertThat(response.getOrderDate()).isNotNull(); // 주문 날짜 확인
         assertThat(response.getTotalPrice()).isEqualTo(200); // 가격 검증 (100 * 2)

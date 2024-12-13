@@ -83,7 +83,7 @@ public class AddressServiceimpl implements AddressService {
     // 주소 저장
     @Override
     @Transactional
-    public void saveAddress(SaveAddressRequestDto saveAddressRequestDto) {
+    public void saveAddress(Long orderId, SaveAddressRequestDto saveAddressRequestDto) {
         String account = SecurityUtils.getCurrentUsername();
 
         String roadAddress = saveAddressRequestDto.getRoadAddress();

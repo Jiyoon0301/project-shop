@@ -318,7 +318,7 @@ public class CartServiceImpl implements CartService {
                                 .title(orderItem.getBook().getTitle())
                                 .quantity(orderItem.getQuantity())
                                 .price(orderItem.getOrderPrice())
-                                .totalPrice(orderItem.getOrderPrice() * orderItem.getQuantity())
+                                .totalPrice(orderItem.getOrderPrice())
                                 .build())
                         .collect(Collectors.toList()))
                 .build();

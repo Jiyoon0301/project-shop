@@ -38,8 +38,8 @@ public class Order {
     private List<OrderItem> orderItems = new ArrayList<>(); //주문상품
 
     // TODO: Cannot drop table 'delivery' referenced by a foreign key constraint 'FK7k5g81aklxrspa4fenlg60ti3' on table 'orders'. 에러 해결
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true) //Order persist 될 때마다 Delivery도 persist됨
-    @JoinColumn(name = "delivery_id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true) //Order persist 될 때마다 Delivery도 persist됨
+    @JoinColumn(name = "delivery_id", foreignKey = @ForeignKey(name = "FK_delivery_orders"))
     private Delivery delivery;
 
     private int totalPrice;
