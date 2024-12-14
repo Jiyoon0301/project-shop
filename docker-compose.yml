@@ -1,0 +1,42 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wldbs007!  # root 사용자 비밀번호 설정
+      MYSQL_DATABASE: shop1           # 기본 데이터베이스 이름 설정
+    ports:
+      - "3306:3306"                   # 로컬과 컨테이너 간 포트 매핑
+    networks:
+      - app-network
+    volumes:
+      - mysql-data:/var/lib/mysql     # 데이터 저장소
+
+  app:
+    build: .                          # 현재 디렉토리에서 Dockerfile을 찾아 이미지를 빌드
+    container_name: shop1             # 원하는 이름
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/shop1
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: wldbs007!
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update  # Hibernate DDL 자동 생성 옵션
+      CLIENT_SECRET_GOOGLE: ${CLIENT_SECRET_GOOGLE}
+      CLIENT_SECRET_NAVER: ${CLIENT_SECRET_NAVER}
+      EMAIL_USERNAME: ${EMAIL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PASSWORD_AWS: ${MYSQL_PASSWORD_AWS}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
