@@ -95,14 +95,13 @@ class ProductServiceImplTest {
     @Test
     @DisplayName("addProduct: id가_유효하지_않은_상품의_재고를_추가하려고_하면_예외_발생")
     void id가_유효하지_않은_상품의_재고를_추가하려고_하면_예외_발생() {
-        // Given
+        // given
         Long invalidProductId = -1L;
         int addQuantity = 5;
 
-        // Mocking
         when(productRepository.findById(invalidProductId)).thenReturn(Optional.empty());
 
-        // When & Then
+        // when & then
         assertThatThrownBy(() -> productService.addProduct(invalidProductId, addQuantity))
                 .isInstanceOf(BusinessException.class)
                 .hasMessageContaining("존재하지 않는 상품입니다.");
@@ -114,16 +113,15 @@ class ProductServiceImplTest {
     @Test
     @DisplayName("addProduct: 잘못된_수량을_재고_추가하면_예외_발생")
     void 잘못된_수량을_재고_추가하면_예외_발생() {
-        // Given
+        // given
         Long productId = 1L;
         int invalidQuantity = -5;
 
         Book existingProduct = createBookEntity();
 
-        // Mocking
         when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
 
-        // When & Then
+        // when & then
         assertThatThrownBy(() -> productService.addProduct(productId, invalidQuantity))
                 .isInstanceOf(BusinessException.class)
                 .hasMessageContaining("수량은 0보다 커야합니다");
@@ -135,17 +133,16 @@ class ProductServiceImplTest {
     @Test
     @DisplayName("addProduct: 잘못된_수량을_재고_추가하면_예외_발생")
     void id로_상품_조회_성공() {
-        // Given
+        // given
         Long productId = 1L;
         Book mockBook = createBookEntity();
 
-        // Stub the repository
         when(productRepository.findById(productId)).thenReturn(Optional.of(mockBook));
 
-        // When
+        // when
         ProductResponseDto result = productService.getProductById(productId);
 
-        // Then
+        // then
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(mockBook.getId());
         assertThat(result.getTitle()).isEqualTo(mockBook.getTitle());
@@ -154,25 +151,22 @@ class ProductServiceImplTest {
         assertThat(result.getAuthorName()).isEqualTo(mockBook.getAuthorName());
         assertThat(result.getCategory()).isEqualTo(mockBook.getCategory());
 
-        // Verify repository interaction
         verify(productRepository).findById(productId);
     }
 
     @Test
     @DisplayName("getProductById: id가_유효하지_않은_상품을_조회하려고_하면_예외_발생")
     void id가_유효하지_않은_상품을_조회하려고_하면_예외_발생() {
-        // Given
+        // given
         Long productId = 1L;
 
-        // Stub the repository
         when(productRepository.findById(productId)).thenReturn(Optional.empty());
 
-        // When & Then
+        // when & then
         assertThatThrownBy(() -> productService.getProductById(productId))
                 .isInstanceOf(BusinessException.class)
                 .hasMessageContaining("존재하지 않는 상품입니다.");
 
-        // Verify repository interaction
         verify(productRepository).findById(productId);
     }
 
@@ -356,7 +350,7 @@ class ProductServiceImplTest {
     @Test
     @DisplayName("updateStock: 존재하지_않는_상품의_재고_수량을_업데이트_시도하면_예외_발생")
     void 존재하지_않는_상품의_재고_수량을_업데이트_시도하면_예외_발생() {
-        // Given
+        // given
         Long productId = 999L;
         int quantity = 10;
 
