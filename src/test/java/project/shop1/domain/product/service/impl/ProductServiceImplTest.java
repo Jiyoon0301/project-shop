@@ -1,6 +1,7 @@
 package project.shop1.domain.product.service.impl;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,19 +44,19 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @DisplayName("createProduct: 상품_등록_성공")
     void 상품_등록_성공() {
-        // Given
+        // given
         ProductRequestDto requestDto = createProductRequestDto();
         Book productEntity = createBookEntity();
         ProductResponseDto responseDto = createProductResponseDto();
 
-        // Mocking
         when(productRepository.save(any(Book.class))).thenReturn(productEntity);
 
-        // When
+        // when
         ProductResponseDto result = productService.createProduct(requestDto);
 
-        // Then
+        // then
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(1L);
         assertThat(result.getTitle()).isEqualTo(requestDto.getTitle());
@@ -64,26 +65,25 @@ class ProductServiceImplTest {
         assertThat(result.getAuthorName()).isEqualTo(requestDto.getAuthorName());
         assertThat(result.getCategory()).isEqualTo(requestDto.getCategory());
 
-        // Verify
         verify(productRepository, times(1)).save(any(Book.class));
     }
 
     @Test
+    @DisplayName("addProduct: 상품_재고_추가_성공")
     void 상품_재고_추가_성공() {
-        // Given
+        // given
         Long productId = 1L;
         int addQuantity = 5;
 
         Book existingProduct = createBookEntity();
 
-        // Mocking
         when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
         when(productRepository.save(any(Book.class))).thenReturn(existingProduct);
 
-        // When
+        // when
         ProductResponseDto updatedProduct = productService.addProduct(productId, addQuantity);
 
-        // Then
+        // then
         assertThat(updatedProduct).isNotNull();
         assertThat(updatedProduct.getId()).isEqualTo(productId);
         assertThat(updatedProduct.getStockQuantity()).isEqualTo(55); // 기존 10 + 추가 5
@@ -93,6 +93,7 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @DisplayName("addProduct: id가_유효하지_않은_상품의_재고를_추가하려고_하면_예외_발생")
     void id가_유효하지_않은_상품의_재고를_추가하려고_하면_예외_발생() {
         // Given
         Long invalidProductId = -1L;
@@ -111,6 +112,7 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @DisplayName("addProduct: 잘못된_수량을_재고_추가하면_예외_발생")
     void 잘못된_수량을_재고_추가하면_예외_발생() {
         // Given
         Long productId = 1L;
@@ -131,6 +133,7 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @DisplayName("addProduct: 잘못된_수량을_재고_추가하면_예외_발생")
     void id로_상품_조회_성공() {
         // Given
         Long productId = 1L;
@@ -156,6 +159,7 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @DisplayName("getProductById: id가_유효하지_않은_상품을_조회하려고_하면_예외_발생")
     void id가_유효하지_않은_상품을_조회하려고_하면_예외_발생() {
         // Given
         Long productId = 1L;
@@ -173,8 +177,9 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @DisplayName("getAllProducts: 모든_상품_조회_성공")
     void 모든_상품_조회_성공() {
-        // Given
+        // given
         List<Book> mockProducts = List.of(
                 Book.builder().id(1L).title("Book 1").price(1000).stockQuantity(10).build(),
                 Book.builder().id(2L).title("Book 2").price(2000).stockQuantity(5).build()
@@ -182,10 +187,10 @@ class ProductServiceImplTest {
 
         when(productRepository.findAll()).thenReturn(mockProducts);
 
-        // When
+        // when
         List<ProductResponseDto> result = productService.getAllProducts();
 
-        // Then
+        // then
         assertThat(result).hasSize(2);
         assertThat(result.get(0).getId()).isEqualTo(1L);
         assertThat(result.get(0).getTitle()).isEqualTo("Book 1");
@@ -198,31 +203,31 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @DisplayName("searchProducts: 키워드로_상품_검색_성공")
     void 키워드로_상품_검색_성공() {
-        // Given
+        // given
         String keyword = "Book";
         List<Book> mockBooks = List.of(
                 Book.builder().id(1L).title("Book1").price(1000).build(),
                 Book.builder().id(2L).title("Book2").price(1500).build()
         );
 
-        // Repository Mock 설정
         when(productRepository.findByTitleContainingIgnoreCase(keyword)).thenReturn(mockBooks);
 
-        // When
+        // when
         List<ProductResponseDto> result = productService.searchProducts(keyword);
 
-        // Then
+        // then
         assertThat(result).isNotNull();
         assertThat(result).hasSize(2);
         assertThat(result.get(0).getTitle()).isEqualTo("Book1");
         assertThat(result.get(1).getTitle()).isEqualTo("Book2");
 
-        // Verify Repository 호출 확인
         verify(productRepository, times(1)).findByTitleContainingIgnoreCase(keyword);
     }
 
     @Test
+    @DisplayName("updateProduct: 상품_업데이트_성공")
     void 상품_업데이트_성공() {
         // given
         Long productId = 1L;
@@ -251,12 +256,12 @@ class ProductServiceImplTest {
         assertThat(result.getAuthorName()).isEqualTo("Updated Author");
         assertThat(result.getCategory()).isEqualTo("Updated Category");
 
-        // Verify Repository 호출 확인
         verify(productRepository).findById(productId);
         verify(productRepository).save(existingProduct);
     }
 
     @Test
+    @DisplayName("deleteProduct: 상품_삭제_성공")
     void 상품_삭제_성공() {
         // given
         Long productId = 1L;
@@ -273,6 +278,7 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @DisplayName("deleteProduct: 존재하지_않는_상품_삭제_시도시_예외_발생")
     void 존재하지_않는_상품_삭제_시도시_예외_발생() {
         // given
         Long productId = 1L;
@@ -289,6 +295,7 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @DisplayName("updateStock: 재고_수량_업데이트_성공")
     void 재고_수량_업데이트_성공() {
         // given
         Long productId = 1L;
@@ -327,6 +334,7 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @DisplayName("updateStock: 재고가_음수이면_예외_발생")
     void 재고가_음수이면_예외_발생() {
         // given
         Long productId = 1L;
@@ -346,6 +354,7 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @DisplayName("updateStock: 존재하지_않는_상품의_재고_수량을_업데이트_시도하면_예외_발생")
     void 존재하지_않는_상품의_재고_수량을_업데이트_시도하면_예외_발생() {
         // Given
         Long productId = 999L;
@@ -363,6 +372,7 @@ class ProductServiceImplTest {
     }
 
     @Test
+    @DisplayName("getStockLevel: 재고_조회_성공")
     void 재고_조회_성공() {
         // given
         Long productId = 1L;
